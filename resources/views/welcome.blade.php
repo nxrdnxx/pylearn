@@ -3,1009 +3,844 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyQuest — Belajar Python dengan Gamifikasi</title>
+<title>PyLearn — Belajar Python</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy-950: #050d1a;
-    --navy-900: #0a1628;
-    --navy-800: #0f2040;
-    --navy-700: #162d57;
-    --navy-600: #1e3d72;
-    --navy-500: #2952a0;
-    --navy-400: #3668c8;
-    --navy-300: #5a86d8;
-    --navy-200: #8fb3e8;
-    --navy-100: #c4d9f5;
-    --navy-50: #e8f1fd;
-    --blue-accent: #3b82f6;
-    --blue-bright: #60a5fa;
-    --purple: #8b5cf6;
-    --purple-bright: #a78bfa;
-    --green: #10b981;
-    --green-bright: #34d399;
-    --amber: #f59e0b;
-    --amber-bright: #fbbf24;
-    --red: #ef4444;
-    --red-bright: #f87171;
-    --cyan: #06b6d4;
-    --surface-1: #0f1f3d;
-    --surface-2: #142847;
-    --surface-3: #1a3255;
-    --surface-hover: #1e3a62;
-    --border: rgba(90,134,216,0.18);
-    --border-bright: rgba(90,134,216,0.35);
-    --text-primary: #e8f1fd;
-    --text-secondary: #8fb3e8;
-    --text-muted: #5a86d8;
-    --font-main: 'Space Grotesk', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --glow-blue: 0 0 20px rgba(59,130,246,0.25);
-    --glow-purple: 0 0 20px rgba(139,92,246,0.25);
-  }
+:root {
+  --ink-950: #04091a;
+  --ink-900: #070f26;
+  --ink-800: #0c1a3b;
+  --ink-700: #122248;
+  --ink-600: #1a2f5e;
+  --ink-500: #243e7a;
+  --ink-400: #3557a0;
+  --ink-300: #4e70bc;
+  --ink-200: #7a9ad4;
+  --ink-100: #b0c8ec;
+  --ink-50: #dce9f8;
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  --blue: #3b7cf4;
+  --blue-light: #6b9ff7;
+  --blue-dim: rgba(59,124,244,0.12);
 
-  body {
-    font-family: var(--font-main);
-    background: var(--navy-950);
-    color: var(--text-primary);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  --green: #1fb87a;
+  --green-light: #4dcf9b;
+  --green-dim: rgba(31,184,122,0.12);
 
-  /* ===== SCROLLBAR ===== */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--navy-900); }
-  ::-webkit-scrollbar-thumb { background: var(--navy-600); border-radius: 99px; }
+  --amber: #e8a022;
+  --amber-light: #f0bc5e;
+  --amber-dim: rgba(232,160,34,0.12);
 
-  /* ===== PAGE SYSTEM ===== */
-  .page { display: none; min-height: 100vh; }
-  .page.active { display: block; }
+  --red: #e05252;
+  --red-dim: rgba(224,82,82,0.1);
 
-  /* ===== NAVBAR ===== */
-  .navbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(5,13,26,0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    height: 60px;
-    display: flex; align-items: center;
-    padding: 0 24px;
-    gap: 8px;
-  }
-  .navbar-logo {
-    display: flex; align-items: center; gap: 10px;
-    font-weight: 700; font-size: 18px; color: var(--text-primary);
-    cursor: pointer; margin-right: auto; text-decoration: none;
-    flex-shrink: 0;
-  }
-  .logo-icon {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, var(--blue-accent), var(--purple));
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-  }
-  .logo-text span { color: var(--blue-bright); }
-  .nav-links { display: flex; align-items: center; gap: 4px; }
-  .nav-link {
-    padding: 7px 14px; border-radius: var(--radius-sm);
-    color: var(--text-secondary); font-size: 14px; font-weight: 500;
-    cursor: pointer; transition: all 0.2s; border: none; background: none;
-    white-space: nowrap;
-  }
-  .nav-link:hover { background: var(--surface-2); color: var(--text-primary); }
-  .nav-link.active { background: var(--surface-2); color: var(--blue-bright); }
-  .nav-avatar {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--navy-600), var(--purple));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; cursor: pointer;
-    border: 2px solid var(--border-bright); color: var(--text-primary);
-    flex-shrink: 0;
-  }
-  .nav-xp-badge {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 99px; padding: 5px 12px;
-    font-size: 13px; font-weight: 600; color: var(--amber-bright);
-    flex-shrink: 0;
-  }
-  .streak-badge {
-    display: flex; align-items: center; gap: 5px;
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 99px; padding: 5px 12px;
-    font-size: 13px; font-weight: 600; color: var(--red-bright);
-    flex-shrink: 0;
-  }
+  --purple: #7b5ef5;
+  --purple-dim: rgba(123,94,245,0.12);
 
-  /* ===== BUTTONS ===== */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    gap: 8px; padding: 12px 24px; border-radius: var(--radius-md);
-    font-family: var(--font-main); font-size: 15px; font-weight: 600;
-    cursor: pointer; border: none; transition: all 0.2s; text-decoration: none;
-  }
-  .btn-primary {
-    background: var(--blue-accent);
-    color: white;
-    box-shadow: 0 4px 0 #1d4ed8;
-  }
-  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 5px 0 #1d4ed8; }
-  .btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 #1d4ed8; }
-  .btn-secondary {
-    background: var(--surface-2);
-    color: var(--text-primary);
-    border: 1.5px solid var(--border-bright);
-    box-shadow: 0 4px 0 rgba(0,0,0,0.3);
-  }
-  .btn-secondary:hover { background: var(--surface-hover); }
-  .btn-secondary:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.3); }
-  .btn-purple {
-    background: var(--purple);
-    color: white;
-    box-shadow: 0 4px 0 #5b21b6;
-  }
-  .btn-purple:hover { transform: translateY(-1px); box-shadow: 0 5px 0 #5b21b6; }
-  .btn-success {
-    background: var(--green);
-    color: white;
-    box-shadow: 0 4px 0 #065f46;
-  }
-  .btn-danger {
-    background: var(--red);
-    color: white;
-    box-shadow: 0 4px 0 #7f1d1d;
-  }
-  .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: var(--radius-sm); }
-  .btn-lg { padding: 16px 32px; font-size: 17px; border-radius: var(--radius-lg); }
-  .btn-full { width: 100%; }
+  --s1: #0b1630;
+  --s2: #0f1e3e;
+  --s3: #13244a;
+  --s-hover: #162a54;
 
-  /* ===== CARDS ===== */
-  .card {
-    background: var(--surface-1);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    transition: border-color 0.2s;
-  }
-  .card:hover { border-color: var(--border-bright); }
-  .card-elevated {
-    background: var(--surface-2);
-    border: 1.5px solid var(--border-bright);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  }
+  --bd: rgba(74,118,210,0.14);
+  --bd2: rgba(74,118,210,0.26);
+  --bd3: rgba(74,118,210,0.42);
 
-  /* ===== PROGRESS BAR ===== */
-  .progress-track {
-    height: 12px; background: var(--navy-800);
-    border-radius: 99px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; border-radius: 99px;
-    background: linear-gradient(90deg, var(--blue-accent), var(--blue-bright));
-    transition: width 0.8s cubic-bezier(.4,0,.2,1);
-    position: relative;
-  }
-  .progress-fill::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent 60%, rgba(255,255,255,0.25));
-    border-radius: 99px;
-  }
-  .progress-fill-green {
-    background: linear-gradient(90deg, var(--green), var(--green-bright));
-  }
-  .progress-fill-purple {
-    background: linear-gradient(90deg, var(--purple), var(--purple-bright));
-  }
-  .progress-fill-amber {
-    background: linear-gradient(90deg, var(--amber), var(--amber-bright));
-  }
+  --t1: #dce9f8;
+  --t2: #7a9ad4;
+  --t3: #4e70bc;
 
-  /* ===== BADGE PILL ===== */
-  .badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: 99px;
-    font-size: 12px; font-weight: 600;
-  }
-  .badge-blue { background: rgba(59,130,246,0.2); color: var(--blue-bright); border: 1px solid rgba(59,130,246,0.3); }
-  .badge-purple { background: rgba(139,92,246,0.2); color: var(--purple-bright); border: 1px solid rgba(139,92,246,0.3); }
-  .badge-green { background: rgba(16,185,129,0.2); color: var(--green-bright); border: 1px solid rgba(16,185,129,0.3); }
-  .badge-amber { background: rgba(245,158,11,0.2); color: var(--amber-bright); border: 1px solid rgba(245,158,11,0.3); }
-  .badge-red { background: rgba(239,68,68,0.2); color: var(--red-bright); border: 1px solid rgba(239,68,68,0.3); }
-  .badge-gray { background: rgba(90,134,216,0.1); color: var(--text-secondary); border: 1px solid var(--border); }
+  --f-serif: 'Instrument Serif', Georgia, serif;
+  --f-sans: 'DM Sans', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', monospace;
 
-  /* ===== DIVIDER ===== */
-  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+  --r1: 6px;
+  --r2: 10px;
+  --r3: 14px;
+  --r4: 20px;
+}
 
-  /* ===== INPUT ===== */
-  .input-group { display: flex; flex-direction: column; gap: 8px; }
-  .input-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
-  .input {
-    background: var(--surface-2); border: 1.5px solid var(--border);
-    border-radius: var(--radius-md); padding: 12px 16px;
-    color: var(--text-primary); font-family: var(--font-main); font-size: 15px;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    width: 100%;
-  }
-  .input:focus { border-color: var(--blue-accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-  .input::placeholder { color: var(--text-muted); }
-  .input-code {
-    font-family: var(--font-mono); font-size: 14px;
-    background: var(--navy-900); border-color: var(--border);
-    line-height: 1.6; min-height: 100px; resize: vertical;
-  }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* ===== LAYOUT ===== */
-  .main-layout {
-    padding-top: 60px;
-    min-height: 100vh;
-  }
-  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .flex { display: flex; }
-  .flex-col { display: flex; flex-direction: column; }
-  .items-center { align-items: center; }
-  .justify-between { justify-content: space-between; }
-  .gap-2 { gap: 8px; }
-  .gap-3 { gap: 12px; }
-  .gap-4 { gap: 16px; }
-  .gap-6 { gap: 24px; }
+html { scroll-behavior: smooth; }
 
-  /* ===== SECTION HEADER ===== */
-  .section-title { font-size: 22px; font-weight: 700; color: var(--text-primary); }
-  .section-sub { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+body {
+  font-family: var(--f-sans);
+  background: var(--ink-950);
+  color: var(--t1);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* ===== TOAST ===== */
-  .toast-container {
-    position: fixed; bottom: 24px; right: 24px; z-index: 999;
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .toast {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--surface-2); border: 1.5px solid var(--border-bright);
-    border-radius: var(--radius-md); padding: 14px 18px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-    min-width: 280px; animation: toastIn 0.3s ease;
-    font-size: 14px; font-weight: 500;
-  }
-  .toast-success { border-color: rgba(16,185,129,0.5); }
-  .toast-error { border-color: rgba(239,68,68,0.5); }
-  .toast-icon { font-size: 20px; flex-shrink: 0; }
-  @keyframes toastIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-600); border-radius: 99px; }
 
-  /* ===== MODAL ===== */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(5,13,26,0.85);
-    display: none; align-items: center; justify-content: center;
-    backdrop-filter: blur(4px);
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface-2); border: 1.5px solid var(--border-bright);
-    border-radius: var(--radius-xl); padding: 36px;
-    max-width: 440px; width: 90%; text-align: center;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-    animation: modalIn 0.3s cubic-bezier(.34,1.56,.64,1);
-  }
-  @keyframes modalIn {
-    from { transform: scale(0.85); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
+/* PAGE SYSTEM */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
 
-  /* ===== STAT CARD ===== */
-  .stat-card {
-    background: var(--surface-1);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .stat-icon {
-    width: 44px; height: 44px; border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
-  .stat-value { font-size: 28px; font-weight: 700; color: var(--text-primary); }
-  .stat-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+/* NAVBAR */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  display: flex; align-items: center; padding: 0 28px; gap: 6px;
+  background: rgba(4,9,26,0.8);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--bd);
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--f-serif); font-size: 20px;
+  color: var(--t1); cursor: pointer;
+  margin-right: auto; text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.brand-mark {
+  width: 28px; height: 28px; border-radius: var(--r1);
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.brand-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: white;
+}
+.brand-name em { font-style: italic; color: var(--blue-light); }
 
-  /* ===== LEVEL CARD ===== */
-  .level-card {
-    background: var(--surface-1); border: 1.5px solid var(--border);
-    border-radius: var(--radius-lg); padding: 20px;
-    cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
-  }
-  .level-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
-  .level-card.locked { opacity: 0.55; cursor: not-allowed; }
-  .level-card.locked:hover { transform: none; }
-  .level-card.completed { border-color: rgba(16,185,129,0.4); }
-  .level-card.completed::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--green);
-  }
-  .level-card.unlocked { border-color: rgba(59,130,246,0.4); }
-  .level-card.unlocked::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--blue-accent);
-  }
-  .level-number {
-    width: 44px; height: 44px; border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 800; flex-shrink: 0;
-  }
-  .level-number-blue { background: rgba(59,130,246,0.2); color: var(--blue-bright); }
-  .level-number-green { background: rgba(16,185,129,0.2); color: var(--green-bright); }
-  .level-number-locked { background: var(--surface-2); color: var(--text-muted); }
+.nav-item {
+  padding: 6px 14px; border-radius: var(--r1);
+  color: var(--t2); font-size: 14px; font-weight: 400;
+  cursor: pointer; transition: all 0.15s;
+  border: none; background: none; font-family: var(--f-sans);
+}
+.nav-item:hover { color: var(--t1); background: var(--s2); }
+.nav-item.on { color: var(--t1); background: var(--s2); }
 
-  /* ===== QUIZ ===== */
-  .quiz-option {
-    background: var(--surface-1); border: 2px solid var(--border);
-    border-radius: var(--radius-md); padding: 16px 20px;
-    cursor: pointer; transition: all 0.18s; font-size: 15px; font-weight: 500;
-    text-align: left; color: var(--text-primary);
-    display: flex; align-items: center; gap: 14px;
-  }
-  .quiz-option:hover { border-color: var(--blue-accent); background: var(--surface-hover); }
-  .quiz-option.selected { border-color: var(--blue-accent); background: rgba(59,130,246,0.12); }
-  .quiz-option.correct { border-color: var(--green); background: rgba(16,185,129,0.12); color: var(--green-bright); }
-  .quiz-option.wrong { border-color: var(--red); background: rgba(239,68,68,0.12); color: var(--red-bright); }
-  .option-letter {
-    width: 32px; height: 32px; border-radius: var(--radius-sm);
-    background: var(--surface-2); border: 1.5px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; flex-shrink: 0; color: var(--text-secondary);
-  }
-  .quiz-option.correct .option-letter { background: rgba(16,185,129,0.25); border-color: var(--green); color: var(--green-bright); }
-  .quiz-option.wrong .option-letter { background: rgba(239,68,68,0.25); border-color: var(--red); color: var(--red-bright); }
-  .quiz-option.selected .option-letter { background: rgba(59,130,246,0.25); border-color: var(--blue-accent); color: var(--blue-bright); }
+.nav-stat {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 99px;
+  background: var(--s2); border: 1px solid var(--bd);
+  font-size: 13px; font-weight: 500; color: var(--t2);
+  font-family: var(--f-sans);
+}
+.nav-stat strong { color: var(--t1); font-weight: 600; }
 
-  /* ===== CODE BLOCK ===== */
-  .code-block {
-    background: var(--navy-900); border: 1px solid var(--border);
-    border-radius: var(--radius-md); padding: 16px 20px;
-    font-family: var(--font-mono); font-size: 14px; line-height: 1.7;
-    color: var(--navy-100); overflow-x: auto;
-  }
-  .code-keyword { color: #c792ea; }
-  .code-function { color: #82aaff; }
-  .code-string { color: #c3e88d; }
-  .code-number { color: #f78c6c; }
-  .code-comment { color: #546e7a; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--ink-500), var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--bd2); color: var(--t1);
+  flex-shrink: 0; font-family: var(--f-sans);
+}
 
-  /* ===== LEADERBOARD ===== */
-  .lb-row {
-    display: flex; align-items: center; gap: 16px;
-    padding: 14px 20px; border-radius: var(--radius-md);
-    transition: background 0.15s;
-  }
-  .lb-row:hover { background: var(--surface-2); }
-  .lb-row.me { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3); }
-  .lb-rank { width: 36px; font-size: 16px; font-weight: 700; text-align: center; flex-shrink: 0; }
-  .lb-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 700; flex-shrink: 0;
-  }
-  .lb-name { flex: 1; font-weight: 600; font-size: 15px; }
-  .lb-xp { font-size: 15px; font-weight: 700; color: var(--amber-bright); }
+/* LAYOUT */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+.wrap-sm { max-width: 680px; margin: 0 auto; padding: 0 28px; }
+.wrap-xs { max-width: 440px; margin: 0 auto; padding: 0 20px; }
+.pt { padding-top: 56px; }
 
-  /* ===== BADGE GRID ===== */
-  .badge-item {
-    background: var(--surface-1); border: 1.5px solid var(--border);
-    border-radius: var(--radius-lg); padding: 24px 16px;
-    text-align: center; cursor: default; transition: all 0.2s;
-    position: relative;
-  }
-  .badge-item:hover { border-color: var(--border-bright); transform: translateY(-2px); }
-  .badge-item.locked { opacity: 0.4; }
-  .badge-icon { font-size: 44px; display: block; margin-bottom: 12px; }
-  .badge-name { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-  .badge-desc { font-size: 11px; color: var(--text-secondary); }
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 22px; border-radius: var(--r2);
+  font-family: var(--f-sans); font-size: 14px; font-weight: 500;
+  cursor: pointer; border: none; transition: all 0.18s;
+  letter-spacing: -0.01em; text-decoration: none; white-space: nowrap;
+}
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: #4a8bf5; }
+.btn-primary:active { transform: scale(0.98); }
+.btn-ghost {
+  background: transparent; color: var(--t2);
+  border: 1px solid var(--bd2);
+}
+.btn-ghost:hover { background: var(--s2); color: var(--t1); border-color: var(--bd3); }
+.btn-muted {
+  background: var(--s2); color: var(--t2);
+  border: 1px solid var(--bd);
+}
+.btn-muted:hover { background: var(--s3); color: var(--t1); }
+.btn-success { background: var(--green); color: #fff; }
+.btn-success:hover { background: #23ce8b; }
+.btn-sm { padding: 7px 14px; font-size: 13px; border-radius: var(--r1); }
+.btn-lg { padding: 14px 28px; font-size: 15px; }
+.btn-full { width: 100%; }
 
-  /* ===== FEEDBACK BAR ===== */
-  .feedback-bar {
-    border-radius: var(--radius-lg); padding: 18px 24px;
-    display: flex; align-items: center; gap: 16px;
-    border: 2px solid;
-  }
-  .feedback-bar.correct { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.5); }
-  .feedback-bar.wrong { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.4); }
+/* CARDS */
+.card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--r3);
+  padding: 22px;
+}
+.card-elevated {
+  background: var(--s2);
+  border: 1px solid var(--bd2);
+  border-radius: var(--r3);
+  padding: 28px;
+}
 
-  /* ===== HERO BG ===== */
-  .hero-bg {
-    position: absolute; inset: 0; overflow: hidden; z-index: 0;
-    pointer-events: none;
-  }
-  .hero-orb {
-    position: absolute; border-radius: 50%;
-    filter: blur(80px); opacity: 0.25;
-  }
-  .hero-orb-1 { width: 600px; height: 600px; background: var(--blue-accent); top: -200px; right: -100px; }
-  .hero-orb-2 { width: 400px; height: 400px; background: var(--purple); bottom: -100px; left: -100px; }
+/* TAGS / PILLS */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 99px;
+  font-size: 12px; font-weight: 500; font-family: var(--f-sans);
+}
+.tag-blue { background: var(--blue-dim); color: var(--blue-light); border: 1px solid rgba(59,124,244,0.22); }
+.tag-green { background: var(--green-dim); color: var(--green-light); border: 1px solid rgba(31,184,122,0.22); }
+.tag-amber { background: var(--amber-dim); color: var(--amber-light); border: 1px solid rgba(232,160,34,0.22); }
+.tag-red { background: var(--red-dim); color: #f87171; border: 1px solid rgba(224,82,82,0.2); }
+.tag-purple { background: var(--purple-dim); color: #a78bfa; border: 1px solid rgba(123,94,245,0.22); }
+.tag-muted { background: var(--s2); color: var(--t2); border: 1px solid var(--bd); }
 
-  /* ===== FEATURE ICON ===== */
-  .feature-icon {
-    width: 56px; height: 56px; border-radius: var(--radius-lg);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; margin-bottom: 14px;
-  }
+/* PROGRESS */
+.track {
+  height: 6px; background: var(--ink-700);
+  border-radius: 99px; overflow: hidden;
+}
+.fill {
+  height: 100%; border-radius: 99px;
+  background: var(--blue);
+  transition: width 0.7s cubic-bezier(.4,0,.2,1);
+}
+.fill-green { background: var(--green); }
+.fill-amber { background: var(--amber); }
 
-  /* ===== RESULT ===== */
-  .result-score {
-    font-size: 80px; font-weight: 800;
-    background: linear-gradient(135deg, var(--blue-bright), var(--purple-bright));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    line-height: 1;
-  }
+/* INPUT */
+.field { display: flex; flex-direction: column; gap: 7px; }
+.label { font-size: 12px; font-weight: 500; color: var(--t2); letter-spacing: 0.03em; }
+.input {
+  background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r2); padding: 11px 15px;
+  color: var(--t1); font-family: var(--f-sans); font-size: 14px;
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s; width: 100%;
+}
+.input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,124,244,0.13); }
+.input::placeholder { color: var(--t3); }
+.input-code {
+  font-family: var(--f-mono); font-size: 13px;
+  background: var(--ink-900); min-height: 90px; resize: vertical; line-height: 1.7;
+}
 
-  /* ===== SIDEBAR LAYOUT ===== */
-  .sidebar-layout {
-    display: grid; grid-template-columns: 240px 1fr; gap: 24px;
-    align-items: start;
-  }
-  .sidebar {
-    background: var(--surface-1); border: 1.5px solid var(--border);
-    border-radius: var(--radius-lg); padding: 16px; position: sticky; top: 80px;
-  }
-  .sidebar-link {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 14px; border-radius: var(--radius-md);
-    font-size: 14px; font-weight: 500; cursor: pointer;
-    color: var(--text-secondary); transition: all 0.15s;
-    border: none; background: none; width: 100%;
-  }
-  .sidebar-link:hover { background: var(--surface-2); color: var(--text-primary); }
-  .sidebar-link.active { background: rgba(59,130,246,0.15); color: var(--blue-bright); }
+/* DIVIDER */
+.hr { height: 1px; background: var(--bd); margin: 20px 0; }
 
-  /* ===== TABLE ===== */
-  .table { width: 100%; border-collapse: collapse; }
-  .table th, .table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
-  .table th { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .table td { font-size: 14px; color: var(--text-primary); }
-  .table tr:last-child td { border-bottom: none; }
+/* TOAST */
+.toast-wrap {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--s3); border: 1px solid var(--bd2);
+  border-radius: var(--r2); padding: 13px 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  min-width: 260px; max-width: 320px;
+  font-size: 13px; font-weight: 400; color: var(--t1);
+  animation: tIn .25s ease;
+}
+.toast-ok { border-color: rgba(31,184,122,0.35); }
+.toast-err { border-color: rgba(224,82,82,0.35); }
+.t-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.t-dot-ok { background: var(--green); }
+.t-dot-err { background: var(--red); }
+@keyframes tIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ===== NOTIFICATION ===== */
-  .notif {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px 16px; border-radius: var(--radius-md);
-    background: var(--surface-2); border: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-accent); margin-top: 3px; flex-shrink: 0; }
+/* MODAL */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(4,9,26,0.75);
+  backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--s2); border: 1px solid var(--bd2);
+  border-radius: var(--r4); padding: 36px 32px;
+  max-width: 400px; width: 100%; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: mIn .22s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes mIn { from { opacity:0; transform:scale(0.94); } to { opacity:1; transform:scale(1); } }
 
-  /* ===== FILTER TABS ===== */
-  .filter-tabs { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: var(--radius-md); }
-  .filter-tab {
-    padding: 7px 18px; border-radius: var(--radius-sm);
-    font-size: 13px; font-weight: 600; cursor: pointer; border: none;
-    background: none; color: var(--text-secondary); transition: all 0.18s;
-  }
-  .filter-tab.active { background: var(--navy-700); color: var(--text-primary); }
+/* CODE BLOCK */
+.code-block {
+  background: var(--ink-900); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 16px 18px;
+  font-family: var(--f-mono); font-size: 13px; line-height: 1.75;
+  color: var(--ink-100); overflow-x: auto;
+}
+.kw { color: #7aa3f5; }
+.fn { color: #9ecbff; }
+.st { color: #9fd9a0; }
+.nm { color: #d4a574; }
+.cm { color: var(--ink-400); }
 
-  /* ===== PAGE HERO ===== */
-  .page-hero { background: var(--surface-1); border-bottom: 1px solid var(--border); padding: 32px 0; }
+/* QUIZ OPTION */
+.opt {
+  width: 100%; background: var(--s1); border: 1px solid var(--bd);
+  border-radius: var(--r2); padding: 15px 18px;
+  cursor: pointer; transition: all 0.15s;
+  font-size: 14px; font-weight: 400; text-align: left;
+  color: var(--t1); font-family: var(--f-sans);
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.opt:hover { border-color: var(--bd3); background: var(--s-hover); }
+.opt.sel { border-color: var(--blue); background: rgba(59,124,244,0.08); }
+.opt.ok { border-color: var(--green); background: var(--green-dim); color: var(--green-light); }
+.opt.ng { border-color: var(--red); background: var(--red-dim); color: #f87171; }
+.opt-key {
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: var(--r1); background: var(--s3);
+  border: 1px solid var(--bd); font-size: 12px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; color: var(--t2);
+  font-family: var(--f-mono);
+}
+.opt.ok .opt-key { background: rgba(31,184,122,0.2); border-color: rgba(31,184,122,0.4); color: var(--green-light); }
+.opt.ng .opt-key { background: rgba(224,82,82,0.15); border-color: rgba(224,82,82,0.35); color: #f87171; }
+.opt.sel .opt-key { background: rgba(59,124,244,0.2); border-color: rgba(59,124,244,0.4); color: var(--blue-light); }
 
-  /* ===== AVATAR COLORS ===== */
-  .av-blue { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
-  .av-purple { background: linear-gradient(135deg, #6d28d9, #8b5cf6); }
-  .av-green { background: linear-gradient(135deg, #065f46, #10b981); }
-  .av-amber { background: linear-gradient(135deg, #92400e, #f59e0b); }
-  .av-red { background: linear-gradient(135deg, #7f1d1d, #ef4444); }
-  .av-cyan { background: linear-gradient(135deg, #0e7490, #06b6d4); }
+/* FEEDBACK */
+.feedback {
+  border-radius: var(--r3); padding: 16px 20px;
+  border: 1px solid; display: flex; gap: 14px; align-items: flex-start;
+}
+.fb-ok { background: var(--green-dim); border-color: rgba(31,184,122,0.3); }
+.fb-ng { background: var(--red-dim); border-color: rgba(224,82,82,0.25); }
 
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-    .grid-auto { grid-template-columns: 1fr 1fr; }
-    .sidebar-layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .nav-links { display: none; }
-    .hero-section { padding: 60px 0 40px; }
-  }
-  @media (max-width: 480px) {
-    .grid-auto { grid-template-columns: 1fr; }
-    .container { padding: 0 16px; }
-    .result-score { font-size: 60px; }
-  }
+/* LEADERBOARD */
+.lb-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px; border-radius: var(--r2);
+  transition: background 0.12s;
+}
+.lb-row:hover { background: var(--s2); }
+.lb-row.me { background: rgba(59,124,244,0.08); border: 1px solid rgba(59,124,244,0.2); }
+.lb-num { width: 28px; font-size: 14px; font-weight: 600; text-align: center; flex-shrink: 0; color: var(--t2); }
+.lb-av {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--t1);
+}
+.lb-name { flex: 1; font-size: 14px; font-weight: 500; }
+.lb-xp { font-size: 14px; font-weight: 600; color: var(--amber); font-family: var(--f-mono); }
+
+/* LEVEL CARD */
+.lv-card {
+  background: var(--s1); border: 1px solid var(--bd);
+  border-radius: var(--r3); padding: 20px 22px;
+  cursor: pointer; transition: all 0.15s; position: relative;
+}
+.lv-card:hover { border-color: var(--bd3); }
+.lv-card.done { border-color: rgba(31,184,122,0.25); }
+.lv-card.done::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; border-radius: 3px 0 0 3px;
+  background: var(--green);
+}
+.lv-card.open { border-color: rgba(59,124,244,0.3); }
+.lv-card.open::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; border-radius: 3px 0 0 3px;
+  background: var(--blue);
+}
+.lv-card.locked { opacity: 0.45; cursor: not-allowed; }
+.lv-card.locked:hover { border-color: var(--bd); }
+.lv-num {
+  width: 38px; height: 38px; border-radius: var(--r1); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; font-family: var(--f-mono);
+}
+.lv-num-blue { background: rgba(59,124,244,0.15); color: var(--blue-light); }
+.lv-num-green { background: rgba(31,184,122,0.15); color: var(--green-light); }
+.lv-num-dim { background: var(--s2); color: var(--t3); }
+
+/* BADGE GRID */
+.bdg-item {
+  background: var(--s1); border: 1px solid var(--bd);
+  border-radius: var(--r3); padding: 22px 16px;
+  text-align: center; cursor: default; transition: all 0.15s;
+}
+.bdg-item:hover { border-color: var(--bd3); }
+.bdg-item.off { opacity: 0.35; }
+.bdg-ico { font-size: 36px; display: block; margin-bottom: 10px; }
+.bdg-name { font-size: 13px; font-weight: 600; color: var(--t1); margin-bottom: 3px; }
+.bdg-desc { font-size: 11px; color: var(--t2); }
+
+/* TABLE */
+.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tbl th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 500; color: var(--t3); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--bd); }
+.tbl td { padding: 13px 14px; border-bottom: 1px solid var(--bd); color: var(--t1); }
+.tbl tr:last-child td { border-bottom: none; }
+
+/* HERO BG */
+.bg-glow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
+
+/* STAT CARD */
+.sc {
+  background: var(--s1); border: 1px solid var(--bd);
+  border-radius: var(--r3); padding: 20px;
+}
+.sc-val { font-size: 30px; font-weight: 700; color: var(--t1); font-family: var(--f-serif); letter-spacing: -0.02em; }
+.sc-lbl { font-size: 12px; color: var(--t2); margin-top: 3px; font-weight: 400; }
+
+/* FILTER */
+.ftabs { display: flex; gap: 3px; background: var(--s2); padding: 3px; border-radius: var(--r2); border: 1px solid var(--bd); }
+.ftab {
+  padding: 6px 16px; border-radius: var(--r1);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  border: none; background: none; color: var(--t2);
+  font-family: var(--f-sans); transition: all 0.15s;
+}
+.ftab.on { background: var(--s3); color: var(--t1); }
+
+/* SECTION HEADER */
+.sh { font-size: 11px; font-weight: 500; color: var(--t3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+/* GRID */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.ga { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 12px; }
+
+/* AVATAR COLORS */
+.av1 { background: linear-gradient(135deg, #1a3a8a, #3b7cf4); }
+.av2 { background: linear-gradient(135deg, #1a4a3a, #1fb87a); }
+.av3 { background: linear-gradient(135deg, #4a2a1a, #e8a022); }
+.av4 { background: linear-gradient(135deg, #3a1a6a, #7b5ef5); }
+.av5 { background: linear-gradient(135deg, #4a1a1a, #e05252); }
+.av6 { background: linear-gradient(135deg, #0e4a5a, #06b6d4); }
+
+@media(max-width:800px){
+  .g2,.g3,.g4{grid-template-columns:1fr;}
+  .ga{grid-template-columns:1fr 1fr;}
+  .nav-item{display:none;}
+  .wrap,.wrap-sm{padding:0 16px;}
+}
+@media(max-width:480px){
+  .ga{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
 
-<!-- ===== TOAST CONTAINER ===== -->
-<div class="toast-container" id="toastContainer"></div>
+<!-- TOAST -->
+<div class="toast-wrap" id="toasts"></div>
 
-<!-- ===== BADGE MODAL ===== -->
-<div class="modal-overlay" id="badgeModal">
+<!-- MODAL: Badge -->
+<div class="overlay" id="m-badge">
   <div class="modal">
-    <div style="font-size:64px;margin-bottom:16px">🏆</div>
-    <div style="font-size:12px;font-weight:600;color:var(--amber-bright);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px">Badge Baru!</div>
-    <div style="font-size:22px;font-weight:700;margin-bottom:8px" id="badgeModalName">First Blood</div>
-    <div style="font-size:14px;color:var(--text-secondary);margin-bottom:24px" id="badgeModalDesc">Selesaikan level pertamamu!</div>
-    <button class="btn btn-primary btn-full" onclick="closeBadgeModal()">Keren! ⚡</button>
+    <div style="width:56px;height:56px;border-radius:50%;background:var(--amber-dim);border:1px solid rgba(232,160,34,0.3);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:26px" id="m-badge-ico">🏆</div>
+    <div style="font-size:11px;font-weight:500;color:var(--amber);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">Badge Baru</div>
+    <div style="font-family:var(--f-serif);font-size:22px;margin-bottom:6px" id="m-badge-name">—</div>
+    <div style="font-size:14px;color:var(--t2);margin-bottom:24px" id="m-badge-desc">—</div>
+    <button class="btn btn-primary btn-full" onclick="closeModal('m-badge')">Lanjutkan</button>
   </div>
 </div>
 
-<!-- ===== LEVEL LOCKED MODAL ===== -->
-<div class="modal-overlay" id="lockedModal">
+<!-- MODAL: Locked -->
+<div class="overlay" id="m-lock">
   <div class="modal">
-    <div style="font-size:56px;margin-bottom:16px">🔒</div>
-    <div style="font-size:20px;font-weight:700;margin-bottom:10px">Level Terkunci</div>
-    <div style="font-size:14px;color:var(--text-secondary);margin-bottom:24px">Selesaikan level sebelumnya terlebih dahulu untuk membuka level ini.</div>
-    <button class="btn btn-secondary btn-full" onclick="closeLockedModal()">Mengerti</button>
+    <div style="width:48px;height:48px;border-radius:50%;background:var(--s3);margin:0 auto 16px;display:flex;align-items:center;justify-content:center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div style="font-size:18px;font-weight:600;margin-bottom:8px">Level Terkunci</div>
+    <div style="font-size:14px;color:var(--t2);margin-bottom:24px">Selesaikan level sebelumnya terlebih dahulu.</div>
+    <button class="btn btn-ghost btn-full" onclick="closeModal('m-lock')">Mengerti</button>
   </div>
 </div>
 
 
-<!-- ============================== -->
-<!--        LANDING PAGE            -->
-<!-- ============================== -->
+<!-- ==================== LANDING ==================== -->
 <div id="page-landing" class="page active">
-  <!-- Navbar Landing -->
-  <nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,13,26,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 24px;gap:12px">
-    <div class="navbar-logo" onclick="showPage('landing')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('landing')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
-    <div style="margin-left:auto;display:flex;gap:8px">
-      <button class="btn btn-secondary btn-sm" onclick="showPage('login')">Masuk</button>
-      <button class="btn btn-primary btn-sm" onclick="showPage('register')">Daftar</button>
-    </div>
+    <button class="btn btn-ghost btn-sm" onclick="go('login')">Masuk</button>
+    <button class="btn btn-primary btn-sm" onclick="go('register')">Daftar</button>
   </nav>
 
-  <!-- Hero -->
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;padding-top:60px">
-    <div class="hero-bg">
-      <div class="hero-orb hero-orb-1"></div>
-      <div class="hero-orb hero-orb-2"></div>
-    </div>
-    <div class="container" style="position:relative;z-index:1;padding:80px 24px">
-      <div style="max-width:680px">
-        <div class="badge badge-blue" style="margin-bottom:20px;font-size:13px;padding:6px 14px">
-          🐍 Belajar Python dengan cara yang menyenangkan
-        </div>
-        <h1 style="font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1.1;margin-bottom:20px">
-          Kuasai Python<br>
-          <span style="background:linear-gradient(135deg,var(--blue-bright),var(--purple-bright));-webkit-background-clip:text;-webkit-text-fill-color:transparent">
-            Level demi Level
-          </span>
+  <div style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden">
+    <div class="bg-glow" style="width:700px;height:700px;background:var(--blue);opacity:0.07;top:-200px;right:-200px"></div>
+    <div class="bg-glow" style="width:500px;height:500px;background:var(--purple);opacity:0.06;bottom:-150px;left:-150px"></div>
+
+    <div class="wrap" style="padding-top:80px;padding-bottom:80px;position:relative;z-index:1">
+      <div style="max-width:620px">
+        <div class="tag tag-blue" style="margin-bottom:22px">Belajar Python secara terstruktur</div>
+        <h1 style="font-family:var(--f-serif);font-size:clamp(44px,5.5vw,72px);line-height:1.08;letter-spacing:-0.02em;margin-bottom:20px">
+          Belajar Python,<br>
+          <span style="color:var(--blue-light);font-style:italic">dari nol hingga mahir.</span>
         </h1>
-        <p style="font-size:18px;color:var(--text-secondary);line-height:1.7;margin-bottom:36px;max-width:520px">
-          Platform belajar Python yang mengubah coding menjadi petualangan epik. Kumpulkan XP, raih badge, dan bersaing di leaderboard!
+        <p style="font-size:17px;color:var(--t2);line-height:1.75;margin-bottom:36px;max-width:480px;font-weight:300">
+          Platform belajar Python berbasis level dan gamifikasi. Kumpulkan XP, raih badge, dan lacak progresmu setiap hari.
         </p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <button class="btn btn-primary btn-lg" onclick="showPage('register')">
-            🚀 Mulai Belajar Gratis
-          </button>
-          <button class="btn btn-secondary btn-lg" onclick="showPage('levels')">
-            Lihat Kurikulum
-          </button>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:56px">
+          <button class="btn btn-primary btn-lg" onclick="go('register')">Mulai Gratis</button>
+          <button class="btn btn-ghost btn-lg" onclick="go('levels')">Lihat Kurikulum</button>
         </div>
-        <!-- Stats bar -->
-        <div style="display:flex;gap:32px;margin-top:48px;flex-wrap:wrap">
+        <div style="display:flex;gap:36px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--bd)">
           <div>
-            <div style="font-size:24px;font-weight:800;color:var(--text-primary)">12K+</div>
-            <div style="font-size:13px;color:var(--text-secondary)">Pelajar Aktif</div>
+            <div style="font-family:var(--f-serif);font-size:28px;letter-spacing:-0.02em">12.4K</div>
+            <div style="font-size:13px;color:var(--t2);margin-top:2px">Pelajar aktif</div>
           </div>
-          <div style="width:1px;background:var(--border)"></div>
           <div>
-            <div style="font-size:24px;font-weight:800;color:var(--text-primary)">50+</div>
-            <div style="font-size:13px;color:var(--text-secondary)">Level Materi</div>
+            <div style="font-family:var(--f-serif);font-size:28px;letter-spacing:-0.02em">50+</div>
+            <div style="font-size:13px;color:var(--t2);margin-top:2px">Level materi</div>
           </div>
-          <div style="width:1px;background:var(--border)"></div>
           <div>
-            <div style="font-size:24px;font-weight:800;color:var(--text-primary)">4.9★</div>
-            <div style="font-size:13px;color:var(--text-secondary)">Rating Pengguna</div>
+            <div style="font-family:var(--f-serif);font-size:28px;letter-spacing:-0.02em">4.9</div>
+            <div style="font-size:13px;color:var(--t2);margin-top:2px">Rating pengguna</div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- Features -->
-  <section style="padding:80px 0;background:var(--surface-1);border-top:1px solid var(--border)">
-    <div class="container">
-      <div style="text-align:center;margin-bottom:56px">
-        <div class="badge badge-purple" style="margin-bottom:16px;font-size:13px">✨ Fitur Unggulan</div>
-        <h2 style="font-size:36px;font-weight:800;margin-bottom:12px">Belajar yang Berbeda</h2>
-        <p style="color:var(--text-secondary);font-size:16px">Kami mengubah cara belajar coding agar lebih engaging</p>
+  <div style="background:var(--s1);border-top:1px solid var(--bd);padding:80px 0">
+    <div class="wrap">
+      <div style="margin-bottom:52px">
+        <div class="tag tag-muted" style="margin-bottom:14px">Fitur</div>
+        <h2 style="font-family:var(--f-serif);font-size:36px;letter-spacing:-0.02em;margin-bottom:10px">Dirancang untuk hasil nyata</h2>
+        <p style="color:var(--t2);font-size:15px;max-width:420px">Setiap fitur dibuat untuk membantu kamu belajar lebih efektif dan konsisten.</p>
       </div>
-      <div class="grid-3" style="gap:24px">
-        <div class="card" style="padding:32px">
-          <div class="feature-icon" style="background:rgba(59,130,246,0.15)">🎯</div>
-          <h3 style="font-size:18px;font-weight:700;margin-bottom:10px">Level System</h3>
-          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7">Belajar secara bertahap dengan sistem level yang terstruktur. Dari dasar hingga mahir, satu langkah demi langkah.</p>
-        </div>
-        <div class="card" style="padding:32px">
-          <div class="feature-icon" style="background:rgba(139,92,246,0.15)">⚡</div>
-          <h3 style="font-size:18px;font-weight:700;margin-bottom:10px">Quiz Interaktif</h3>
-          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7">Uji pemahaman dengan soal pilihan ganda, kode interaktif, dan feedback instan yang membantu kamu belajar lebih cepat.</p>
-        </div>
-        <div class="card" style="padding:32px">
-          <div class="feature-icon" style="background:rgba(16,185,129,0.15)">🏆</div>
-          <h3 style="font-size:18px;font-weight:700;margin-bottom:10px">Badge & Leaderboard</h3>
-          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7">Kumpulkan badge eksklusif dan bersaing dengan pelajar lain di leaderboard global. Jadilah yang terbaik!</p>
-        </div>
-        <div class="card" style="padding:32px">
-          <div class="feature-icon" style="background:rgba(245,158,11,0.15)">🔥</div>
-          <h3 style="font-size:18px;font-weight:700;margin-bottom:10px">Streak Harian</h3>
-          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7">Bangun kebiasaan belajar yang konsisten dengan sistem streak. Semakin panjang streak, semakin besar bonus XP!</p>
-        </div>
-        <div class="card" style="padding:32px">
-          <div class="feature-icon" style="background:rgba(6,182,212,0.15)">💻</div>
-          <h3 style="font-size:18px;font-weight:700;margin-bottom:10px">Code Editor</h3>
-          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7">Tulis dan jalankan kode Python langsung di browser. Tidak perlu install apapun, langsung coding!</p>
-        </div>
-        <div class="card" style="padding:32px">
-          <div class="feature-icon" style="background:rgba(239,68,68,0.15)">📊</div>
-          <h3 style="font-size:18px;font-weight:700;margin-bottom:10px">Progress Tracking</h3>
-          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7">Pantau perkembangan belajarmu dengan dashboard yang detail. Lihat statistik dan riwayat aktivitasmu.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section style="padding:100px 0;text-align:center;position:relative;overflow:hidden">
-    <div class="hero-bg">
-      <div class="hero-orb" style="width:500px;height:500px;background:var(--blue-accent);top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.12"></div>
-    </div>
-    <div class="container" style="position:relative;z-index:1">
-      <h2 style="font-size:clamp(28px,4vw,52px);font-weight:800;margin-bottom:16px">
-        Siap Jadi Python Master?
-      </h2>
-      <p style="font-size:16px;color:var(--text-secondary);margin-bottom:36px">Bergabung dengan ribuan pelajar yang sudah memulai perjalanan coding mereka.</p>
-      <button class="btn btn-primary btn-lg" onclick="showPage('register')">
-        🎯 Daftar Sekarang — Gratis!
-      </button>
-    </div>
-  </section>
-</div>
-
-
-<!-- ============================== -->
-<!--         LOGIN PAGE             -->
-<!-- ============================== -->
-<div id="page-login" class="page">
-  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 16px;position:relative">
-    <div class="hero-bg">
-      <div class="hero-orb hero-orb-1" style="opacity:0.12"></div>
-      <div class="hero-orb hero-orb-2" style="opacity:0.12"></div>
-    </div>
-    <div style="width:100%;max-width:400px;position:relative;z-index:1">
-      <!-- Back -->
-      <button class="btn btn-secondary btn-sm" style="margin-bottom:24px" onclick="showPage('landing')">← Kembali</button>
-      
-      <div class="card-elevated">
-        <div style="text-align:center;margin-bottom:28px">
-          <div class="logo-icon" style="width:48px;height:48px;margin:0 auto 14px;font-size:24px">🐍</div>
-          <h1 style="font-size:24px;font-weight:800;margin-bottom:6px">Selamat Datang Kembali!</h1>
-          <p style="font-size:14px;color:var(--text-secondary)">Lanjutkan perjalanan belajarmu</p>
-        </div>
-        
-        <div id="loginError" style="display:none;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);border-radius:var(--radius-md);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--red-bright)">
-          ⚠️ Email atau password salah. Coba lagi.
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="input-group">
-            <label class="input-label">Email</label>
-            <input class="input" type="email" id="loginEmail" placeholder="kamu@email.com">
+      <div class="g3" style="gap:1px;background:var(--bd);border-radius:var(--r3);overflow:hidden">
+        <div style="background:var(--ink-950);padding:32px">
+          <div style="width:36px;height:36px;border-radius:var(--r1);background:var(--blue-dim);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue-light)" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           </div>
-          <div class="input-group">
-            <label class="input-label">Password</label>
-            <input class="input" type="password" id="loginPass" placeholder="••••••••">
-          </div>
-          <button class="btn btn-primary btn-full" style="margin-top:4px" onclick="doLogin()">
-            🚀 Masuk
-          </button>
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:8px">Level System</h3>
+          <p style="font-size:14px;color:var(--t2);line-height:1.7;font-weight:300">Materi tersusun dari dasar hingga lanjutan. Setiap level membuka level berikutnya.</p>
         </div>
-        
-        <div class="divider"></div>
-        <p style="text-align:center;font-size:14px;color:var(--text-secondary)">
-          Belum punya akun? <span style="color:var(--blue-bright);cursor:pointer;font-weight:600" onclick="showPage('register')">Daftar sekarang</span>
-        </p>
+        <div style="background:var(--ink-950);padding:32px">
+          <div style="width:36px;height:36px;border-radius:var(--r1);background:var(--purple-dim);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:8px">Quiz Interaktif</h3>
+          <p style="font-size:14px;color:var(--t2);line-height:1.7;font-weight:300">Uji pemahaman dengan soal pilihan ganda dan kode editor. Feedback langsung setelah menjawab.</p>
+        </div>
+        <div style="background:var(--ink-950);padding:32px">
+          <div style="width:36px;height:36px;border-radius:var(--r1);background:var(--amber-dim);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber-light)" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:8px">XP & Badge</h3>
+          <p style="font-size:14px;color:var(--t2);line-height:1.7;font-weight:300">Dapatkan XP setiap menyelesaikan level. Kumpulkan badge dan bersaing di leaderboard.</p>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="padding:90px 0;text-align:center;position:relative;overflow:hidden">
+    <div class="bg-glow" style="width:400px;height:400px;background:var(--blue);opacity:0.07;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="wrap" style="position:relative;z-index:1">
+      <h2 style="font-family:var(--f-serif);font-size:clamp(28px,4vw,48px);letter-spacing:-0.02em;margin-bottom:14px">Siap memulai?</h2>
+      <p style="color:var(--t2);font-size:15px;margin-bottom:32px;font-weight:300">Daftarkan diri dan mulai belajar Python hari ini, gratis.</p>
+      <button class="btn btn-primary btn-lg" onclick="go('register')">Buat Akun Gratis</button>
     </div>
   </div>
 </div>
 
 
-<!-- ============================== -->
-<!--       REGISTER PAGE            -->
-<!-- ============================== -->
-<div id="page-register" class="page">
-  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 16px;position:relative">
-    <div class="hero-bg">
-      <div class="hero-orb hero-orb-1" style="opacity:0.12"></div>
-      <div class="hero-orb hero-orb-2" style="opacity:0.12"></div>
-    </div>
-    <div style="width:100%;max-width:420px;position:relative;z-index:1">
-      <button class="btn btn-secondary btn-sm" style="margin-bottom:24px" onclick="showPage('landing')">← Kembali</button>
+<!-- ==================== LOGIN ==================== -->
+<div id="page-login" class="page">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 16px;position:relative;overflow:hidden">
+    <div class="bg-glow" style="width:600px;height:600px;background:var(--blue);opacity:0.06;top:-100px;right:-200px"></div>
+    <div style="width:100%;max-width:380px;position:relative;z-index:1">
+      <button class="btn btn-ghost btn-sm" style="margin-bottom:28px" onclick="go('landing')">← Kembali</button>
       <div class="card-elevated">
-        <div style="text-align:center;margin-bottom:28px">
-          <div class="logo-icon" style="width:48px;height:48px;margin:0 auto 14px;font-size:24px">🐍</div>
-          <h1 style="font-size:24px;font-weight:800;margin-bottom:6px">Mulai Perjalananmu!</h1>
-          <p style="font-size:14px;color:var(--text-secondary)">Buat akun gratis dan mulai belajar</p>
+        <div style="margin-bottom:28px">
+          <div class="nav-brand" style="margin-bottom:20px;cursor:default">
+            <div class="brand-mark"><div class="brand-dot"></div></div>
+            <span class="brand-name">Py<em>Learn</em></span>
+          </div>
+          <h1 style="font-family:var(--f-serif);font-size:26px;letter-spacing:-0.02em;margin-bottom:5px">Selamat datang kembali</h1>
+          <p style="font-size:14px;color:var(--t2);font-weight:300">Lanjutkan perjalanan belajarmu.</p>
+        </div>
+        <div id="login-err" style="display:none;background:var(--red-dim);border:1px solid rgba(224,82,82,0.3);border-radius:var(--r2);padding:11px 14px;margin-bottom:16px;font-size:13px;color:#f87171">
+          Email atau password tidak sesuai.
         </div>
         <div style="display:flex;flex-direction:column;gap:14px">
-          <div class="input-group">
-            <label class="input-label">Nama Lengkap</label>
+          <div class="field">
+            <label class="label">Email</label>
+            <input class="input" type="email" id="le" placeholder="kamu@email.com">
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <input class="input" type="password" id="lp" placeholder="••••••••">
+          </div>
+          <button class="btn btn-primary btn-full" style="margin-top:4px" onclick="doLogin()">Masuk</button>
+        </div>
+        <div class="hr"></div>
+        <p style="text-align:center;font-size:13px;color:var(--t2)">Belum punya akun? <span style="color:var(--blue-light);cursor:pointer;font-weight:500" onclick="go('register')">Daftar</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== REGISTER ==================== -->
+<div id="page-register" class="page">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 16px;position:relative;overflow:hidden">
+    <div class="bg-glow" style="width:600px;height:600px;background:var(--purple);opacity:0.06;bottom:-100px;left:-200px"></div>
+    <div style="width:100%;max-width:380px;position:relative;z-index:1">
+      <button class="btn btn-ghost btn-sm" style="margin-bottom:28px" onclick="go('landing')">← Kembali</button>
+      <div class="card-elevated">
+        <div style="margin-bottom:28px">
+          <div class="nav-brand" style="margin-bottom:20px;cursor:default">
+            <div class="brand-mark"><div class="brand-dot"></div></div>
+            <span class="brand-name">Py<em>Learn</em></span>
+          </div>
+          <h1 style="font-family:var(--f-serif);font-size:26px;letter-spacing:-0.02em;margin-bottom:5px">Buat akun baru</h1>
+          <p style="font-size:14px;color:var(--t2);font-weight:300">Mulai belajar Python hari ini, gratis.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:13px">
+          <div class="field">
+            <label class="label">Nama Lengkap</label>
             <input class="input" type="text" placeholder="Nama kamu">
           </div>
-          <div class="input-group">
-            <label class="input-label">Email</label>
+          <div class="field">
+            <label class="label">Email</label>
             <input class="input" type="email" placeholder="kamu@email.com">
           </div>
-          <div class="input-group">
-            <label class="input-label">Password</label>
-            <input class="input" type="password" placeholder="Min. 8 karakter">
+          <div class="field">
+            <label class="label">Password</label>
+            <input class="input" type="password" placeholder="Minimal 8 karakter">
           </div>
-          <div class="input-group">
-            <label class="input-label">Konfirmasi Password</label>
+          <div class="field">
+            <label class="label">Konfirmasi Password</label>
             <input class="input" type="password" placeholder="Ulangi password">
           </div>
-          <button class="btn btn-primary btn-full" style="margin-top:4px" onclick="doRegister()">
-            🎯 Buat Akun
-          </button>
+          <button class="btn btn-primary btn-full" style="margin-top:4px" onclick="doRegister()">Buat Akun</button>
         </div>
-        <div class="divider"></div>
-        <p style="text-align:center;font-size:14px;color:var(--text-secondary)">
-          Sudah punya akun? <span style="color:var(--blue-bright);cursor:pointer;font-weight:600" onclick="showPage('login')">Masuk sekarang</span>
-        </p>
+        <div class="hr"></div>
+        <p style="text-align:center;font-size:13px;color:var(--t2)">Sudah punya akun? <span style="color:var(--blue-light);cursor:pointer;font-weight:500" onclick="go('login')">Masuk</span></p>
       </div>
     </div>
   </div>
 </div>
 
 
-<!-- ============================== -->
-<!--       DASHBOARD PAGE           -->
-<!-- ============================== -->
+<!-- ==================== DASHBOARD ==================== -->
 <div id="page-dashboard" class="page">
-  <!-- Navbar App -->
-  <nav class="navbar">
-    <div class="navbar-logo" onclick="showPage('dashboard')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('dashboard')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
-    <div class="nav-links">
-      <button class="nav-link active" onclick="showPage('dashboard')">Dashboard</button>
-      <button class="nav-link" onclick="showPage('levels')">Levels</button>
-      <button class="nav-link" onclick="showPage('leaderboard')">Leaderboard</button>
-      <button class="nav-link" onclick="showPage('badges')">Badges</button>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <div class="streak-badge">🔥 7</div>
-      <div class="nav-xp-badge">⚡ 2,450 XP</div>
-      <div class="nav-avatar" onclick="showPage('profile')">AR</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <button class="nav-item" onclick="go('dashboard')">Dashboard</button>
+      <button class="nav-item" onclick="go('levels')">Level</button>
+      <button class="nav-item" onclick="go('leaderboard')">Leaderboard</button>
+      <button class="nav-item" onclick="go('badges')">Badge</button>
+      <div style="width:1px;height:20px;background:var(--bd);margin:0 4px"></div>
+      <div class="nav-stat"><strong>2.450</strong> XP</div>
+      <div class="nav-stat">Streak <strong>7</strong></div>
+      <div class="avatar" onclick="go('profile')">AR</div>
     </div>
   </nav>
 
-  <div class="main-layout">
-    <div class="container" style="padding-top:32px;padding-bottom:48px">
-      <!-- Welcome -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:gap">
+  <div class="pt">
+    <div class="wrap" style="padding-top:36px;padding-bottom:56px">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap">
         <div>
-          <h1 style="font-size:26px;font-weight:800;margin-bottom:4px">Halo, Arya! 👋</h1>
-          <p style="color:var(--text-secondary);font-size:15px">Streak kamu sedang panas! Lanjutkan belajar hari ini.</p>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:6px">Halo, Arya</div>
+          <h1 style="font-family:var(--f-serif);font-size:32px;letter-spacing:-0.02em">Lanjutkan di mana kamu berhenti.</h1>
         </div>
-        <button class="btn btn-primary" onclick="showPage('quiz')">⚡ Lanjutkan Belajar</button>
+        <button class="btn btn-primary" onclick="go('quiz')">Lanjutkan Belajar</button>
       </div>
 
-      <!-- Stats Grid -->
-      <div class="grid-4" style="margin-bottom:24px">
-        <div class="stat-card">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div class="stat-icon" style="background:rgba(59,130,246,0.15)">⚡</div>
-            <span class="badge badge-blue">+120 hari ini</span>
-          </div>
-          <div>
-            <div class="stat-value">2,450</div>
-            <div class="stat-label">Total XP</div>
+      <!-- Stats -->
+      <div class="g4" style="margin-bottom:24px">
+        <div class="sc">
+          <div class="sc-val">2.450</div>
+          <div class="sc-lbl">Total XP</div>
+          <div style="margin-top:12px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--green);font-weight:500">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+            +120 hari ini
           </div>
         </div>
-        <div class="stat-card">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div class="stat-icon" style="background:rgba(16,185,129,0.15)">📊</div>
-            <span class="badge badge-green">Level 5</span>
-          </div>
-          <div>
-            <div class="stat-value">5/12</div>
-            <div class="stat-label">Level Selesai</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div class="stat-icon" style="background:rgba(239,68,68,0.15)">🔥</div>
-            <span class="badge badge-red">Rekor: 14</span>
-          </div>
-          <div>
-            <div class="stat-value">7</div>
-            <div class="stat-label">Streak Hari</div>
+        <div class="sc">
+          <div class="sc-val">5 <span style="font-size:18px;color:var(--t2)">/12</span></div>
+          <div class="sc-lbl">Level selesai</div>
+          <div style="margin-top:12px">
+            <div class="track" style="height:4px">
+              <div class="fill" style="width:41%"></div>
+            </div>
           </div>
         </div>
-        <div class="stat-card">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div class="stat-icon" style="background:rgba(245,158,11,0.15)">🏆</div>
-            <span class="badge badge-amber">3 baru</span>
-          </div>
-          <div>
-            <div class="stat-value">8</div>
-            <div class="stat-label">Badge Diraih</div>
-          </div>
+        <div class="sc">
+          <div class="sc-val">7</div>
+          <div class="sc-lbl">Hari streak</div>
+          <div style="margin-top:12px;font-size:12px;color:var(--t3)">Rekor terbaik: 14 hari</div>
+        </div>
+        <div class="sc">
+          <div class="sc-val">8</div>
+          <div class="sc-lbl">Badge diraih</div>
+          <div style="margin-top:12px;font-size:12px;color:var(--t3)">dari 24 tersedia</div>
         </div>
       </div>
 
-      <!-- Main Grid -->
-      <div style="display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start">
-        <!-- Left -->
-        <div style="display:flex;flex-direction:column;gap:20px">
-          <!-- Progress Card -->
+      <!-- Main 2-col -->
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- Current Level -->
           <div class="card-elevated">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
               <div>
-                <div style="font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:4px">PROGRESS LEVEL 5</div>
-                <div style="font-size:18px;font-weight:700">Functions & Modules</div>
+                <div class="sh" style="margin-bottom:4px">Level 5 — Sedang berjalan</div>
+                <div style="font-size:18px;font-weight:600">Functions & Modules</div>
               </div>
-              <div style="text-align:right">
-                <div style="font-size:24px;font-weight:800;color:var(--blue-bright)">65%</div>
-                <div style="font-size:12px;color:var(--text-muted)">6/10 soal</div>
+              <div class="tag tag-blue">65%</div>
+            </div>
+            <div class="track" style="margin-bottom:20px">
+              <div class="fill" style="width:65%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:13px;color:var(--t2)">6 dari 10 soal dijawab</span>
+              <button class="btn btn-primary btn-sm" onclick="go('quiz')">Lanjutkan</button>
+            </div>
+          </div>
+
+          <!-- Activity -->
+          <div class="card">
+            <div class="sh">Aktivitas terbaru</div>
+            <div style="display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--bd)">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:1px"></div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:500">Level 4: Loops selesai</div>
+                  <div style="font-size:12px;color:var(--t2);margin-top:2px">Skor 90 · 2 jam lalu</div>
+                </div>
+                <div class="tag tag-green">+200 XP</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--bd)">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:1px"></div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:500">Badge "Loop Master" diraih</div>
+                  <div style="font-size:12px;color:var(--t2);margin-top:2px">Kemarin</div>
+                </div>
+                <div class="tag tag-amber">Badge</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 0">
+                <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:1px"></div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:500">Level 3: Conditionals selesai</div>
+                  <div style="font-size:12px;color:var(--t2);margin-top:2px">Skor 80 · 3 hari lalu</div>
+                </div>
+                <div class="tag tag-blue">+150 XP</div>
               </div>
             </div>
-            <div class="progress-track" style="height:16px;margin-bottom:20px">
-              <div class="progress-fill" style="width:65%"></div>
-            </div>
-            <button class="btn btn-primary btn-full" onclick="showPage('quiz')">
-              ⚡ Lanjutkan Quiz — Level 5
+          </div>
+
+          <!-- Shortcuts -->
+          <div class="g3" style="gap:10px">
+            <button class="card" style="text-align:left;cursor:pointer;border:none;font-family:var(--f-sans)" onclick="go('levels')">
+              <div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px">Level</div>
+              <div style="font-size:12px;color:var(--t2)">5 dari 12 selesai</div>
+            </button>
+            <button class="card" style="text-align:left;cursor:pointer;border:none;font-family:var(--f-sans)" onclick="go('leaderboard')">
+              <div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px">Leaderboard</div>
+              <div style="font-size:12px;color:var(--t2)">Posisi #4 global</div>
+            </button>
+            <button class="card" style="text-align:left;cursor:pointer;border:none;font-family:var(--f-sans)" onclick="go('profile')">
+              <div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px">Profil</div>
+              <div style="font-size:12px;color:var(--t2)">Lihat statistikmu</div>
             </button>
           </div>
-
-          <!-- Quick Nav -->
-          <div class="card">
-            <div style="font-size:14px;font-weight:700;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.06em">Navigasi Cepat</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-              <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 12px" onclick="showPage('levels')">
-                <span style="font-size:22px">🗺️</span>
-                <span style="font-size:12px">Levels</span>
-              </button>
-              <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 12px" onclick="showPage('leaderboard')">
-                <span style="font-size:22px">🏆</span>
-                <span style="font-size:12px">Leaderboard</span>
-              </button>
-              <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 12px" onclick="showPage('profile')">
-                <span style="font-size:22px">👤</span>
-                <span style="font-size:12px">Profile</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Recent Activity -->
-          <div class="card">
-            <div style="font-size:14px;font-weight:700;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.06em">Aktivitas Terbaru</div>
-            <div style="display:flex;flex-direction:column;gap:0">
-              <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)">
-                <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;font-size:18px">✅</div>
-                <div style="flex:1">
-                  <div style="font-size:14px;font-weight:600">Level 4: Loops selesai</div>
-                  <div style="font-size:12px;color:var(--text-secondary)">Skor: 90/100 · 2 jam lalu</div>
-                </div>
-                <span class="badge badge-green">+200 XP</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)">
-                <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:rgba(245,158,11,0.15);display:flex;align-items:center;justify-content:center;font-size:18px">🏆</div>
-                <div style="flex:1">
-                  <div style="font-size:14px;font-weight:600">Badge "Loop Master" diraih</div>
-                  <div style="font-size:12px;color:var(--text-secondary)">Kemarin</div>
-                </div>
-                <span class="badge badge-amber">Badge</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
-                <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:center;font-size:18px">⚡</div>
-                <div style="flex:1">
-                  <div style="font-size:14px;font-weight:600">Level 3: Conditionals selesai</div>
-                  <div style="font-size:12px;color:var(--text-secondary)">Skor: 80/100 · 3 hari lalu</div>
-                </div>
-                <span class="badge badge-blue">+150 XP</span>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!-- Right Sidebar -->
-        <div style="display:flex;flex-direction:column;gap:20px">
-          <!-- Badge Preview -->
+        <!-- Right col -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- XP Chart -->
           <div class="card">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-              <div style="font-size:14px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em">Badge Terbaru</div>
-              <span style="font-size:12px;color:var(--blue-bright);cursor:pointer;font-weight:600" onclick="showPage('badges')">Lihat semua →</span>
+            <div class="sh">XP minggu ini</div>
+            <div style="display:flex;align-items:flex-end;gap:5px;height:72px;margin-bottom:10px">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+                <div style="background:var(--ink-700);border-radius:3px;width:100%;height:30%"></div>
+                <div style="font-size:9px;color:var(--t3)">Sen</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+                <div style="background:var(--blue);border-radius:3px;width:100%;height:70%;opacity:0.7"></div>
+                <div style="font-size:9px;color:var(--t3)">Sel</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+                <div style="background:var(--blue);border-radius:3px;width:100%;height:50%;opacity:0.7"></div>
+                <div style="font-size:9px;color:var(--t3)">Rab</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+                <div style="background:var(--blue);border-radius:3px;width:100%;height:90%;opacity:0.85"></div>
+                <div style="font-size:9px;color:var(--t3)">Kam</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+                <div style="background:var(--blue);border-radius:3px;width:100%;height:60%;opacity:0.75"></div>
+                <div style="font-size:9px;color:var(--t3)">Jum</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+                <div style="background:var(--blue);border-radius:3px;width:100%;height:100%"></div>
+                <div style="font-size:9px;color:var(--t3)">Sab</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+                <div style="background:var(--s3);border-radius:3px;width:100%;height:15%;border:1px dashed var(--bd2)"></div>
+                <div style="font-size:9px;color:var(--t3)">Min</div>
+              </div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-              <div style="text-align:center;padding:10px 4px;background:var(--surface-2);border-radius:var(--radius-md)"><div style="font-size:28px">🏆</div></div>
-              <div style="text-align:center;padding:10px 4px;background:var(--surface-2);border-radius:var(--radius-md)"><div style="font-size:28px">🔥</div></div>
-              <div style="text-align:center;padding:10px 4px;background:var(--surface-2);border-radius:var(--radius-md)"><div style="font-size:28px">⚡</div></div>
-              <div style="text-align:center;padding:10px 4px;background:var(--surface-2);border-radius:var(--radius-md);opacity:0.35"><div style="font-size:28px">🌟</div></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px">
+              <span style="color:var(--t2)">Total</span>
+              <span style="font-weight:600;color:var(--amber);font-family:var(--f-mono)">840 XP</span>
             </div>
           </div>
 
-          <!-- Weekly XP -->
+          <!-- Leaderboard preview -->
           <div class="card">
-            <div style="font-size:14px;font-weight:700;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.06em">XP Minggu Ini</div>
-            <div style="display:flex;align-items:flex-end;gap:6px;height:80px">
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-                <div style="background:var(--navy-700);border-radius:4px;width:100%;height:30%"></div>
-                <div style="font-size:10px;color:var(--text-muted)">Sen</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-                <div style="background:var(--blue-accent);border-radius:4px;width:100%;height:70%"></div>
-                <div style="font-size:10px;color:var(--text-muted)">Sel</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-                <div style="background:var(--blue-accent);border-radius:4px;width:100%;height:50%"></div>
-                <div style="font-size:10px;color:var(--text-muted)">Rab</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-                <div style="background:var(--blue-accent);border-radius:4px;width:100%;height:90%"></div>
-                <div style="font-size:10px;color:var(--text-muted)">Kam</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-                <div style="background:var(--blue-accent);border-radius:4px;width:100%;height:60%"></div>
-                <div style="font-size:10px;color:var(--text-muted)">Jum</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-                <div style="background:var(--purple);border-radius:4px;width:100%;height:100%"></div>
-                <div style="font-size:10px;color:var(--text-muted)">Sab</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-                <div style="background:var(--navy-700);border-radius:4px 4px 0 0;width:100%;height:20%;border:1.5px dashed var(--border-bright)"></div>
-                <div style="font-size:10px;color:var(--text-muted)">Min</div>
-              </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+              <div class="sh" style="margin:0">Top pelajar</div>
+              <span style="font-size:12px;color:var(--blue-light);cursor:pointer" onclick="go('leaderboard')">Lihat semua</span>
             </div>
-            <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:12px">
-              <span style="color:var(--text-secondary)">Total minggu ini</span>
-              <span style="font-weight:700;color:var(--amber-bright)">840 XP</span>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+                <span style="font-size:12px;width:20px;text-align:center;color:var(--amber);font-weight:700">1</span>
+                <div class="avatar av4" style="width:28px;height:28px;font-size:11px">BW</div>
+                <span style="font-size:13px;flex:1">Budi W.</span>
+                <span style="font-size:12px;color:var(--amber);font-family:var(--f-mono)">5.2K</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+                <span style="font-size:12px;width:20px;text-align:center;color:var(--t2)">2</span>
+                <div class="avatar av2" style="width:28px;height:28px;font-size:11px">SR</div>
+                <span style="font-size:13px;flex:1">Siti R.</span>
+                <span style="font-size:12px;color:var(--amber);font-family:var(--f-mono)">4.8K</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r1);background:rgba(59,124,244,0.08)">
+                <span style="font-size:12px;width:20px;text-align:center;color:var(--blue-light)">#4</span>
+                <div class="avatar av1" style="width:28px;height:28px;font-size:11px">AR</div>
+                <span style="font-size:13px;flex:1;color:var(--blue-light)">Kamu</span>
+                <span style="font-size:12px;color:var(--amber);font-family:var(--f-mono)">2.4K</span>
+              </div>
             </div>
           </div>
 
-          <!-- Leaderboard Preview -->
+          <!-- Badges preview -->
           <div class="card">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-              <div style="font-size:14px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em">Top Pelajar</div>
-              <span style="font-size:12px;color:var(--blue-bright);cursor:pointer;font-weight:600" onclick="showPage('leaderboard')">Lihat semua →</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+              <div class="sh" style="margin:0">Badge terbaru</div>
+              <span style="font-size:12px;color:var(--blue-light);cursor:pointer" onclick="go('badges')">Lihat semua</span>
             </div>
-            <div style="display:flex;flex-direction:column;gap:4px">
-              <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--radius-sm)">
-                <span style="font-size:16px;width:24px;text-align:center">🥇</span>
-                <div class="nav-avatar av-purple" style="width:30px;height:30px;font-size:11px">BW</div>
-                <span style="font-size:13px;font-weight:600;flex:1">Budi W.</span>
-                <span style="font-size:12px;font-weight:700;color:var(--amber-bright)">5.2K</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--radius-sm)">
-                <span style="font-size:16px;width:24px;text-align:center">🥈</span>
-                <div class="nav-avatar av-green" style="width:30px;height:30px;font-size:11px">SR</div>
-                <span style="font-size:13px;font-weight:600;flex:1">Siti R.</span>
-                <span style="font-size:12px;font-weight:700;color:var(--amber-bright)">4.8K</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--radius-sm);background:rgba(59,130,246,0.1)">
-                <span style="font-size:14px;width:24px;text-align:center;font-weight:700;color:var(--text-secondary)">#4</span>
-                <div class="nav-avatar av-blue" style="width:30px;height:30px;font-size:11px">AR</div>
-                <span style="font-size:13px;font-weight:600;flex:1;color:var(--blue-bright)">Kamu</span>
-                <span style="font-size:12px;font-weight:700;color:var(--amber-bright)">2.4K</span>
-              </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+              <div style="aspect-ratio:1;background:var(--s2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:22px">🏆</div>
+              <div style="aspect-ratio:1;background:var(--s2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:22px">🎯</div>
+              <div style="aspect-ratio:1;background:var(--s2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:22px">🔄</div>
+              <div style="aspect-ratio:1;background:var(--s2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:22px;opacity:0.3">🌟</div>
             </div>
           </div>
         </div>
@@ -1015,206 +850,176 @@
 </div>
 
 
-<!-- ============================== -->
-<!--         LEVELS PAGE            -->
-<!-- ============================== -->
+<!-- ==================== LEVELS ==================== -->
 <div id="page-levels" class="page">
-  <nav class="navbar">
-    <div class="navbar-logo" onclick="showPage('dashboard')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('dashboard')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
-    <div class="nav-links">
-      <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
-      <button class="nav-link active" onclick="showPage('levels')">Levels</button>
-      <button class="nav-link" onclick="showPage('leaderboard')">Leaderboard</button>
-      <button class="nav-link" onclick="showPage('badges')">Badges</button>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <div class="streak-badge">🔥 7</div>
-      <div class="nav-xp-badge">⚡ 2,450 XP</div>
-      <div class="nav-avatar" onclick="showPage('profile')">AR</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <button class="nav-item" onclick="go('dashboard')">Dashboard</button>
+      <button class="nav-item on" onclick="go('levels')">Level</button>
+      <button class="nav-item" onclick="go('leaderboard')">Leaderboard</button>
+      <button class="nav-item" onclick="go('badges')">Badge</button>
+      <div style="width:1px;height:20px;background:var(--bd);margin:0 4px"></div>
+      <div class="nav-stat"><strong>2.450</strong> XP</div>
+      <div class="avatar" onclick="go('profile')">AR</div>
     </div>
   </nav>
-  <div class="main-layout">
-    <div class="page-hero">
-      <div class="container">
-        <div class="badge badge-blue" style="margin-bottom:12px">🗺️ Kurikulum</div>
-        <h1 style="font-size:28px;font-weight:800;margin-bottom:6px">Level Pembelajaran</h1>
-        <p style="color:var(--text-secondary)">Perjalananmu dari Python pemula hingga mahir</p>
-        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
-          <span class="badge badge-green">✅ 5 Selesai</span>
-          <span class="badge badge-blue">🔓 2 Terbuka</span>
-          <span class="badge badge-gray">🔒 5 Terkunci</span>
+  <div class="pt">
+    <div style="background:var(--s1);border-bottom:1px solid var(--bd);padding:28px 0">
+      <div class="wrap">
+        <h1 style="font-family:var(--f-serif);font-size:28px;letter-spacing:-0.02em;margin-bottom:6px">Kurikulum</h1>
+        <p style="font-size:14px;color:var(--t2);margin-bottom:16px">Dari dasar hingga lanjutan, satu level demi satu level.</p>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="flex:1;max-width:280px">
+            <div class="track" style="height:5px">
+              <div class="fill fill-green" style="width:41%"></div>
+            </div>
+          </div>
+          <span style="font-size:13px;color:var(--t2)">5 dari 12 level selesai</span>
         </div>
       </div>
     </div>
-    <div class="container" style="padding-top:28px;padding-bottom:48px">
-      <!-- Overall Progress -->
-      <div class="card" style="margin-bottom:24px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <span style="font-size:14px;font-weight:600;color:var(--text-secondary)">Progress Keseluruhan</span>
-          <span style="font-size:14px;font-weight:700">5 / 12 Level</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill progress-fill-green" style="width:41%"></div>
-        </div>
-      </div>
+    <div class="wrap" style="padding-top:28px;padding-bottom:56px">
+      <div style="display:flex;flex-direction:column;gap:8px">
 
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <!-- Level 1 - Completed -->
-        <div class="level-card completed" onclick="showPage('result')">
+        <div class="lv-card done" onclick="go('result')">
           <div style="display:flex;align-items:center;gap:16px">
-            <div class="level-number level-number-green">1</div>
+            <div class="lv-num lv-num-green">01</div>
             <div style="flex:1">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                <span style="font-size:16px;font-weight:700">Python Dasar</span>
-                <span class="badge badge-green">✅ Selesai</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">Python Dasar</span>
+                <div class="tag tag-green">Selesai</div>
               </div>
-              <p style="font-size:13px;color:var(--text-secondary)">Variabel, tipe data, dan operasi dasar Python</p>
+              <p style="font-size:13px;color:var(--t2)">Variabel, tipe data, dan operasi dasar</p>
             </div>
             <div style="text-align:right;flex-shrink:0">
-              <div style="font-size:18px;font-weight:800;color:var(--green-bright)">95</div>
-              <div style="font-size:12px;color:var(--text-secondary)">Skor</div>
-            </div>
-          </div>
-          <div style="margin-top:14px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
-              <span>10/10 soal benar</span><span>+200 XP</span>
-            </div>
-            <div class="progress-track" style="height:8px">
-              <div class="progress-fill progress-fill-green" style="width:100%"></div>
+              <div style="font-size:20px;font-weight:700;font-family:var(--f-mono);color:var(--green-light)">95</div>
+              <div style="font-size:11px;color:var(--t2)">skor</div>
             </div>
           </div>
         </div>
 
-        <!-- Level 2 - Completed -->
-        <div class="level-card completed" onclick="showPage('result')">
+        <div class="lv-card done" onclick="go('result')">
           <div style="display:flex;align-items:center;gap:16px">
-            <div class="level-number level-number-green">2</div>
+            <div class="lv-num lv-num-green">02</div>
             <div style="flex:1">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                <span style="font-size:16px;font-weight:700">String & Input</span>
-                <span class="badge badge-green">✅ Selesai</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">String & Input</span>
+                <div class="tag tag-green">Selesai</div>
               </div>
-              <p style="font-size:13px;color:var(--text-secondary)">Manipulasi string dan interaksi dengan pengguna</p>
+              <p style="font-size:13px;color:var(--t2)">Manipulasi string dan interaksi pengguna</p>
             </div>
             <div style="text-align:right;flex-shrink:0">
-              <div style="font-size:18px;font-weight:800;color:var(--green-bright)">80</div>
-              <div style="font-size:12px;color:var(--text-secondary)">Skor</div>
-            </div>
-          </div>
-          <div style="margin-top:14px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
-              <span>8/10 soal benar</span><span>+160 XP</span>
-            </div>
-            <div class="progress-track" style="height:8px">
-              <div class="progress-fill progress-fill-green" style="width:80%"></div>
+              <div style="font-size:20px;font-weight:700;font-family:var(--f-mono);color:var(--green-light)">80</div>
+              <div style="font-size:11px;color:var(--t2)">skor</div>
             </div>
           </div>
         </div>
 
-        <!-- Level 5 - Unlocked/Current -->
-        <div class="level-card unlocked" onclick="showPage('quiz')">
+        <div class="lv-card done" onclick="go('result')">
           <div style="display:flex;align-items:center;gap:16px">
-            <div class="level-number level-number-blue">5</div>
+            <div class="lv-num lv-num-green">03</div>
             <div style="flex:1">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                <span style="font-size:16px;font-weight:700">Functions & Modules</span>
-                <span class="badge badge-blue">▶ Lanjutkan</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">Conditionals</span>
+                <div class="tag tag-green">Selesai</div>
               </div>
-              <p style="font-size:13px;color:var(--text-secondary)">Membuat fungsi reusable dan menggunakan modul</p>
+              <p style="font-size:13px;color:var(--t2)">Percabangan if, elif, dan else</p>
             </div>
             <div style="text-align:right;flex-shrink:0">
-              <div style="font-size:18px;font-weight:800;color:var(--blue-bright)">—</div>
-              <div style="font-size:12px;color:var(--text-secondary)">Skor</div>
-            </div>
-          </div>
-          <div style="margin-top:14px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
-              <span>6/10 soal dijawab</span><span>+250 XP</span>
-            </div>
-            <div class="progress-track" style="height:8px">
-              <div class="progress-fill" style="width:60%"></div>
+              <div style="font-size:20px;font-weight:700;font-family:var(--f-mono);color:var(--green-light)">70</div>
+              <div style="font-size:11px;color:var(--t2)">skor</div>
             </div>
           </div>
         </div>
 
-        <!-- Level 6 - Unlocked -->
-        <div class="level-card unlocked" onclick="showPage('quiz')">
+        <div class="lv-card done" onclick="go('result')">
           <div style="display:flex;align-items:center;gap:16px">
-            <div class="level-number level-number-blue">6</div>
+            <div class="lv-num lv-num-green">04</div>
             <div style="flex:1">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                <span style="font-size:16px;font-weight:700">List & Dictionary</span>
-                <span class="badge badge-blue">🔓 Terbuka</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">Loops</span>
+                <div class="tag tag-green">Selesai</div>
               </div>
-              <p style="font-size:13px;color:var(--text-secondary)">Struktur data list, tuple, dan dictionary di Python</p>
+              <p style="font-size:13px;color:var(--t2)">Perulangan for dan while</p>
             </div>
             <div style="text-align:right;flex-shrink:0">
-              <div style="font-size:18px;font-weight:800;color:var(--text-muted)">—</div>
-              <div style="font-size:12px;color:var(--text-secondary)">Skor</div>
-            </div>
-          </div>
-          <div style="margin-top:14px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
-              <span>0/10 soal</span><span>+250 XP</span>
-            </div>
-            <div class="progress-track" style="height:8px">
-              <div class="progress-fill" style="width:0%"></div>
+              <div style="font-size:20px;font-weight:700;font-family:var(--f-mono);color:var(--green-light)">90</div>
+              <div style="font-size:11px;color:var(--t2)">skor</div>
             </div>
           </div>
         </div>
 
-        <!-- Level 7 - Locked -->
-        <div class="level-card locked" onclick="showLockedModal()">
+        <div class="lv-card open" onclick="go('quiz')">
           <div style="display:flex;align-items:center;gap:16px">
-            <div class="level-number level-number-locked">7</div>
+            <div class="lv-num lv-num-blue">05</div>
             <div style="flex:1">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                <span style="font-size:16px;font-weight:700">File I/O</span>
-                <span class="badge badge-gray">🔒 Terkunci</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">Functions & Modules</span>
+                <div class="tag tag-blue">Berlangsung</div>
               </div>
-              <p style="font-size:13px;color:var(--text-secondary)">Membaca dan menulis file di Python</p>
-            </div>
-            <div style="text-align:right;flex-shrink:0">
-              <div style="font-size:18px;font-weight:800;color:var(--text-muted)">🔒</div>
-              <div style="font-size:12px;color:var(--text-secondary)">Skor</div>
-            </div>
-          </div>
-          <div style="margin-top:14px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
-              <span>Selesaikan Level 6 dulu</span><span>+300 XP</span>
-            </div>
-            <div class="progress-track" style="height:8px">
-              <div class="progress-fill" style="width:0%"></div>
+              <p style="font-size:13px;color:var(--t2)">Membuat fungsi dan menggunakan modul</p>
+              <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
+                <div class="track" style="flex:1;height:4px">
+                  <div class="fill" style="width:60%"></div>
+                </div>
+                <span style="font-size:12px;color:var(--t2)">6/10</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Level 8 - Locked -->
-        <div class="level-card locked" onclick="showLockedModal()">
+        <div class="lv-card open" onclick="go('quiz')">
           <div style="display:flex;align-items:center;gap:16px">
-            <div class="level-number level-number-locked">8</div>
+            <div class="lv-num lv-num-blue">06</div>
             <div style="flex:1">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                <span style="font-size:16px;font-weight:700">Exception Handling</span>
-                <span class="badge badge-gray">🔒 Terkunci</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">List & Dictionary</span>
+                <div class="tag tag-blue">Terbuka</div>
               </div>
-              <p style="font-size:13px;color:var(--text-secondary)">Menangani error dan exception dengan try/except</p>
+              <p style="font-size:13px;color:var(--t2)">Struktur data list, tuple, dan dictionary</p>
             </div>
           </div>
         </div>
 
-        <div class="level-card locked" onclick="showLockedModal()">
+        <div class="lv-card locked" onclick="showLock()">
           <div style="display:flex;align-items:center;gap:16px">
-            <div class="level-number level-number-locked">9</div>
+            <div class="lv-num lv-num-dim">07</div>
             <div style="flex:1">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                <span style="font-size:16px;font-weight:700">OOP — Kelas & Objek</span>
-                <span class="badge badge-gray">🔒 Terkunci</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">File I/O</span>
+                <div class="tag tag-muted">Terkunci</div>
               </div>
-              <p style="font-size:13px;color:var(--text-secondary)">Konsep pemrograman berorientasi objek di Python</p>
+              <p style="font-size:13px;color:var(--t2)">Membaca dan menulis file</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lv-card locked" onclick="showLock()">
+          <div style="display:flex;align-items:center;gap:16px">
+            <div class="lv-num lv-num-dim">08</div>
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">Exception Handling</span>
+                <div class="tag tag-muted">Terkunci</div>
+              </div>
+              <p style="font-size:13px;color:var(--t2)">Menangani error dengan try/except</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lv-card locked" onclick="showLock()">
+          <div style="display:flex;align-items:center;gap:16px">
+            <div class="lv-num lv-num-dim">09</div>
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                <span style="font-size:15px;font-weight:600">OOP — Kelas & Objek</span>
+                <div class="tag tag-muted">Terkunci</div>
+              </div>
+              <p style="font-size:13px;color:var(--t2)">Pemrograman berorientasi objek</p>
             </div>
           </div>
         </div>
@@ -1224,173 +1029,155 @@
 </div>
 
 
-<!-- ============================== -->
-<!--          QUIZ PAGE             -->
-<!-- ============================== -->
+<!-- ==================== QUIZ ==================== -->
 <div id="page-quiz" class="page">
-  <nav class="navbar">
-    <div class="navbar-logo" onclick="showPage('levels')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('levels')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
-    <div style="flex:1;display:flex;align-items:center;gap:16px;padding:0 24px">
-      <div class="progress-track" style="flex:1;max-width:400px;height:10px">
-        <div class="progress-fill" id="quizProgress" style="width:60%"></div>
+    <div style="flex:1;display:flex;align-items:center;gap:14px;padding:0 24px">
+      <div class="track" style="flex:1;max-width:360px;height:5px">
+        <div class="fill" style="width:60%"></div>
       </div>
-      <span style="font-size:13px;font-weight:600;color:var(--text-secondary)" id="quizProgressLabel">6 / 10</span>
+      <span style="font-size:13px;color:var(--t2);font-family:var(--f-mono)">6 / 10</span>
     </div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <div style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--green-bright)">❤️ 3</div>
-      <button class="btn btn-secondary btn-sm" onclick="showPage('levels')">✕ Keluar</button>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:13px;color:var(--t2)">3 nyawa tersisa</span>
+      <button class="btn btn-ghost btn-sm" onclick="go('levels')">Keluar</button>
     </div>
   </nav>
-  <div class="main-layout">
-    <div class="container" style="max-width:720px;padding-top:40px;padding-bottom:48px">
-      <!-- Question Header -->
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px">
-        <span class="badge badge-blue" style="font-size:13px;padding:6px 14px">Soal 7 dari 10</span>
-        <span class="badge badge-purple" style="font-size:13px">⚡ Functions</span>
+  <div class="pt">
+    <div class="wrap-sm" style="padding-top:40px;padding-bottom:56px">
+
+      <div style="display:flex;gap:8px;margin-bottom:28px">
+        <div class="tag tag-blue">Soal 7</div>
+        <div class="tag tag-muted">Functions</div>
       </div>
 
-      <!-- Question -->
-      <div class="card-elevated" style="margin-bottom:20px">
-        <div style="font-size:18px;font-weight:700;line-height:1.5;margin-bottom:20px">
-          Apa output dari kode Python berikut ini?
-        </div>
-        <!-- Code Snippet -->
+      <div class="card-elevated" style="margin-bottom:18px">
+        <p style="font-size:17px;font-weight:500;line-height:1.6;margin-bottom:20px">Apa output dari kode berikut?</p>
         <div class="code-block">
-<span class="code-keyword">def</span> <span class="code-function">greet</span>(name, greeting<span class="code-keyword">=</span><span class="code-string">"Halo"</span>):
-    <span class="code-keyword">return</span> <span class="code-string">f"{greeting}, {name}!"</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name, greeting=<span class="st">"Halo"</span>):
+    <span class="kw">return</span> <span class="st">f"{greeting}, {name}!"</span>
 
-<span class="code-function">print</span>(greet(<span class="code-string">"Arya"</span>))
-<span class="code-function">print</span>(greet(<span class="code-string">"Budi"</span>, <span class="code-string">"Selamat pagi"</span>))
+<span class="fn">print</span>(greet(<span class="st">"Arya"</span>))
+<span class="fn">print</span>(greet(<span class="st">"Budi"</span>, <span class="st">"Selamat pagi"</span>))
         </div>
       </div>
 
-      <!-- Options -->
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-        <button class="quiz-option" onclick="selectOption(this, false)">
-          <div class="option-letter">A</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+        <button class="opt" onclick="pick(this,false)">
+          <div class="opt-key">A</div>
           <span>Halo, Arya!<br>Halo, Budi!</span>
         </button>
-        <button class="quiz-option correct" onclick="selectOption(this, true)">
-          <div class="option-letter">B</div>
+        <button class="opt ok" onclick="pick(this,true)">
+          <div class="opt-key">B</div>
           <span>Halo, Arya!<br>Selamat pagi, Budi!</span>
         </button>
-        <button class="quiz-option" onclick="selectOption(this, false)">
-          <div class="option-letter">C</div>
+        <button class="opt" onclick="pick(this,false)">
+          <div class="opt-key">C</div>
           <span>Error: missing argument</span>
         </button>
-        <button class="quiz-option" onclick="selectOption(this, false)">
-          <div class="option-letter">D</div>
+        <button class="opt" onclick="pick(this,false)">
+          <div class="opt-key">D</div>
           <span>Selamat pagi, Arya!<br>Halo, Budi!</span>
         </button>
       </div>
 
-      <!-- Feedback Bar -->
-      <div class="feedback-bar correct" style="margin-bottom:24px">
-        <div style="font-size:28px">🎉</div>
+      <div class="feedback fb-ok" style="margin-bottom:24px">
         <div>
-          <div style="font-weight:700;color:var(--green-bright);margin-bottom:4px">Benar! +15 XP</div>
-          <div style="font-size:13px;color:var(--text-secondary)">Parameter <code style="font-family:var(--font-mono);color:var(--navy-100);font-size:12px">greeting</code> memiliki nilai default <code style="font-family:var(--font-mono);color:var(--navy-100);font-size:12px">"Halo"</code> yang digunakan jika argumen tidak diberikan.</div>
+          <div style="font-size:14px;font-weight:600;color:var(--green-light);margin-bottom:5px">Benar — +15 XP</div>
+          <div style="font-size:13px;color:var(--t2);line-height:1.65">Parameter <code style="font-family:var(--f-mono);font-size:12px;color:var(--ink-100)">greeting</code> memiliki nilai default <code style="font-family:var(--f-mono);font-size:12px;color:var(--ink-100)">"Halo"</code>. Jika argumen tidak diberikan, nilai default digunakan.</div>
         </div>
       </div>
 
-      <!-- Actions -->
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <button class="btn btn-secondary">← Sebelumnya</button>
-        <button class="btn btn-primary btn-lg" onclick="showPage('result')">Selanjutnya →</button>
+      <div style="display:flex;justify-content:space-between">
+        <button class="btn btn-ghost">Sebelumnya</button>
+        <button class="btn btn-primary" onclick="go('result')">Selanjutnya</button>
       </div>
     </div>
   </div>
 </div>
 
 
-<!-- ============================== -->
-<!--         RESULT PAGE            -->
-<!-- ============================== -->
+<!-- ==================== RESULT ==================== -->
 <div id="page-result" class="page">
-  <nav class="navbar">
-    <div class="navbar-logo" onclick="showPage('dashboard')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('dashboard')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
     <div style="margin-left:auto">
-      <button class="btn btn-secondary btn-sm" onclick="showPage('dashboard')">Dashboard</button>
+      <button class="btn btn-ghost btn-sm" onclick="go('dashboard')">Dashboard</button>
     </div>
   </nav>
-  <div class="main-layout">
-    <div class="container" style="max-width:640px;padding-top:48px;padding-bottom:48px;text-align:center">
-      <div style="font-size:64px;margin-bottom:12px">🎊</div>
-      <div style="font-size:13px;font-weight:600;color:var(--text-secondary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px">Level 5 Selesai!</div>
-      <h1 style="font-size:32px;font-weight:800;margin-bottom:4px">Functions & Modules</h1>
-      
-      <!-- Score -->
-      <div style="margin:32px 0">
-        <div class="result-score">85</div>
-        <div style="font-size:16px;color:var(--text-secondary);margin-top:8px">dari 100 poin</div>
-        <div class="badge badge-green" style="margin-top:12px;font-size:14px;padding:8px 20px">✅ LULUS</div>
+  <div class="pt">
+    <div class="wrap-xs" style="padding-top:52px;padding-bottom:56px;text-align:center">
+      <div style="font-size:12px;color:var(--t3);margin-bottom:6px;letter-spacing:0.05em">Level 5 selesai</div>
+      <h1 style="font-family:var(--f-serif);font-size:28px;letter-spacing:-0.02em;margin-bottom:32px">Functions & Modules</h1>
+
+      <div style="margin-bottom:32px">
+        <div style="font-family:var(--f-serif);font-size:88px;letter-spacing:-0.04em;line-height:1;color:var(--t1)">85</div>
+        <div style="font-size:14px;color:var(--t2);margin-top:6px;margin-bottom:14px">dari 100 poin</div>
+        <div class="tag tag-green" style="font-size:13px;padding:5px 16px">Lulus</div>
       </div>
 
-      <!-- Stats Row -->
-      <div class="grid-3" style="margin-bottom:28px;gap:12px">
-        <div class="stat-card" style="text-align:center;padding:16px">
-          <div style="font-size:28px;font-weight:800;color:var(--amber-bright)">+250</div>
-          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">XP Diraih</div>
+      <div class="g3" style="margin-bottom:24px;gap:10px">
+        <div class="sc" style="text-align:center">
+          <div style="font-family:var(--f-mono);font-size:26px;font-weight:700;color:var(--amber)">+250</div>
+          <div class="sc-lbl">XP diraih</div>
         </div>
-        <div class="stat-card" style="text-align:center;padding:16px">
-          <div style="font-size:28px;font-weight:800;color:var(--green-bright)">8</div>
-          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Jawaban Benar</div>
+        <div class="sc" style="text-align:center">
+          <div style="font-family:var(--f-mono);font-size:26px;font-weight:700;color:var(--green-light)">8</div>
+          <div class="sc-lbl">Benar</div>
         </div>
-        <div class="stat-card" style="text-align:center;padding:16px">
-          <div style="font-size:28px;font-weight:800;color:var(--red-bright)">2</div>
-          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Jawaban Salah</div>
+        <div class="sc" style="text-align:center">
+          <div style="font-family:var(--f-mono);font-size:26px;font-weight:700;color:var(--red)">2</div>
+          <div class="sc-lbl">Salah</div>
         </div>
       </div>
 
       <!-- Badge Earned -->
-      <div class="card" style="margin-bottom:28px;background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.3)">
-        <div style="font-size:12px;font-weight:600;color:var(--amber-bright);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px">🎖️ Badge Baru Diraih!</div>
-        <div style="font-size:48px;margin-bottom:8px">🧩</div>
-        <div style="font-weight:700;margin-bottom:4px">Function Wizard</div>
-        <div style="font-size:13px;color:var(--text-secondary)">Selesaikan Level 5 dengan skor di atas 80</div>
+      <div class="card" style="margin-bottom:20px;text-align:center;border-color:rgba(232,160,34,0.25)">
+        <div style="font-size:11px;font-weight:500;color:var(--amber);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Badge diraih</div>
+        <div style="font-size:40px;margin-bottom:8px">🧩</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:3px">Function Wizard</div>
+        <div style="font-size:12px;color:var(--t2)">Selesaikan Level 5 dengan skor di atas 80</div>
       </div>
 
       <!-- Summary -->
-      <div class="card" style="text-align:left;margin-bottom:28px">
-        <div style="font-size:14px;font-weight:700;color:var(--text-secondary);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.06em">Ringkasan Jawaban</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card" style="text-align:left;margin-bottom:22px">
+        <div class="sh">Ringkasan</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
           <div style="display:flex;align-items:center;gap:10px;font-size:13px">
-            <span style="color:var(--green-bright)">✅</span>
-            <span>Apa itu fungsi di Python?</span>
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0"></div>
+            Apa itu fungsi di Python?
           </div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px">
-            <span style="color:var(--green-bright)">✅</span>
-            <span>Cara mendefinisikan fungsi dengan <code style="font-family:var(--font-mono);font-size:11px">def</code></span>
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0"></div>
+            Mendefinisikan fungsi dengan <code style="font-family:var(--f-mono);font-size:11px">def</code>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t2)">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0"></div>
+            Parameter default dalam fungsi
           </div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px">
-            <span style="color:var(--red-bright)">❌</span>
-            <span>Parameter default dalam fungsi</span>
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0"></div>
+            Return value dari fungsi
           </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px">
-            <span style="color:var(--green-bright)">✅</span>
-            <span>Return value dari fungsi</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px">
-            <span style="color:var(--red-bright)">❌</span>
-            <span>Import modul Python</span>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t2)">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0"></div>
+            Import modul Python
           </div>
         </div>
       </div>
 
-      <!-- Action Buttons -->
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <button class="btn btn-primary btn-full btn-lg" onclick="showPage('quiz')">
-          ▶ Lanjut ke Level 6
-        </button>
-        <div style="display:flex;gap:10px">
-          <button class="btn btn-secondary btn-full" onclick="showPage('quiz')">🔁 Ulangi Level</button>
-          <button class="btn btn-secondary btn-full" onclick="showPage('dashboard')">🏠 Dashboard</button>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-primary btn-full btn-lg" onclick="go('quiz')">Lanjut ke Level 6</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-full" onclick="go('quiz')">Ulangi</button>
+          <button class="btn btn-muted btn-full" onclick="go('dashboard')">Dashboard</button>
         </div>
       </div>
     </div>
@@ -1398,121 +1185,121 @@
 </div>
 
 
-<!-- ============================== -->
-<!--       LEADERBOARD PAGE         -->
-<!-- ============================== -->
+<!-- ==================== LEADERBOARD ==================== -->
 <div id="page-leaderboard" class="page">
-  <nav class="navbar">
-    <div class="navbar-logo" onclick="showPage('dashboard')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('dashboard')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
-    <div class="nav-links">
-      <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
-      <button class="nav-link" onclick="showPage('levels')">Levels</button>
-      <button class="nav-link active" onclick="showPage('leaderboard')">Leaderboard</button>
-      <button class="nav-link" onclick="showPage('badges')">Badges</button>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <div class="streak-badge">🔥 7</div>
-      <div class="nav-xp-badge">⚡ 2,450 XP</div>
-      <div class="nav-avatar" onclick="showPage('profile')">AR</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <button class="nav-item" onclick="go('dashboard')">Dashboard</button>
+      <button class="nav-item" onclick="go('levels')">Level</button>
+      <button class="nav-item on" onclick="go('leaderboard')">Leaderboard</button>
+      <button class="nav-item" onclick="go('badges')">Badge</button>
+      <div style="width:1px;height:20px;background:var(--bd);margin:0 4px"></div>
+      <div class="nav-stat"><strong>2.450</strong> XP</div>
+      <div class="avatar" onclick="go('profile')">AR</div>
     </div>
   </nav>
-  <div class="main-layout">
-    <div class="page-hero">
-      <div class="container">
-        <div class="badge badge-amber" style="margin-bottom:12px">🏆 Kompetisi</div>
-        <h1 style="font-size:28px;font-weight:800;margin-bottom:6px">Leaderboard</h1>
-        <p style="color:var(--text-secondary)">Kamu ada di posisi <strong style="color:var(--blue-bright)">#4</strong> dari 1.240 pelajar</p>
+  <div class="pt">
+    <div style="background:var(--s1);border-bottom:1px solid var(--bd);padding:28px 0">
+      <div class="wrap" style="max-width:700px">
+        <h1 style="font-family:var(--f-serif);font-size:28px;letter-spacing:-0.02em;margin-bottom:6px">Leaderboard</h1>
+        <p style="font-size:14px;color:var(--t2)">Kamu di posisi <strong style="color:var(--blue-light)">#4</strong> dari 1.240 pelajar</p>
       </div>
     </div>
-    <div class="container" style="padding-top:28px;padding-bottom:48px;max-width:720px">
-      <!-- Filter -->
+    <div class="wrap" style="max-width:700px;padding-top:28px;padding-bottom:56px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-        <div class="filter-tabs">
-          <button class="filter-tab active" onclick="setTab(this)">Mingguan</button>
-          <button class="filter-tab" onclick="setTab(this)">All-time</button>
+        <div class="ftabs">
+          <button class="ftab on" onclick="ftab(this)">Mingguan</button>
+          <button class="ftab" onclick="ftab(this)">All-time</button>
         </div>
-        <span class="badge badge-blue">1,240 pelajar</span>
+        <span style="font-size:13px;color:var(--t2)">1.240 pelajar</span>
       </div>
 
-      <!-- Top 3 Podium -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px">
-        <div class="card" style="text-align:center;padding:20px;order:1">
-          <div style="font-size:28px;margin-bottom:8px">🥈</div>
-          <div class="nav-avatar av-green" style="width:48px;height:48px;margin:0 auto 10px;font-size:17px">SR</div>
-          <div style="font-weight:700;font-size:14px">Siti R.</div>
-          <div style="color:var(--amber-bright);font-weight:800;font-size:18px;margin-top:6px">4,820</div>
-          <div style="font-size:11px;color:var(--text-muted)">XP</div>
+      <!-- Podium -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px">
+        <div class="card" style="text-align:center;padding:20px">
+          <div style="font-size:11px;font-weight:600;color:var(--t2);margin-bottom:10px;letter-spacing:0.06em">#2</div>
+          <div class="avatar av2" style="width:44px;height:44px;font-size:16px;margin:0 auto 10px">SR</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:6px">Siti R.</div>
+          <div style="font-family:var(--f-mono);font-size:16px;font-weight:700;color:var(--amber)">4.820</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:2px">XP</div>
         </div>
-        <div class="card" style="text-align:center;padding:20px;background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.4);order:0">
-          <div style="font-size:32px;margin-bottom:8px">🥇</div>
-          <div class="nav-avatar av-purple" style="width:56px;height:56px;margin:0 auto 10px;font-size:20px">BW</div>
-          <div style="font-weight:800;font-size:16px">Budi W.</div>
-          <div style="color:var(--amber-bright);font-weight:800;font-size:22px;margin-top:6px">5,240</div>
-          <div style="font-size:11px;color:var(--text-muted)">XP</div>
+        <div class="card" style="text-align:center;padding:20px;border-color:rgba(232,160,34,0.3)">
+          <div style="font-size:11px;font-weight:600;color:var(--amber);margin-bottom:10px;letter-spacing:0.06em">#1</div>
+          <div class="avatar av4" style="width:52px;height:52px;font-size:18px;margin:0 auto 10px">BW</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px">Budi W.</div>
+          <div style="font-family:var(--f-mono);font-size:18px;font-weight:700;color:var(--amber)">5.240</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:2px">XP</div>
         </div>
-        <div class="card" style="text-align:center;padding:20px;order:2">
-          <div style="font-size:28px;margin-bottom:8px">🥉</div>
-          <div class="nav-avatar av-amber" style="width:48px;height:48px;margin:0 auto 10px;font-size:17px">DP</div>
-          <div style="font-weight:700;font-size:14px">Dewi P.</div>
-          <div style="color:var(--amber-bright);font-weight:800;font-size:18px;margin-top:6px">4,100</div>
-          <div style="font-size:11px;color:var(--text-muted)">XP</div>
+        <div class="card" style="text-align:center;padding:20px">
+          <div style="font-size:11px;font-weight:600;color:var(--t2);margin-bottom:10px;letter-spacing:0.06em">#3</div>
+          <div class="avatar av3" style="width:44px;height:44px;font-size:16px;margin:0 auto 10px">DP</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:6px">Dewi P.</div>
+          <div style="font-family:var(--f-mono);font-size:16px;font-weight:700;color:var(--amber)">4.100</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:2px">XP</div>
         </div>
       </div>
 
       <!-- List -->
       <div class="card">
-        <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;align-items:center;gap:14px;padding:10px 14px;border-radius:var(--r1);margin-bottom:4px">
+          <div style="font-size:11px;font-weight:500;color:var(--t3);width:28px;text-align:center">No</div>
+          <div style="font-size:11px;font-weight:500;color:var(--t3);flex:1">Nama</div>
+          <div style="font-size:11px;font-weight:500;color:var(--t3)">Level</div>
+          <div style="font-size:11px;font-weight:500;color:var(--t3)">XP</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
           <div class="lb-row">
-            <div class="lb-rank">🥇</div>
-            <div class="lb-avatar av-purple">BW</div>
+            <div class="lb-num" style="color:var(--amber)">1</div>
+            <div class="lb-av av4">BW</div>
             <div class="lb-name">Budi Wicaksono</div>
-            <span class="badge badge-purple">Lv.12</span>
-            <div class="lb-xp">5,240 XP</div>
+            <div class="tag tag-purple" style="font-size:11px">Lv.12</div>
+            <div class="lb-xp">5.240</div>
           </div>
           <div class="lb-row">
-            <div class="lb-rank">🥈</div>
-            <div class="lb-avatar av-green">SR</div>
+            <div class="lb-num">2</div>
+            <div class="lb-av av2">SR</div>
             <div class="lb-name">Siti Rahayu</div>
-            <span class="badge badge-green">Lv.11</span>
-            <div class="lb-xp">4,820 XP</div>
+            <div class="tag tag-green" style="font-size:11px">Lv.11</div>
+            <div class="lb-xp">4.820</div>
           </div>
           <div class="lb-row">
-            <div class="lb-rank">🥉</div>
-            <div class="lb-avatar av-amber">DP</div>
+            <div class="lb-num">3</div>
+            <div class="lb-av av3">DP</div>
             <div class="lb-name">Dewi Pratiwi</div>
-            <span class="badge badge-amber">Lv.10</span>
-            <div class="lb-xp">4,100 XP</div>
+            <div class="tag tag-amber" style="font-size:11px">Lv.10</div>
+            <div class="lb-xp">4.100</div>
           </div>
           <div class="lb-row me">
-            <div class="lb-rank" style="color:var(--blue-bright)">4</div>
-            <div class="lb-avatar av-blue">AR</div>
-            <div class="lb-name" style="color:var(--blue-bright)">Arya (Kamu) ✨</div>
-            <span class="badge badge-blue">Lv.5</span>
-            <div class="lb-xp">2,450 XP</div>
+            <div class="lb-num" style="color:var(--blue-light)">4</div>
+            <div class="lb-av av1">AR</div>
+            <div class="lb-name" style="color:var(--blue-light)">Arya (Kamu)</div>
+            <div class="tag tag-blue" style="font-size:11px">Lv.5</div>
+            <div class="lb-xp">2.450</div>
           </div>
           <div class="lb-row">
-            <div class="lb-rank" style="color:var(--text-muted)">5</div>
-            <div class="lb-avatar av-red">RK</div>
+            <div class="lb-num">5</div>
+            <div class="lb-av av5">RK</div>
             <div class="lb-name">Rizky K.</div>
-            <span class="badge badge-gray">Lv.5</span>
-            <div class="lb-xp">2,200 XP</div>
+            <div class="tag tag-muted" style="font-size:11px">Lv.5</div>
+            <div class="lb-xp">2.200</div>
           </div>
           <div class="lb-row">
-            <div class="lb-rank" style="color:var(--text-muted)">6</div>
-            <div class="lb-avatar av-cyan">NF</div>
+            <div class="lb-num">6</div>
+            <div class="lb-av av6">NF</div>
             <div class="lb-name">Nadia F.</div>
-            <span class="badge badge-gray">Lv.4</span>
-            <div class="lb-xp">1,980 XP</div>
+            <div class="tag tag-muted" style="font-size:11px">Lv.4</div>
+            <div class="lb-xp">1.980</div>
           </div>
           <div class="lb-row">
-            <div class="lb-rank" style="color:var(--text-muted)">7</div>
-            <div class="lb-avatar" style="background:linear-gradient(135deg,#0f2040,#1e3d72)">AH</div>
+            <div class="lb-num">7</div>
+            <div class="lb-av" style="background:var(--s3)">AH</div>
             <div class="lb-name">Ahmad H.</div>
-            <span class="badge badge-gray">Lv.4</span>
-            <div class="lb-xp">1,750 XP</div>
+            <div class="tag tag-muted" style="font-size:11px">Lv.4</div>
+            <div class="lb-xp">1.750</div>
           </div>
         </div>
       </div>
@@ -1521,168 +1308,153 @@
 </div>
 
 
-<!-- ============================== -->
-<!--         BADGES PAGE            -->
-<!-- ============================== -->
+<!-- ==================== BADGES ==================== -->
 <div id="page-badges" class="page">
-  <nav class="navbar">
-    <div class="navbar-logo" onclick="showPage('dashboard')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('dashboard')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
-    <div class="nav-links">
-      <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
-      <button class="nav-link" onclick="showPage('levels')">Levels</button>
-      <button class="nav-link" onclick="showPage('leaderboard')">Leaderboard</button>
-      <button class="nav-link active" onclick="showPage('badges')">Badges</button>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <div class="streak-badge">🔥 7</div>
-      <div class="nav-xp-badge">⚡ 2,450 XP</div>
-      <div class="nav-avatar" onclick="showPage('profile')">AR</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <button class="nav-item" onclick="go('dashboard')">Dashboard</button>
+      <button class="nav-item" onclick="go('levels')">Level</button>
+      <button class="nav-item" onclick="go('leaderboard')">Leaderboard</button>
+      <button class="nav-item on" onclick="go('badges')">Badge</button>
+      <div style="width:1px;height:20px;background:var(--bd);margin:0 4px"></div>
+      <div class="nav-stat"><strong>2.450</strong> XP</div>
+      <div class="avatar" onclick="go('profile')">AR</div>
     </div>
   </nav>
-  <div class="main-layout">
-    <div class="page-hero">
-      <div class="container">
-        <div class="badge badge-amber" style="margin-bottom:12px">🎖️ Koleksi</div>
-        <h1 style="font-size:28px;font-weight:800;margin-bottom:6px">Badge Saya</h1>
-        <p style="color:var(--text-secondary)">8 dari 24 badge diraih</p>
-        <div style="margin-top:16px;max-width:300px">
-          <div class="progress-track" style="height:8px">
-            <div class="progress-fill progress-fill-amber" style="width:33%"></div>
+  <div class="pt">
+    <div style="background:var(--s1);border-bottom:1px solid var(--bd);padding:28px 0">
+      <div class="wrap">
+        <h1 style="font-family:var(--f-serif);font-size:28px;letter-spacing:-0.02em;margin-bottom:6px">Badge</h1>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="flex:1;max-width:200px">
+            <div class="track" style="height:4px">
+              <div class="fill fill-amber" style="width:33%"></div>
+            </div>
           </div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:6px">33% lengkap</div>
+          <span style="font-size:13px;color:var(--t2)">8 dari 24 diraih</span>
         </div>
       </div>
     </div>
-    <div class="container" style="padding-top:28px;padding-bottom:48px">
-      <!-- Diraih -->
-      <div style="font-size:14px;font-weight:700;color:var(--amber-bright);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">✅ Sudah Diraih (8)</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:32px">
-        <div class="badge-item" onclick="showBadgeModal('First Blood','Selesaikan level pertamamu!')">
-          <span class="badge-icon">⚔️</span>
-          <div class="badge-name">First Blood</div>
-          <div class="badge-desc">Selesaikan level 1</div>
+    <div class="wrap" style="padding-top:28px;padding-bottom:56px">
+      <div style="font-size:11px;font-weight:500;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">Diraih</div>
+      <div class="ga" style="margin-bottom:36px">
+        <div class="bdg-item" onclick="showBadge('🏆','First Blood','Selesaikan level pertamamu')">
+          <span class="bdg-ico">🏆</span>
+          <div class="bdg-name">First Blood</div>
+          <div class="bdg-desc">Selesaikan level 1</div>
         </div>
-        <div class="badge-item" onclick="showBadgeModal('Streak Starter','Belajar 3 hari berturut-turut!')">
-          <span class="badge-icon">🔥</span>
-          <div class="badge-name">Streak Starter</div>
-          <div class="badge-desc">Streak 3 hari</div>
+        <div class="bdg-item" onclick="showBadge('🎯','Quiz Master','Skor sempurna di satu level')">
+          <span class="bdg-ico">🎯</span>
+          <div class="bdg-name">Quiz Master</div>
+          <div class="bdg-desc">Skor 100%</div>
         </div>
-        <div class="badge-item" onclick="showBadgeModal('Quiz Master','Skor sempurna di satu level!')">
-          <span class="badge-icon">🎯</span>
-          <div class="badge-name">Quiz Master</div>
-          <div class="badge-desc">Skor 100%</div>
+        <div class="bdg-item" onclick="showBadge('🔄','Loop Master','Kuasai perulangan Python')">
+          <span class="bdg-ico">🔄</span>
+          <div class="bdg-name">Loop Master</div>
+          <div class="bdg-desc">Selesaikan Level 4</div>
         </div>
-        <div class="badge-item" onclick="showBadgeModal('Loop Master','Kuasai perulangan Python!')">
-          <span class="badge-icon">🔄</span>
-          <div class="badge-name">Loop Master</div>
-          <div class="badge-desc">Selesaikan Level 4</div>
+        <div class="bdg-item" onclick="showBadge('🧩','Function Wizard','Kuasai fungsi Python')">
+          <span class="bdg-ico">🧩</span>
+          <div class="bdg-name">Function Wizard</div>
+          <div class="bdg-desc">Selesaikan Level 5</div>
         </div>
-        <div class="badge-item" onclick="showBadgeModal('Speed Coder','Selesaikan quiz dalam 5 menit!')">
-          <span class="badge-icon">⚡</span>
-          <div class="badge-name">Speed Coder</div>
-          <div class="badge-desc">Quiz &lt; 5 menit</div>
+        <div class="bdg-item" onclick="showBadge('⚡','Speed Coder','Selesaikan quiz dalam 5 menit')">
+          <span class="bdg-ico">⚡</span>
+          <div class="bdg-name">Speed Coder</div>
+          <div class="bdg-desc">Quiz &lt; 5 menit</div>
         </div>
-        <div class="badge-item" onclick="showBadgeModal('Top 10','Masuk 10 besar leaderboard!')">
-          <span class="badge-icon">🏆</span>
-          <div class="badge-name">Top 10</div>
-          <div class="badge-desc">Leaderboard top 10</div>
+        <div class="bdg-item" onclick="showBadge('🔡','String Slayer','Kuasai manipulasi string')">
+          <span class="bdg-ico">🔡</span>
+          <div class="bdg-name">String Slayer</div>
+          <div class="bdg-desc">Selesaikan Level 2</div>
         </div>
-        <div class="badge-item" onclick="showBadgeModal('String Slayer','Kuasai manipulasi string!')">
-          <span class="badge-icon">🔡</span>
-          <div class="badge-name">String Slayer</div>
-          <div class="badge-desc">Selesaikan Level 2</div>
+        <div class="bdg-item" onclick="showBadge('🏅','Top 10','Masuk 10 besar leaderboard')">
+          <span class="bdg-ico">🏅</span>
+          <div class="bdg-name">Top 10</div>
+          <div class="bdg-desc">Leaderboard top 10</div>
         </div>
-        <div class="badge-item" onclick="showBadgeModal('Function Wizard','Kuasai fungsi Python!')">
-          <span class="badge-icon">🧩</span>
-          <div class="badge-name">Function Wizard</div>
-          <div class="badge-desc">Selesaikan Level 5</div>
+        <div class="bdg-item" onclick="showBadge('🔥','Streak Starter','Belajar 3 hari berturut-turut')">
+          <span class="bdg-ico">🔥</span>
+          <div class="bdg-name">Streak Starter</div>
+          <div class="bdg-desc">Streak 3 hari</div>
         </div>
       </div>
 
-      <!-- Belum diraih -->
-      <div style="font-size:14px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">🔒 Belum Diraih (16)</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
-        <div class="badge-item locked"><span class="badge-icon">🐉</span><div class="badge-name">Dragon Coder</div><div class="badge-desc">Selesaikan semua level</div></div>
-        <div class="badge-item locked"><span class="badge-icon">🌟</span><div class="badge-name">Perfectionist</div><div class="badge-desc">3 skor sempurna berturut</div></div>
-        <div class="badge-item locked"><span class="badge-icon">🗓️</span><div class="badge-name">Month Warrior</div><div class="badge-desc">Streak 30 hari</div></div>
-        <div class="badge-item locked"><span class="badge-icon">👑</span><div class="badge-name">Python King</div><div class="badge-desc">Rank #1 leaderboard</div></div>
-        <div class="badge-item locked"><span class="badge-icon">🦉</span><div class="badge-name">Night Owl</div><div class="badge-desc">Belajar jam 23.00+</div></div>
-        <div class="badge-item locked"><span class="badge-icon">💎</span><div class="badge-name">Diamond</div><div class="badge-desc">5000 XP terkumpul</div></div>
+      <div style="font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">Belum diraih</div>
+      <div class="ga">
+        <div class="bdg-item off"><span class="bdg-ico">🐉</span><div class="bdg-name">Dragon Coder</div><div class="bdg-desc">Semua level selesai</div></div>
+        <div class="bdg-item off"><span class="bdg-ico">🌟</span><div class="bdg-name">Perfectionist</div><div class="bdg-desc">3 skor sempurna</div></div>
+        <div class="bdg-item off"><span class="bdg-ico">🗓️</span><div class="bdg-name">Month Warrior</div><div class="bdg-desc">Streak 30 hari</div></div>
+        <div class="bdg-item off"><span class="bdg-ico">👑</span><div class="bdg-name">Python King</div><div class="bdg-desc">Rank #1</div></div>
+        <div class="bdg-item off"><span class="bdg-ico">💎</span><div class="bdg-name">Diamond</div><div class="bdg-desc">5.000 XP</div></div>
+        <div class="bdg-item off"><span class="bdg-ico">🦉</span><div class="bdg-name">Night Owl</div><div class="bdg-desc">Belajar jam 23.00+</div></div>
       </div>
     </div>
   </div>
 </div>
 
 
-<!-- ============================== -->
-<!--         PROFILE PAGE           -->
-<!-- ============================== -->
+<!-- ==================== PROFILE ==================== -->
 <div id="page-profile" class="page">
-  <nav class="navbar">
-    <div class="navbar-logo" onclick="showPage('dashboard')">
-      <div class="logo-icon">🐍</div>
-      <span class="logo-text">Py<span>Quest</span></span>
+  <nav class="nav">
+    <div class="nav-brand" onclick="go('dashboard')">
+      <div class="brand-mark"><div class="brand-dot"></div></div>
+      <span class="brand-name">Py<em>Learn</em></span>
     </div>
-    <div class="nav-links">
-      <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
-      <button class="nav-link" onclick="showPage('levels')">Levels</button>
-      <button class="nav-link" onclick="showPage('leaderboard')">Leaderboard</button>
-      <button class="nav-link" onclick="showPage('badges')">Badges</button>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <div class="streak-badge">🔥 7</div>
-      <div class="nav-xp-badge">⚡ 2,450 XP</div>
-      <div class="nav-avatar" onclick="showPage('profile')">AR</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <button class="nav-item" onclick="go('dashboard')">Dashboard</button>
+      <button class="nav-item" onclick="go('levels')">Level</button>
+      <button class="nav-item" onclick="go('leaderboard')">Leaderboard</button>
+      <button class="nav-item" onclick="go('badges')">Badge</button>
+      <div style="width:1px;height:20px;background:var(--bd);margin:0 4px"></div>
+      <div class="nav-stat"><strong>2.450</strong> XP</div>
+      <div class="avatar" onclick="go('profile')">AR</div>
     </div>
   </nav>
-  <div class="main-layout">
-    <div class="container" style="padding-top:32px;padding-bottom:48px;max-width:840px">
+  <div class="pt">
+    <div class="wrap" style="max-width:800px;padding-top:36px;padding-bottom:56px">
+
       <!-- Profile Header -->
-      <div class="card-elevated" style="display:flex;align-items:center;gap:24px;margin-bottom:24px;flex-wrap:wrap">
-        <div class="nav-avatar av-blue" style="width:80px;height:80px;font-size:28px;font-weight:800;flex-shrink:0">AR</div>
-        <div style="flex:1;min-width:200px">
-          <h1 style="font-size:24px;font-weight:800;margin-bottom:4px">Arya Ramadhan</h1>
-          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:12px">arya.ramadhan@email.com</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <span class="badge badge-blue">Level 5</span>
-            <span class="badge badge-amber">🏆 Rank #4</span>
-            <span class="badge badge-red">🔥 Streak 7</span>
+      <div class="card-elevated" style="display:flex;align-items:center;gap:22px;margin-bottom:22px;flex-wrap:wrap">
+        <div class="avatar av1" style="width:64px;height:64px;font-size:22px;font-weight:700;flex-shrink:0">AR</div>
+        <div style="flex:1;min-width:180px">
+          <h1 style="font-size:22px;font-weight:600;margin-bottom:3px">Arya Ramadhan</h1>
+          <p style="font-size:13px;color:var(--t2);margin-bottom:12px">arya.ramadhan@email.com</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <div class="tag tag-blue">Level 5</div>
+            <div class="tag tag-amber">Rank #4</div>
+            <div class="tag tag-muted">Streak 7 hari</div>
           </div>
         </div>
-        <button class="btn btn-secondary btn-sm" style="flex-shrink:0">✏️ Edit Profil</button>
+        <button class="btn btn-ghost btn-sm">Edit Profil</button>
       </div>
 
-      <!-- Stats -->
-      <div class="grid-4" style="margin-bottom:24px">
-        <div class="stat-card">
-          <div class="stat-icon" style="background:rgba(59,130,246,0.15)">⚡</div>
-          <div class="stat-value">2,450</div>
-          <div class="stat-label">Total XP</div>
+      <div class="g4" style="margin-bottom:22px">
+        <div class="sc">
+          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">2.450</div>
+          <div class="sc-lbl">Total XP</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:rgba(16,185,129,0.15)">📊</div>
-          <div class="stat-value">5</div>
-          <div class="stat-label">Level Selesai</div>
+        <div class="sc">
+          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">5</div>
+          <div class="sc-lbl">Level selesai</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:rgba(245,158,11,0.15)">🏆</div>
-          <div class="stat-value">8</div>
-          <div class="stat-label">Badge Diraih</div>
+        <div class="sc">
+          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">8</div>
+          <div class="sc-lbl">Badge diraih</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:rgba(239,68,68,0.15)">🔥</div>
-          <div class="stat-value">7</div>
-          <div class="stat-label">Hari Streak</div>
+        <div class="sc">
+          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">7</div>
+          <div class="sc-lbl">Hari streak</div>
         </div>
       </div>
 
-      <!-- Activity History -->
       <div class="card">
-        <div style="font-size:14px;font-weight:700;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.06em">Riwayat Aktivitas</div>
-        <table class="table">
+        <div class="sh">Riwayat aktivitas</div>
+        <table class="tbl">
           <thead>
             <tr>
               <th>Level</th>
@@ -1694,39 +1466,39 @@
           </thead>
           <tbody>
             <tr>
-              <td><span style="font-weight:600">Lv.5 · Functions</span></td>
-              <td><span style="color:var(--green-bright);font-weight:700">85</span></td>
-              <td><span style="color:var(--amber-bright);font-weight:700">+250</span></td>
-              <td style="color:var(--text-secondary);font-size:13px">Hari ini</td>
-              <td><span class="badge badge-green">Lulus</span></td>
+              <td style="font-weight:500">Lv.5 — Functions</td>
+              <td style="font-family:var(--f-mono);color:var(--green-light)">85</td>
+              <td style="font-family:var(--f-mono);color:var(--amber)">+250</td>
+              <td style="color:var(--t2);font-size:13px">Hari ini</td>
+              <td><div class="tag tag-green">Lulus</div></td>
             </tr>
             <tr>
-              <td><span style="font-weight:600">Lv.4 · Loops</span></td>
-              <td><span style="color:var(--green-bright);font-weight:700">90</span></td>
-              <td><span style="color:var(--amber-bright);font-weight:700">+200</span></td>
-              <td style="color:var(--text-secondary);font-size:13px">2 hari lalu</td>
-              <td><span class="badge badge-green">Lulus</span></td>
+              <td style="font-weight:500">Lv.4 — Loops</td>
+              <td style="font-family:var(--f-mono);color:var(--green-light)">90</td>
+              <td style="font-family:var(--f-mono);color:var(--amber)">+200</td>
+              <td style="color:var(--t2);font-size:13px">2 hari lalu</td>
+              <td><div class="tag tag-green">Lulus</div></td>
             </tr>
             <tr>
-              <td><span style="font-weight:600">Lv.3 · Conditionals</span></td>
-              <td><span style="color:var(--amber-bright);font-weight:700">70</span></td>
-              <td><span style="color:var(--amber-bright);font-weight:700">+140</span></td>
-              <td style="color:var(--text-secondary);font-size:13px">5 hari lalu</td>
-              <td><span class="badge badge-amber">Lulus</span></td>
+              <td style="font-weight:500">Lv.3 — Conditionals</td>
+              <td style="font-family:var(--f-mono);color:var(--amber-light)">70</td>
+              <td style="font-family:var(--f-mono);color:var(--amber)">+140</td>
+              <td style="color:var(--t2);font-size:13px">5 hari lalu</td>
+              <td><div class="tag tag-amber">Lulus</div></td>
             </tr>
             <tr>
-              <td><span style="font-weight:600">Lv.2 · Strings</span></td>
-              <td><span style="color:var(--green-bright);font-weight:700">80</span></td>
-              <td><span style="color:var(--amber-bright);font-weight:700">+160</span></td>
-              <td style="color:var(--text-secondary);font-size:13px">1 minggu lalu</td>
-              <td><span class="badge badge-green">Lulus</span></td>
+              <td style="font-weight:500">Lv.2 — Strings</td>
+              <td style="font-family:var(--f-mono);color:var(--green-light)">80</td>
+              <td style="font-family:var(--f-mono);color:var(--amber)">+160</td>
+              <td style="color:var(--t2);font-size:13px">1 minggu lalu</td>
+              <td><div class="tag tag-green">Lulus</div></td>
             </tr>
             <tr>
-              <td><span style="font-weight:600">Lv.1 · Dasar</span></td>
-              <td><span style="color:var(--green-bright);font-weight:700">95</span></td>
-              <td><span style="color:var(--amber-bright);font-weight:700">+200</span></td>
-              <td style="color:var(--text-secondary);font-size:13px">2 minggu lalu</td>
-              <td><span class="badge badge-green">Lulus</span></td>
+              <td style="font-weight:500">Lv.1 — Dasar</td>
+              <td style="font-family:var(--f-mono);color:var(--green-light)">95</td>
+              <td style="font-family:var(--f-mono);color:var(--amber)">+200</td>
+              <td style="color:var(--t2);font-size:13px">2 minggu lalu</td>
+              <td><div class="tag tag-green">Lulus</div></td>
             </tr>
           </tbody>
         </table>
@@ -1737,103 +1509,69 @@
 
 
 <script>
-  // ===== PAGE NAVIGATION =====
-  function showPage(name) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const target = document.getElementById('page-' + name);
-    if (target) {
-      target.classList.add('active');
-      window.scrollTo(0, 0);
-    }
-  }
+function go(p) {
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  const t = document.getElementById('page-' + p);
+  if (t) { t.classList.add('active'); window.scrollTo(0,0); }
+}
 
-  // ===== LOGIN =====
-  function doLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const pass = document.getElementById('loginPass').value;
-    if (!email || !pass) {
-      document.getElementById('loginError').style.display = 'block';
-      return;
-    }
-    if (email === 'test@test.com' && pass === 'wrong') {
-      document.getElementById('loginError').style.display = 'block';
-      return;
-    }
-    document.getElementById('loginError').style.display = 'none';
-    showPage('dashboard');
-    showToast('success', '👋 Selamat datang kembali, Arya!');
-  }
+function doLogin() {
+  const e = document.getElementById('le').value;
+  const p = document.getElementById('lp').value;
+  const err = document.getElementById('login-err');
+  if (!e || !p) { err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  go('dashboard');
+  toast('ok', 'Selamat datang kembali, Arya.');
+}
 
-  // ===== REGISTER =====
-  function doRegister() {
-    showPage('dashboard');
-    showToast('success', '🎉 Akun berhasil dibuat! Selamat belajar!');
-    setTimeout(() => showBadgeModal('First Blood', 'Selamat datang di PyQuest!'), 1500);
-  }
+function doRegister() {
+  go('dashboard');
+  toast('ok', 'Akun berhasil dibuat. Selamat belajar!');
+  setTimeout(() => showBadge('🏆','First Blood','Selesaikan level pertamamu'), 1400);
+}
 
-  // ===== QUIZ =====
-  function selectOption(el, isCorrect) {
-    const options = document.querySelectorAll('.quiz-option');
-    options.forEach(o => {
-      o.classList.remove('selected', 'correct', 'wrong');
-      o.disabled = true;
-    });
-    if (isCorrect) {
-      el.classList.add('correct');
-    } else {
-      el.classList.add('wrong');
-      // Highlight correct
-      options[1].classList.add('correct');
-    }
-  }
-
-  // ===== TOASTS =====
-  function showToast(type, msg) {
-    const container = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = 'toast toast-' + type;
-    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-    toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${msg}</span>`;
-    container.appendChild(toast);
-    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; toast.style.transition = 'all 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
-  }
-
-  // ===== MODALS =====
-  function showBadgeModal(name, desc) {
-    document.getElementById('badgeModalName').textContent = name;
-    document.getElementById('badgeModalDesc').textContent = desc;
-    document.getElementById('badgeModal').classList.add('open');
-  }
-  function closeBadgeModal() {
-    document.getElementById('badgeModal').classList.remove('open');
-    showToast('success', '🏆 Badge "' + document.getElementById('badgeModalName').textContent + '" diraih!');
-  }
-  function showLockedModal() {
-    document.getElementById('lockedModal').classList.add('open');
-  }
-  function closeLockedModal() {
-    document.getElementById('lockedModal').classList.remove('open');
-  }
-
-  // Close modal on overlay click
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function(e) {
-      if (e.target === this) {
-        this.classList.remove('open');
-      }
-    });
+function pick(el, ok) {
+  document.querySelectorAll('.opt').forEach(o => {
+    o.classList.remove('sel','ok','ng');
+    o.disabled = true;
   });
+  if (ok) el.classList.add('ok');
+  else { el.classList.add('ng'); document.querySelectorAll('.opt')[1].classList.add('ok'); }
+}
 
-  // ===== FILTER TABS =====
-  function setTab(el) {
-    el.closest('.filter-tabs').querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-  }
+function toast(type, msg) {
+  const w = document.getElementById('toasts');
+  const d = document.createElement('div');
+  d.className = 'toast toast-' + type;
+  d.innerHTML = `<div class="t-dot t-dot-${type}"></div><span>${msg}</span>`;
+  w.appendChild(d);
+  setTimeout(() => { d.style.opacity='0'; d.style.transform='translateY(4px)'; d.style.transition='all .2s'; setTimeout(()=>d.remove(),200); }, 3200);
+}
 
-  // ===== DEMO: Show toast on first load =====
-  window.addEventListener('load', () => {
-    setTimeout(() => showToast('success', '🔥 Streak 7 hari! Terus semangat!'), 800);
-  });
+function showBadge(ico, name, desc) {
+  document.getElementById('m-badge-ico').textContent = ico;
+  document.getElementById('m-badge-name').textContent = name;
+  document.getElementById('m-badge-desc').textContent = desc;
+  document.getElementById('m-badge').classList.add('open');
+}
+
+function showLock() { document.getElementById('m-lock').classList.add('open'); }
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+function ftab(el) {
+  el.closest('.ftabs').querySelectorAll('.ftab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => toast('ok', 'Streak 7 hari berjalan. Pertahankan!'), 700);
+});
 </script>
 </body>
 </html>
