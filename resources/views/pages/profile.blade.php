@@ -27,7 +27,15 @@
           </div>
         </div>
         <button class="btn btn-ghost btn-sm">Edit Profil</button>
-        <button class="btn btn-ghost btn-sm">Logout</button>
+        {{-- <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-ghost btn-sm">
+                Logout
+            </button>
+        </form> --}}
+        <button type="button" class="btn btn-ghost btn-sm" onclick="openLogoutModal()">
+            Logout
+        </button>
       </div>
 
       <div class="g4" style="margin-bottom:22px">
@@ -103,4 +111,42 @@
     </div>
   </div>
 </div>
+
+{{-- Modal Logout --}}
+<div id="logoutModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center;">
+  <div style="background:var(--s1); padding:24px; border-radius:12px; width:100%; max-width:320px; text-align:center;">
+    
+    <h3 style="margin-bottom:10px">Konfirmasi Logout</h3>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:20px">
+      Anda yakin ingin keluar dari akun?
+    </p>
+
+    <div style="display:flex; gap:10px; justify-content:center">
+      
+      <button class="btn btn-ghost btn-sm" onclick="closeLogoutModal()">
+        Batal
+      </button>
+
+      <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary btn-sm">
+          Ya, Logout
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
 @endsection
+
+@push('scripts')
+    <script>
+function openLogoutModal() {
+    document.getElementById('logoutModal').style.display = 'flex';
+}
+
+function closeLogoutModal() {
+    document.getElementById('logoutModal').style.display = 'none';
+}
+</script>
+@endpush
