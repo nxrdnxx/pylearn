@@ -39,8 +39,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // WEBSITE
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/level', [LevelController::class, 'index'])->name('level.index');
+Route::get('/levels', [LevelController::class, 'index'])
+    ->name('level.index')
+    ->middleware('auth');
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 Route::get('/badge', [BadgeController::class, 'index'])->name('badge.index');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
+Route::get('/quiz/{level}', [QuizController::class, 'show'])
+    ->name('quiz.show')
+    ->middleware('auth');
+Route::post('/quiz/answer', [QuizController::class, 'answer'])
+    ->name('quiz.answer');
