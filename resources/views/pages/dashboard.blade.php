@@ -13,7 +13,10 @@
           <div style="font-size:12px;color:var(--t3);margin-bottom:6px">Halo, Arya</div>
           <h1 style="font-family:var(--f-serif);font-size:32px;letter-spacing:-0.02em">Lanjutkan di mana kamu berhenti.</h1>
         </div>
-        <button class="btn btn-primary" onclick="go('quiz')">Lanjutkan Belajar</button>
+        {{-- <button class="btn btn-primary" onclick="go('quiz')">Lanjutkan Belajar</button> --}}
+        <a href="{{ route('quiz') }}" class="btn btn-primary">
+            Lanjutkan Belajar
+        </a>
       </div>
 
       <!-- Stats -->

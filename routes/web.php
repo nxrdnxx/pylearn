@@ -8,6 +8,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\QuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,3 +43,4 @@ Route::get('/level', [LevelController::class, 'index'])->name('level.index');
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 Route::get('/badge', [BadgeController::class, 'index'])->name('badge.index');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
