@@ -14,42 +14,36 @@ class LevelController extends Controller
 
         $levels = Level::orderBy('order_number')->get();
 
-        $result = [];
+$result = [];
         $previousCompleted = true; // level 1 terbuka
 
         foreach ($levels as $level) {
 
-            // 🔥 Ambil semua question id di level ini
             $questionIds = Question::where('level_id', $level->id)->pluck('id');
 
             $total = $questionIds->count();
 
-            // 🔥 semua jawaban user di level ini
             $userAnswers = UserAnswer::where('user_id', $userId)
                 ->whereIn('question_id', $questionIds);
 
             $answered = (clone $userAnswers)
-            ->distinct('question_id')
-            ->count('question_id');
+                ->distinct('question_id')
+                ->count('question_id');
             $correct = (clone $userAnswers)
-            ->where('is_correct', true)
-            ->distinct('question_id')
-            ->count('question_id');
-            $totalScore = UserAnswer::where('user_id', $userId)
-            ->whereIn('question_id', $questionIds)
-            ->selectRaw('MAX(score) as score')
-            ->groupBy('question_id')
-            ->get()
-            ->sum('score');
+                ->where('is_correct', true)
+                ->distinct('question_id')
+                ->count('question_id');
+            
+            // Score sebagai persentase (0-100)
+            $scorePercent = $total > 0 ? round(($correct / $total) * 100) : 0;
 
-            // 🔥 STATUS LOGIC
+            // STATUS LOGIC
             if ($answered >= $total && $total > 0) {
 
-                // 🔥 lulus jika score >= 50
-                if ($totalScore >= 30) {
+                if ($scorePercent >= 60) {
                     $status = 'completed';
                 } else {
-                    $status = 'unlocked'; // belum lulus
+                    $status = 'unlocked';
                 }
 
             } elseif ($previousCompleted) {
@@ -58,7 +52,6 @@ class LevelController extends Controller
                 $status = 'locked';
             }
 
-            // 🔥 unlock next level
             $previousCompleted = ($status === 'completed');
 
             $result[] = [
@@ -69,7 +62,7 @@ class LevelController extends Controller
                 'total' => $total,
                 'answered' => $answered,
                 'correct' => $correct,
-                'score' => $totalScore,
+                'score' => $scorePercent,
                 'status' => $status,
             ];
         }

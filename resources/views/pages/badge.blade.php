@@ -2,74 +2,60 @@
 @section('title', 'Badge')
 
 @section('content')
-<div id="page-badges" class="page">
-  <div class="pt">
-
-    {{-- HEADER --}}
-    <div style="background:var(--s1);border-bottom:1px solid var(--bd);padding:28px 0">
-      <div class="wrap">
-        <h1 style="font-family:var(--f-serif);font-size:28px;margin-bottom:6px">
-            Badge
-        </h1>
-
-        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-          <div style="flex:1;max-width:200px">
-            <div class="track" style="height:4px">
-              <div class="fill fill-amber" style="width:{{ $percent }}%"></div>
+<div class="pt-16 min-h-screen" style="background: linear-gradient(135deg, #04091a 0%, #070f26 100%);">
+    <div class="max-w-[1100px] mx-auto px-7 pt-10 pb-14">
+        <div class="flex items-center justify-between gap-4 flex-wrap mb-8">
+            <h1 class="font-serif text-[32px] text-white">
+                <i class="fa-solid fa-medal text-amber-400 mr-3"></i>Badge
+            </h1>
+            <div class="flex items-center gap-3">
+                <div class="flex-1 max-w-[200px] h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-amber-500 rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
+                </div>
+                <span class="text-sm text-gray-400">{{ $owned }}/{{ $total }}</span>
             </div>
-          </div>
-
-          <span style="font-size:13px;color:var(--t2)">
-              {{ $owned }} dari {{ $total }} diraih
-          </span>
         </div>
-      </div>
+
+        <div class="flex items-center gap-3 mb-5">
+            <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
+            <span class="text-xs font-semibold text-green-400 uppercase tracking-wide">Diraih</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-10">
+            @forelse($earned as $badge)
+            <div class="bg-slate-800 rounded-xl border border-gray-700 p-4 flex flex-col items-center text-center transition-all duration-200 hover:border-amber-500/50 hover:scale-105">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mb-3 shadow-lg">
+                    <i class="fa-solid {{ $badge->icon ?? 'fa-medal' }} text-xl text-white"></i>
+                </div>
+                <div class="text-sm font-semibold text-white mb-1">{{ $badge->name }}</div>
+                <div class="text-[11px] text-gray-400">{{ $badge->description }}</div>
+            </div>
+            @empty
+            <div class="col-span-full text-center py-10 text-gray-500">
+                <div class="text-4xl mb-3">
+                    <i class="fa-solid fa-medal"></i>
+                </div>
+                <div>Belum ada badge diraih. Terus belajar!</div>
+            </div>
+            @endforelse
+        </div>
+
+        <div class="flex items-center gap-3 mb-5">
+            <div class="w-2 h-2 rounded-full bg-gray-600"></div>
+            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Belum diraih</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            @foreach($locked as $badge)
+            <div class="bg-slate-900 rounded-xl border border-gray-800 p-4 flex flex-col items-center text-center opacity-50">
+                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-lock text-gray-600"></i>
+                </div>
+                <div class="text-sm font-semibold text-gray-400 mb-1">{{ $badge->name }}</div>
+                <div class="text-[11px] text-gray-600">{{ $badge->description }}</div>
+            </div>
+            @endforeach
+        </div>
     </div>
-
-    <div class="wrap" style="padding-top:28px;padding-bottom:56px">
-
-      {{-- ================= BADGE DIDAPAT ================= --}}
-      <div style="font-size:11px;font-weight:500;color:var(--green);margin-bottom:14px">
-        Diraih
-      </div>
-
-      <div class="ga" style="margin-bottom:36px">
-
-        @forelse($earned as $badge)
-        <div class="bdg-item"
-             onclick="showBadge('{{ $badge->icon }}','{{ $badge->name }}','{{ $badge->description }}')">
-
-          <span class="bdg-ico">🏆</span>
-
-          <div class="bdg-name">{{ $badge->name }}</div>
-          <div class="bdg-desc">{{ $badge->description }}</div>
-        </div>
-        @empty
-        <p style="color:var(--t2)">Belum ada badge</p>
-        @endforelse
-
-      </div>
-
-      {{-- ================= BADGE BELUM ================= --}}
-      <div style="font-size:11px;font-weight:500;color:var(--t3);margin-bottom:14px">
-        Belum diraih
-      </div>
-
-      <div class="ga">
-
-        @foreach($locked as $badge)
-        <div class="bdg-item off">
-
-          <span class="bdg-ico">🔒</span>
-
-          <div class="bdg-name">{{ $badge->name }}</div>
-          <div class="bdg-desc">{{ $badge->description }}</div>
-        </div>
-        @endforeach
-
-      </div>
-
-    </div>
-  </div>
 </div>
 @endsection

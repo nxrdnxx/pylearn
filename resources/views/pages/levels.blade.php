@@ -3,149 +3,93 @@
 @section('title', 'Level')
 
 @section('content')
-<div id="page-levels" class="page">
-  <div class="pt">
-
-    {{-- ================= HEADER ================= --}}
+<div class="pt-16">
     @php
         $totalLevel = count($levels);
         $completed = collect($levels)->where('status', 'completed')->count();
         $percent = $totalLevel > 0 ? ($completed / $totalLevel) * 100 : 0;
     @endphp
 
-    <div style="background:var(--s1);border-bottom:1px solid var(--bd);padding:28px 0">
-      <div class="wrap">
-        <h1 style="font-family:var(--f-serif);font-size:28px;margin-bottom:6px">
-            Kurikulum
-        </h1>
-
-        <p style="font-size:14px;color:var(--t2);margin-bottom:16px">
-            Dari dasar hingga lanjutan, satu level demi satu level.
-        </p>
-
-        <div style="display:flex;align-items:center;gap:16px">
-          <div style="flex:1;max-width:280px">
-            <div class="track" style="height:5px">
-              <div class="fill fill-green" style="width:{{ $percent }}%"></div>
+    <div class="bg-gradient-to-b from-surface-1 to-ink-950 border-b border-ink-700/14 py-8">
+        <div class="max-w-[1100px] mx-auto px-7">
+            <h1 class="font-serif text-[32px] mb-2">
+                <i class="fa-solid fa-graduation-cap text-brand-blue mr-3"></i>Kurikulum
+            </h1>
+            <p class="text-[15px] text-text-secondary mb-5">
+                Dari dasar hingga lanjutan, satu level demi satu level.
+            </p>
+            <div class="flex items-center gap-5">
+                <div class="flex-1 max-w-[300px]">
+                    <div class="w-full bg-surface-2 rounded-full h-1.5 overflow-hidden">
+                        <div class="h-full bg-brand-green rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
+                    </div>
+                </div>
+                <span class="text-sm text-text-secondary">
+                    <i class="fa-solid fa-check-circle text-brand-green mr-1.5"></i>{{ $completed }} dari {{ $totalLevel }} level selesai
+                </span>
             </div>
-          </div>
-
-          <span style="font-size:13px;color:var(--t2)">
-              {{ $completed }} dari {{ $totalLevel }} level selesai
-          </span>
         </div>
-      </div>
     </div>
 
-    {{-- ================= LIST LEVEL ================= --}}
-    <div class="wrap" style="padding:28px 0 56px">
-      <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="max-w-[1100px] mx-auto px-7 py-8 pb-14">
+        <div class="flex flex-col gap-3">
+            @foreach($levels as $index => $level)
+            @php
+                $isCompleted = $level['status'] == 'completed';
+                $isUnlocked  = $level['status'] == 'unlocked';
+                $isLocked    = $level['status'] == 'locked';
+                $percent = $level['total'] > 0 ? ($level['answered'] / $level['total']) * 100 : 0;
+            @endphp
 
-        @foreach($levels as $level)
+            <div class="bg-surface-1 rounded-xl border {{ $isCompleted ? 'border-brand-green/30' : ($isUnlocked ? 'border-brand-blue/30' : 'border-ink-700/14') }} p-5 transition-all duration-200 {{ $isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-ink-700/30 hover:bg-surface-2 cursor-pointer' }}"
+                 onclick="@if(!$isLocked) window.location.href='{{ route('quiz.show', $level['id']) }}' @endif">
 
-        @php
-            $isCompleted = $level['status'] == 'completed';
-            $isUnlocked  = $level['status'] == 'unlocked';
-            $isLocked    = $level['status'] == 'locked';
-
-            $percent = $level['total'] > 0 
-                ? ($level['answered'] / $level['total']) * 100 
-                : 0;
-        @endphp
-
-        <div 
-            class="lv-card 
-                {{ $isCompleted ? 'done' : '' }} 
-                {{ $isUnlocked ? 'open' : '' }} 
-                {{ $isLocked ? 'locked' : '' }}"
-
-            onclick="
-            @if($isLocked)
-                showLock()
-            @else
-                window.location.href='{{ route('quiz.show', $level['id']) }}'
-            @endif
-            "
-        >
-
-        <div style="display:flex;align-items:center;gap:16px">
-
-            {{-- NOMOR --}}
-            <div class="lv-num 
-                {{ $isCompleted ? 'lv-num-green' : '' }}
-                {{ $isUnlocked ? 'lv-num-blue' : '' }}
-                {{ $isLocked ? 'lv-num-dim' : '' }}">
-                {{ str_pad($level['order'], 2, '0', STR_PAD_LEFT) }}
-            </div>
-
-            {{-- INFO --}}
-            <div style="flex:1">
-
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
-                    <span style="font-size:15px;font-weight:600">
-                        {{ $level['name'] }}
-                    </span>
-
-                    @if($isCompleted)
-                        <div class="tag tag-green">Selesai</div>
-                    @elseif($isUnlocked)
-                        <div class="tag tag-blue">
-                            {{ $level['answered'] > 0 ? 'Berlangsung' : 'Terbuka' }}
-                        </div>
-                    @else
-                        <div class="tag tag-muted">Terkunci</div>
-                    @endif
-                </div>
-
-                <p style="font-size:13px;color:var(--t2)">
-                    {{ $level['description'] }}
-                </p>
-
-                {{-- PROGRESS --}}
-                @if($isUnlocked || $isCompleted)
-                <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
-                    <div class="track" style="flex:1;height:4px">
-                        <div class="fill" style="width: {{ $percent }}%"></div>
+                <div class="flex items-center gap-5">
+                    <div class="w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center text-base font-bold font-mono {{ $isCompleted ? 'bg-brand-green/15 text-brand-green-light' : ($isUnlocked ? 'bg-brand-blue/15 text-brand-blue-light' : 'bg-surface-2 text-text-muted') }}">
+                        {{ str_pad($level['order'], 2, '0', STR_PAD_LEFT) }}
                     </div>
 
-                    <span style="font-size:12px;color:var(--t2)">
-                        {{ $level['answered'] }}/{{ $level['total'] }}
-                    </span>
-                </div>
-                @endif
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-base font-semibold text-text-primary">{{ $level['name'] }}</span>
+                            @if($isCompleted)
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-brand-green/15 text-brand-green-light text-xs font-medium">
+                                    <i class="fa-solid fa-circle-check mr-1"></i>Selesai
+                                </span>
+                            @elseif($isUnlocked)
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-brand-blue/15 text-brand-blue-light text-xs font-medium">
+                                    <i class="fa-solid fa-lock-open mr-1"></i>{{ $level['answered'] > 0 ? 'Berlangsung' : 'Terbuka' }}
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-2 text-text-muted text-xs font-medium">
+                                    <i class="fa-solid fa-lock mr-1"></i>Terkunci
+                                </span>
+                            @endif
+                        </div>
+                        <p class="text-sm text-text-secondary leading-relaxed">{{ $level['description'] }}</p>
 
+                        @if($isUnlocked || $isCompleted)
+                        <div class="mt-3 flex items-center gap-3">
+                            <div class="flex-1 h-1 bg-surface-2 rounded-full overflow-hidden">
+                                <div class="h-full {{ $isCompleted ? 'bg-brand-green' : 'bg-brand-blue' }} rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
+                            </div>
+                            <span class="text-xs text-text-secondary font-mono">{{ $level['answered'] }}/{{ $level['total'] }}</span>
+                        </div>
+                        @endif
+                    </div>
+
+                    @if($level['answered'] > 0)
+                    <div class="text-right flex-shrink-0">
+                        <div class="text-[22px] font-bold font-mono {{ $level['score'] >= 60 ? 'text-green-400' : ($level['score'] >= 40 ? 'text-amber-400' : 'text-red-500') }}">
+                            {{ $level['score'] }}
+                        </div>
+                        <div class="text-[11px] text-gray-500 mt-0.5">skor</div>
+                    </div>
+                    @endif
+                </div>
             </div>
-
-            {{-- ✅ SCORE (FIX DI SINI) --}}
-            @if($level['answered'] > 0)
-            <div style="text-align:right;flex-shrink:0">
-                <div style="
-                    font-size:20px;
-                    font-weight:700;
-                    font-family:var(--f-mono);
-                    color:
-                    {{ 
-                        $level['score'] == 0 
-                        ? '#ef4444' 
-                        : ($isCompleted ? 'var(--green-light)' : 'var(--t2)') 
-                    }}
-                ">
-                    {{ $level['score'] }}
-                </div>
-                <div style="font-size:11px;color:var(--t2)">
-                    skor
-                </div>
-            </div>
-            @endif
-
+            @endforeach
         </div>
-        </div>
-
-        @endforeach
-
-      </div>
     </div>
-
-  </div>
 </div>
 @endsection

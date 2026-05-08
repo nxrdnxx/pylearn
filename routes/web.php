@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\DailyQuestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // WEBSITE
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard.index')
+    ->middleware('auth');
 Route::get('/levels', [LevelController::class, 'index'])
     ->name('level.index')
     ->middleware('auth');
@@ -48,5 +51,15 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 Route::get('/quiz/{level}', [QuizController::class, 'show'])
     ->name('quiz.show')
     ->middleware('auth');
+Route::get('/quiz/{level}/result', [QuizController::class, 'result'])
+    ->name('quiz.result');
 Route::post('/quiz/answer', [QuizController::class, 'answer'])
     ->name('quiz.answer');
+
+// DAILY QUEST
+Route::get('/daily-quest', [DailyQuestController::class, 'show'])
+    ->name('daily-quest.show')
+    ->middleware('auth');
+Route::post('/daily-quest', [DailyQuestController::class, 'submit'])
+    ->name('daily-quest.submit')
+    ->middleware('auth');

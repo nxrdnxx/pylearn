@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Services\BadgeService;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -31,6 +33,27 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
+            
+            $user = Auth::user();
+            $today = Carbon::now()->toDateString();
+            $lastLogin = $user->last_login_date ? $user->last_login_date->toDateString() : null;
+            
+            if ($lastLogin !== $today) {
+                $yesterday = Carbon::yesterday()->toDateString();
+                
+                if ($lastLogin === $yesterday) {
+                    $user->increment('login_streak');
+                } else {
+                    $user->update(['login_streak' => 1]);
+                }
+                $user->update(['last_login_date' => $today]);
+                
+                $earnedBadges = BadgeService::checkAndAward($user->id);
+                if (count($earnedBadges) > 0) {
+                    session()->flash('new_badges', $earnedBadges);
+                }
+            }
+            
             return redirect()->route('dashboard.index');
         }
 

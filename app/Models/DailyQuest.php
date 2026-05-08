@@ -4,22 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserAnswer extends Model
+class DailyQuest extends Model
 {
     protected $fillable = [
         'user_id',
         'question_id',
+        'quest_date',
         'user_answer',
         'is_correct',
-        'score',
         'xp_earned',
-        'streak'
+        'completed'
     ];
 
-    public $timestamps = false; // karena cuma pakai created_at
-
     protected $casts = [
-        'is_correct' => 'boolean'
+        'quest_date' => 'date',
+        'is_correct' => 'boolean',
+        'completed' => 'boolean'
     ];
 
     public function user()
@@ -29,6 +29,6 @@ class UserAnswer extends Model
 
     public function question()
     {
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(DailyQuestQuestion::class);
     }
 }

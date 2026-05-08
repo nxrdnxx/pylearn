@@ -1,152 +1,120 @@
 @extends('layouts.app')
 @section('title', 'Profile')
-@push('style')
-    
-@endpush
+
 @section('content')
-    <div id="page-profile" class="page">
-  <div class="pt">
-    <div class="wrap" style="max-width:800px;padding-top:36px;padding-bottom:56px">
+<div class="pt-16 min-h-screen" style="background: linear-gradient(135deg, #04091a 0%, #070f26 100%);">
+    <div class="max-w-[800px] mx-auto px-7 pt-10 pb-14">
+        <div class="bg-slate-800 rounded-2xl border border-gray-700 p-6 mb-6">
+            <div class="flex items-center gap-5 flex-wrap">
+                @auth
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center text-2xl font-bold text-white flex-shrink-0">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                </div>
+                <div class="flex-1 min-w-[180px]">
+                    <h1 class="text-xl font-semibold text-white mb-1">{{ Auth::user()->name }}</h1>
+                    <p class="text-sm text-gray-400 mb-4">{{ Auth::user()->email }}</p>
+                    <div class="flex gap-2 flex-wrap">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-500/15 text-blue-400 text-xs font-medium">
+                            <i class="fa-solid fa-layer-group mr-1"></i>Level {{ $completedLevel }}
+                        </span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-400 text-xs font-medium">
+                            <i class="fa-solid fa-fire mr-1"></i>Streak {{ $streak }} hari
+                        </span>
+                    </div>
+                </div>
+                <div class="flex gap-2 ml-auto">
+                    <button class="px-3 py-1.5 rounded-lg bg-transparent text-gray-400 font-medium text-xs border border-gray-700 hover:bg-gray-700 hover:text-white transition-all duration-200" onclick="document.getElementById('logoutModal').style.display = 'flex'">
+                        Logout
+                    </button>
+                </div>
+                @endauth
+            </div>
+        </div>
 
-      <!-- Profile Header -->
-      <div class="card-elevated" style="display:flex;align-items:center;gap:22px;margin-bottom:22px;flex-wrap:wrap">
-        @auth
-        <div class="avatar av1" style="width:64px;height:64px;font-size:22px;font-weight:700;flex-shrink:0">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
-        <div style="flex:1;min-width:180px">
-            <h1 style="font-size:22px;font-weight:600;margin-bottom:3px">
-                {{ Auth::user()->name }}
-            </h1>
-            <p style="font-size:13px;color:var(--t2);margin-bottom:12px">
-                {{ Auth::user()->email }}
-            </p>
-            @endauth
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <div class="tag tag-blue">Level 5</div>
-            <div class="tag tag-amber">Rank #4</div>
-            <div class="tag tag-muted">Streak 7 hari</div>
-          </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mb-6">
+            <div class="bg-slate-900 rounded-xl border border-gray-800 p-4 hover:border-gray-700 hover:bg-gray-800 transition-all duration-200">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-bolt text-blue-400 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ number_format($xp) }}</div>
+                <div class="text-xs text-gray-400 mt-1">Total XP</div>
+            </div>
+            <div class="bg-slate-900 rounded-xl border border-gray-800 p-4 hover:border-gray-700 hover:bg-gray-800 transition-all duration-200">
+                <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-layer-group text-green-400 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ $completedLevel }}<span class="text-lg text-gray-400">/{{ $totalLevel }}</span></div>
+                <div class="text-xs text-gray-400 mt-1">Level selesai</div>
+            </div>
+            <div class="bg-slate-900 rounded-xl border border-gray-800 p-4 hover:border-gray-700 hover:bg-gray-800 transition-all duration-200">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-medal text-purple-400 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ $badgeCount }}</div>
+                <div class="text-xs text-gray-400 mt-1">Badge diraih</div>
+            </div>
+            <div class="bg-slate-900 rounded-xl border border-gray-800 p-4 hover:border-gray-700 hover:bg-gray-800 transition-all duration-200">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-fire text-amber-400 text-lg"></i>
+                </div>
+                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ $streak }}</div>
+                <div class="text-xs text-gray-400 mt-1">Hari streak</div>
+            </div>
         </div>
-        <button class="btn btn-ghost btn-sm">Edit Profil</button>
-        {{-- <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-            @csrf
-            <button type="submit" class="btn btn-ghost btn-sm">
-                Logout
-            </button>
-        </form> --}}
-        <button type="button" class="btn btn-ghost btn-sm" onclick="openLogoutModal()">
-            Logout
-        </button>
-      </div>
 
-      <div class="g4" style="margin-bottom:22px">
-        <div class="sc">
-          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">2.450</div>
-          <div class="sc-lbl">Total XP</div>
+        <div class="bg-slate-900 rounded-xl border border-gray-800 overflow-hidden">
+            <div class="px-5 py-4 border-b border-gray-800">
+                <h3 class="text-sm font-semibold text-white"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Riwayat aktivitas</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-800">
+                            <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Level</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Skor</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">XP</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Tanggal</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($activities as $activity)
+                        <tr class="border-b border-gray-800">
+                            <td class="px-5 py-3 text-sm font-medium text-white">{{ $activity['level_name'] }}</td>
+                            <td class="px-5 py-3 text-sm font-mono {{ $activity['score'] >= 60 ? 'text-green-400' : 'text-amber-400' }}">{{ $activity['score'] }}</td>
+                            <td class="px-5 py-3 text-sm font-mono text-amber-400">+{{ $activity['xp'] }}</td>
+                            <td class="px-5 py-3 text-sm text-gray-400">{{ $activity['date']->diffForHumans() }}</td>
+                            <td class="px-5 py-3">
+                                @if($activity['status'] === 'Lulus')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-green-500/15 text-green-400 text-xs font-medium">Lulus</span>
+                                @else
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-red-500/15 text-red-400 text-xs font-medium">Gagal</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="px-5 py-8 text-center text-gray-500">Belum ada aktivitas</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="sc">
-          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">5</div>
-          <div class="sc-lbl">Level selesai</div>
-        </div>
-        <div class="sc">
-          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">8</div>
-          <div class="sc-lbl">Badge diraih</div>
-        </div>
-        <div class="sc">
-          <div class="sc-val" style="font-family:var(--f-mono);font-size:26px">7</div>
-          <div class="sc-lbl">Hari streak</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="sh">Riwayat aktivitas</div>
-        <table class="tbl">
-          <thead>
-            <tr>
-              <th>Level</th>
-              <th>Skor</th>
-              <th>XP</th>
-              <th>Tanggal</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight:500">Lv.5 — Functions</td>
-              <td style="font-family:var(--f-mono);color:var(--green-light)">85</td>
-              <td style="font-family:var(--f-mono);color:var(--amber)">+250</td>
-              <td style="color:var(--t2);font-size:13px">Hari ini</td>
-              <td><div class="tag tag-green">Lulus</div></td>
-            </tr>
-            <tr>
-              <td style="font-weight:500">Lv.4 — Loops</td>
-              <td style="font-family:var(--f-mono);color:var(--green-light)">90</td>
-              <td style="font-family:var(--f-mono);color:var(--amber)">+200</td>
-              <td style="color:var(--t2);font-size:13px">2 hari lalu</td>
-              <td><div class="tag tag-green">Lulus</div></td>
-            </tr>
-            <tr>
-              <td style="font-weight:500">Lv.3 — Conditionals</td>
-              <td style="font-family:var(--f-mono);color:var(--amber-light)">70</td>
-              <td style="font-family:var(--f-mono);color:var(--amber)">+140</td>
-              <td style="color:var(--t2);font-size:13px">5 hari lalu</td>
-              <td><div class="tag tag-amber">Lulus</div></td>
-            </tr>
-            <tr>
-              <td style="font-weight:500">Lv.2 — Strings</td>
-              <td style="font-family:var(--f-mono);color:var(--green-light)">80</td>
-              <td style="font-family:var(--f-mono);color:var(--amber)">+160</td>
-              <td style="color:var(--t2);font-size:13px">1 minggu lalu</td>
-              <td><div class="tag tag-green">Lulus</div></td>
-            </tr>
-            <tr>
-              <td style="font-weight:500">Lv.1 — Dasar</td>
-              <td style="font-family:var(--f-mono);color:var(--green-light)">95</td>
-              <td style="font-family:var(--f-mono);color:var(--amber)">+200</td>
-              <td style="color:var(--t2);font-size:13px">2 minggu lalu</td>
-              <td><div class="tag tag-green">Lulus</div></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
-  </div>
 </div>
 
-{{-- Modal Logout --}}
-<div id="logoutModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center;">
-  <div style="background:var(--s1); padding:24px; border-radius:12px; width:100%; max-width:320px; text-align:center;">
-    
-    <h3 style="margin-bottom:10px">Konfirmasi Logout</h3>
-    <p style="font-size:13px;color:var(--t2);margin-bottom:20px">
-      Anda yakin ingin keluar dari akun?
-    </p>
-
-    <div style="display:flex; gap:10px; justify-content:center">
-      
-      <button class="btn btn-ghost btn-sm" onclick="closeLogoutModal()">
-        Batal
-      </button>
-
-      <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="btn btn-primary btn-sm">
-          Ya, Logout
-        </button>
-      </form>
-
+<div id="logoutModal" class="fixed inset-0 bg-black/60 z-[999] hidden items-center justify-center" onclick="if(event.target === this) this.style.display = 'none'">
+    <div class="bg-slate-800 rounded-xl border border-gray-700 p-6 w-full max-w-[320px] text-center">
+        <h3 class="text-lg font-semibold text-white mb-2">Konfirmasi Logout</h3>
+        <p class="text-sm text-gray-400 mb-5">Anda yakin ingin keluar dari akun?</p>
+        <div class="flex gap-3 justify-center">
+            <button class="px-3 py-1.5 rounded-lg bg-transparent text-gray-400 font-medium text-xs border border-gray-700 hover:bg-gray-700 hover:text-white transition-all duration-200" onclick="document.getElementById('logoutModal').style.display = 'none'">Batal</button>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="px-3 py-1.5 rounded-lg bg-red-500 text-white font-medium text-xs hover:bg-red-400 transition-all duration-200">Ya, Logout</button>
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 @endsection
-
-@push('scripts')
-    <script>
-function openLogoutModal() {
-    document.getElementById('logoutModal').style.display = 'flex';
-}
-
-function closeLogoutModal() {
-    document.getElementById('logoutModal').style.display = 'none';
-}
-</script>
-@endpush
