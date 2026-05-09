@@ -24,34 +24,16 @@ class AuthController extends Controller
     }
 
     // proses login
-    public function login(Request $request)
+    public function login(\App\Http\Requests\LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        if (Auth::attempt($request->only('email', 'password'))) {
+        if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
             
             $user = Auth::user();
-            $today = Carbon::now()->toDateString();
-            $lastLogin = $user->last_login_date ? $user->last_login_date->toDateString() : null;
+            $earnedBadges = \App\Services\UserService::handleLoginStreak($user);
             
-            if ($lastLogin !== $today) {
-                $yesterday = Carbon::yesterday()->toDateString();
-                
-                if ($lastLogin === $yesterday) {
-                    $user->increment('login_streak');
-                } else {
-                    $user->update(['login_streak' => 1]);
-                }
-                $user->update(['last_login_date' => $today]);
-                
-                $earnedBadges = BadgeService::checkAndAward($user->id);
-                if (count($earnedBadges) > 0) {
-                    session()->flash('new_badges', $earnedBadges);
-                }
+            if (count($earnedBadges) > 0) {
+                session()->flash('new_badges', $earnedBadges);
             }
             
             return redirect()->route('dashboard.index');
@@ -61,14 +43,8 @@ class AuthController extends Controller
     }
 
     // proses register
-    public function register(Request $request)
+    public function register(\App\Http\Requests\RegisterRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed'
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

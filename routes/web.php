@@ -28,11 +28,11 @@ use App\Http\Controllers\DailyQuestController;
 
 // LOGIN
 Route::get('/login', [AuthController::class, 'index'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post')->middleware('throttle:5,1');
 
 // REGISTER
 Route::get('/register', [AuthController::class, 'registerView'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post')->middleware('throttle:5,1');
 
 // LOGOUT
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
