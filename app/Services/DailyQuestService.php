@@ -12,86 +12,70 @@ class DailyQuestService
     public static function getTodayQuest($userId)
     {
         try {
-            if (!$userId) {
-                \Log::warning("DailyQuestService: Invalid user ID provided");
-                return null;
-            }
+            if (!$userId) return null;
 
             $today = Carbon::now()->toDateString();
             
-            $quest = DailyQuest::where('user_id', $userId)
+            $quests = DailyQuest::where('user_id', $userId)
                 ->where('quest_date', $today)
-                ->first();
+                ->orderBy('id')
+                ->get();
             
-            if (!$quest) {
-                $questions = DailyQuestQuestion::all();
+            if ($quests->count() < 5) {
+                $needed = 5 - $quests->count();
+                $questions = DailyQuestQuestion::whereNotIn('id', $quests->pluck('question_id'))->get();
+                
                 if ($questions->isEmpty()) {
-                    \Log::warning("DailyQuestService: No daily quest questions available");
-                    return null;
+                    $questions = DailyQuestQuestion::all();
+                }
+
+                $randomQuestions = $questions->shuffle()->take($needed);
+                
+                foreach ($randomQuestions as $q) {
+                    DailyQuest::create([
+                        'user_id' => $userId,
+                        'question_id' => $q->id,
+                        'quest_date' => $today,
+                        'completed' => false
+                    ]);
                 }
                 
-                $randomQuestion = $questions->random();
-                
-                $quest = DailyQuest::create([
-                    'user_id' => $userId,
-                    'question_id' => $randomQuestion->id,
-                    'quest_date' => $today,
-                    'completed' => false
-                ]);
+                $quests = DailyQuest::where('user_id', $userId)
+                    ->where('quest_date', $today)
+                    ->orderBy('id')
+                    ->get();
             }
             
-            $quest->load('question');
+            $currentQuest = $quests->where('completed', false)->first();
             
-            return $quest;
+            if (!$currentQuest) {
+                $currentQuest = $quests->last();
+            }
+
+            $currentQuest->load('question');
+            
+            return self::attachProgressInfo($currentQuest, $userId, $quests);
         } catch (\Exception $e) {
-            \Log::error("DailyQuestService::getTodayQuest failed: " . $e->getMessage(), [
-                'user_id' => $userId,
-                'trace' => $e->getTraceAsString()
-            ]);
+            \Log::error("DailyQuestService::getTodayQuest failed: " . $e->getMessage());
             return null;
         }
     }
     
-    public static function submitAnswer($userId, $answer)
+    public static function submitAnswer($userId, $questId, $answer)
     {
         try {
-            if (!$userId || !$answer) {
-                \Log::warning("DailyQuestService: Invalid parameters to submitAnswer", [
-                    'user_id' => $userId,
-                    'answer_provided' => !empty($answer)
-                ]);
-                return null;
-            }
+            if (!$userId || !$questId || $answer === null) return null;
 
-            $today = Carbon::now()->toDateString();
-            
-            $quest = DailyQuest::where('user_id', $userId)
-                ->where('quest_date', $today)
+            $quest = DailyQuest::where('id', $questId)
+                ->where('user_id', $userId)
+                ->where('completed', false)
                 ->first();
             
-            if (!$quest) {
-                \Log::warning("DailyQuestService: No quest found for user", ['user_id' => $userId]);
-                return null;
-            }
+            if (!$quest) return null;
 
-            if ($quest->completed) {
-                \Log::info("DailyQuestService: Quest already completed", ['user_id' => $userId]);
-                return $quest;
-            }
-            
-            $question = $quest->question;
-            
-            if (!$question) {
-                \Log::error("DailyQuestService: Question not found for quest", ['quest_id' => $quest->id]);
-                return null;
-            }
-
-            $correctAnswer = trim(strtolower($question->correct_answer));
-            $userAnswer = trim(strtolower($answer));
-            
-            $isCorrect = $userAnswer === $correctAnswer;
-            
-            $xpEarned = $isCorrect ? 50 : 0;
+            $question = $quest->question ?: DailyQuestQuestion::find($quest->question_id);
+            $isCorrect = trim(strtolower($answer)) === trim(strtolower($question->correct_answer));
+            $xpEarned = $isCorrect ? 5 : 0;
             
             $quest->update([
                 'user_answer' => $answer,
@@ -102,20 +86,31 @@ class DailyQuestService
             
             if ($isCorrect) {
                 $user = User::find($userId);
-                if ($user) {
-                    $user->increment('xp', $xpEarned);
-                } else {
-                    \Log::error("DailyQuestService: User not found", ['user_id' => $userId]);
-                }
+                if ($user) $user->increment('xp', $xpEarned);
             }
             
-            return $quest;
+            $quest->load('question');
+            return self::attachProgressInfo($quest, $userId);
         } catch (\Exception $e) {
-            \Log::error("DailyQuestService::submitAnswer failed: " . $e->getMessage(), [
-                'user_id' => $userId,
-                'trace' => $e->getTraceAsString()
-            ]);
+            \Log::error("DailyQuestService::submitAnswer failed: " . $e->getMessage());
             return null;
         }
+    }
+
+    private static function attachProgressInfo($quest, $userId, $quests = null)
+    {
+        if (!$quests) {
+            $questDate = $quest->quest_date instanceof \Carbon\Carbon ? $quest->quest_date->toDateString() : $quest->quest_date;
+            $quests = DailyQuest::where('user_id', $userId)
+                ->where('quest_date', $questDate)
+                ->orderBy('id')
+                ->get();
+        }
+        
+        $quest->current_step = $quests->where('completed', true)->count() + ($quest->completed ? 0 : 1);
+        $quest->total_steps = $quests->count();
+        $quest->all_quests = $quests;
+        
+        return $quest;
     }
 }

@@ -36,7 +36,7 @@ class DailyQuestController extends Controller
             $validated = $request->validated();
             
             $userId = auth()->id();
-            $quest = DailyQuestService::submitAnswer($userId, $validated['answer']);
+            $quest = DailyQuestService::submitAnswer($userId, $validated['quest_id'], $validated['answer']);
             
             if (!$quest) {
                 return back()->with('error', 'Terjadi kesalahan saat memproses jawaban');

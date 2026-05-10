@@ -140,6 +140,56 @@ class BadgeService
                     \Log::error("BadgeService: Error checking Quiz Master badge: " . $e->getMessage());
                 }
             }
+            
+            // Early Bird - Pagi buta (4-7)
+            $earlyBird = Badge::where('condition', 'early_bird')->first();
+            if ($earlyBird && !in_array($earlyBird->id, $existingBadges)) {
+                try {
+                    $hour = now()->hour;
+                    if ($hour >= 4 && $hour <= 7) {
+                        UserBadge::firstOrCreate(
+                            ['user_id' => $userId, 'badge_id' => $earlyBird->id],
+                            ['earned_at' => now()]
+                        );
+                        $earnedBadges[] = $earlyBird;
+                    }
+                } catch (\Exception $e) {
+                    \Log::error("BadgeService: Error awarding Early Bird badge: " . $e->getMessage());
+                }
+            }
+
+            // Consistent Coder - 7 hari streak
+            $streak7 = Badge::where('condition', 'streak_7')->first();
+            if ($streak7 && !in_array($streak7->id, $existingBadges) && $user->login_streak >= 7) {
+                try {
+                    UserBadge::firstOrCreate(
+                        ['user_id' => $userId, 'badge_id' => $streak7->id],
+                        ['earned_at' => now()]
+                    );
+                    $earnedBadges[] = $streak7;
+                } catch (\Exception $e) {
+                    \Log::error("BadgeService: Error awarding Consistent Coder badge: " . $e->getMessage());
+                }
+            }
+
+            // Problem Solver - 100 soal benar
+            $problemSolver = Badge::where('condition', 'questions_100')->first();
+            if ($problemSolver && !in_array($problemSolver->id, $existingBadges)) {
+                try {
+                    $totalCorrect = UserAnswer::where('user_id', $userId)
+                        ->where('is_correct', true)
+                        ->count();
+                    if ($totalCorrect >= 100) {
+                        UserBadge::firstOrCreate(
+                            ['user_id' => $userId, 'badge_id' => $problemSolver->id],
+                            ['earned_at' => now()]
+                        );
+                        $earnedBadges[] = $problemSolver;
+                    }
+                } catch (\Exception $e) {
+                    \Log::error("BadgeService: Error checking Problem Solver badge: " . $e->getMessage());
+                }
+            }
 
             return $earnedBadges;
         } catch (\Exception $e) {

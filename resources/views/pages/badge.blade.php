@@ -23,11 +23,24 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-10">
             @forelse($earned as $badge)
-            <div class="bg-slate-800 rounded-xl border border-gray-700 p-4 flex flex-col items-center text-center transition-all duration-200 hover:border-amber-500/50 hover:scale-105">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mb-3 shadow-lg">
-                    <i class="fa-solid {{ $badge->icon ?? 'fa-medal' }} text-xl text-white"></i>
+            @php
+                $badgeTheme = [
+                    'First Blood' => ['bg' => 'from-red-500 to-red-600', 'icon' => 'text-white'],
+                    'Diamond Collector' => ['bg' => 'from-blue-500 to-blue-600', 'icon' => 'text-white'],
+                    'Streak Starter' => ['bg' => 'from-orange-500 to-orange-600', 'icon' => 'text-white'],
+                    'Python King' => ['bg' => 'from-amber-500 to-amber-600', 'icon' => 'text-white'],
+                    'Night Owl' => ['bg' => 'from-indigo-600 to-indigo-700', 'icon' => 'text-white'],
+                    'Quiz Master' => ['bg' => 'from-emerald-500 to-emerald-600', 'icon' => 'text-white'],
+                    'Early Bird' => ['bg' => 'from-yellow-400 to-orange-500', 'icon' => 'text-white'],
+                    'Consistent Coder' => ['bg' => 'from-cyan-500 to-blue-500', 'icon' => 'text-white'],
+                    'Problem Solver' => ['bg' => 'from-purple-500 to-pink-500', 'icon' => 'text-white'],
+                ][$badge->name] ?? ['bg' => 'from-brand-blue to-brand-blue-light', 'icon' => 'text-white'];
+            @endphp
+            <div class="bg-slate-800 rounded-xl border border-gray-700 p-4 flex flex-col items-center text-center transition-all duration-200 hover:border-white/20 hover:scale-105 group">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br {{ $badgeTheme['bg'] }} flex items-center justify-center mb-3 shadow-lg group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all">
+                    <i class="fa-solid {{ $badge->icon ?? 'fa-medal' }} text-xl {{ $badgeTheme['icon'] }}"></i>
                 </div>
-                <div class="text-sm font-semibold text-white mb-1">{{ $badge->name }}</div>
+                <div class="text-sm font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors">{{ $badge->name }}</div>
                 <div class="text-[11px] text-gray-400">{{ $badge->description }}</div>
             </div>
             @empty

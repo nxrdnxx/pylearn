@@ -17,12 +17,10 @@ class SubmitDailyQuestRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
-    public function rules(): array
-    {
         return [
+            'quest_id' => 'required|integer|exists:daily_quests,id',
             'answer' => 'required|string|max:1000',
         ];
-    }
 
     /**
      * Get custom error messages.

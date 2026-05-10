@@ -18,14 +18,22 @@
             <p class="text-[15px] text-text-secondary mb-5">
                 Dari dasar hingga lanjutan, satu level demi satu level.
             </p>
-            <div class="flex items-center gap-5">
-                <div class="flex-1 max-w-[300px]">
-                    <div class="w-full bg-surface-2 rounded-full h-1.5 overflow-hidden">
-                        <div class="h-full bg-brand-green rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
+            <div class="flex items-center gap-6">
+                <div class="flex-1 max-w-[320px]">
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 h-2 bg-surface-2 rounded-full overflow-hidden">
+                            <div class="h-full bg-brand-green rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-text-secondary font-mono">
+                            <span class="text-sm font-bold text-brand-green-light">{{ $completed }}</span>
+                            <span class="text-xs opacity-30">/</span>
+                            <span class="text-xs">{{ $totalLevel }}</span>
+                        </div>
                     </div>
                 </div>
-                <span class="text-sm text-text-secondary">
-                    <i class="fa-solid fa-check-circle text-brand-green mr-1.5"></i>{{ $completed }} dari {{ $totalLevel }} level selesai
+                <div class="h-4 w-px bg-ink-700/20"></div>
+                <span class="text-[13px] text-text-secondary font-medium">
+                    <i class="fa-solid fa-check-circle text-brand-green mr-1.5"></i>Level Selesai
                 </span>
             </div>
         </div>
@@ -69,11 +77,15 @@
                         <p class="text-sm text-text-secondary leading-relaxed">{{ $level['description'] }}</p>
 
                         @if($isUnlocked || $isCompleted)
-                        <div class="mt-3 flex items-center gap-3">
-                            <div class="flex-1 h-1 bg-surface-2 rounded-full overflow-hidden">
+                        <div class="mt-4 flex items-center gap-4">
+                            <div class="flex-1 h-2 bg-surface-2 rounded-full overflow-hidden">
                                 <div class="h-full {{ $isCompleted ? 'bg-brand-green' : 'bg-brand-blue' }} rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
                             </div>
-                            <span class="text-xs text-text-secondary font-mono">{{ $level['correct'] }}/{{ $level['total'] }} Benar</span>
+                            <div class="flex items-center gap-1.5 text-text-secondary font-mono">
+                                <span class="text-[13px] font-bold {{ $isCompleted ? 'text-brand-green-light' : 'text-brand-blue-light' }}">{{ $level['correct'] }}</span>
+                                <span class="text-[11px] opacity-30">/</span>
+                                <span class="text-[11px]">{{ $level['total'] }}</span>
+                            </div>
                         </div>
                         @endif
                     </div>

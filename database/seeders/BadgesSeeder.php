@@ -61,6 +61,30 @@ class BadgesSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Early Bird',
+                'description' => 'Belajar di pagi buta (jam 4 - 7 pagi)',
+                'icon' => 'fa-solid fa-sun',
+                'condition' => 'early_bird',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Consistent Coder',
+                'description' => 'Pertahankan streak selama 7 hari berturut-turut',
+                'icon' => 'fa-solid fa-calendar-check',
+                'condition' => 'streak_7',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Problem Solver',
+                'description' => 'Jawab total 100 soal dengan benar',
+                'icon' => 'fa-solid fa-brain',
+                'condition' => 'questions_100',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

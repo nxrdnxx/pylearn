@@ -93,9 +93,13 @@
                 </div>
             </div>
             @else
-            <div class="bg-slate-800 rounded-2xl border border-gray-700 p-10 text-center">
-                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <i class="fa-solid fa-party-horn text-green-400 text-4xl"></i>
+            <div class="bg-slate-800 rounded-3xl border border-gray-700 p-12 text-center shadow-2xl relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-b from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="relative w-24 h-24 mx-auto mb-6">
+                    <div class="w-full h-full rounded-full bg-green-500/20 flex items-center justify-center border-2 border-green-500/30 group-hover:border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.15)] transition-all duration-500 animate-bounce-subtle">
+                        <i class="fa-solid fa-thumbs-up text-green-400 text-[42px]"></i>
+                    </div>
                 </div>
                 <div class="text-xl font-semibold text-white mb-2">Semua level sudah selesai!</div>
                 <p class="text-sm text-gray-400 mb-4">Mantap! Kamu sudah menamatkan semua materi.</p>
@@ -206,9 +210,51 @@
 
             <div class="bg-slate-900 rounded-xl border border-gray-800 p-5">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-sm font-semibold text-white"><i class="fa-solid fa-star mr-2 text-amber-400"></i>Daily Quest</h3>
-                    @if($dailyQuest && $dailyQuest->completed)
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-green-500/15 text-green-400 text-xs font-medium">
+                    <h3 class="text-sm font-semibold text-white"><i class="fa-solid fa-medal mr-2 text-purple-400"></i>Badge terbaru</h3>
+                    <a href="{{ route('profile.index') }}" class="text-[11px] text-gray-500 hover:text-purple-400 transition-colors">Lihat semua</a>
+                </div>
+                <div class="flex flex-col gap-3">
+                    @forelse($recentBadges->take(3) as $ub)
+                    @php
+                        $badgeTheme = [
+                            'First Blood' => ['bg' => 'from-red-600/20 to-red-500/10', 'icon' => 'text-red-400', 'glow' => 'rgba(239, 68, 68, 0.3)'],
+                            'Diamond Collector' => ['bg' => 'from-blue-600/20 to-blue-500/10', 'icon' => 'text-blue-400', 'glow' => 'rgba(59, 130, 246, 0.3)'],
+                            'Streak Starter' => ['bg' => 'from-orange-600/20 to-orange-500/10', 'icon' => 'text-orange-400', 'glow' => 'rgba(249, 115, 22, 0.3)'],
+                            'Python King' => ['bg' => 'from-amber-600/20 to-amber-500/10', 'icon' => 'text-amber-400', 'glow' => 'rgba(245, 158, 11, 0.3)'],
+                            'Night Owl' => ['bg' => 'from-indigo-600/20 to-indigo-500/10', 'icon' => 'text-indigo-400', 'glow' => 'rgba(99, 102, 241, 0.3)'],
+                            'Quiz Master' => ['bg' => 'from-emerald-600/20 to-emerald-500/10', 'icon' => 'text-emerald-400', 'glow' => 'rgba(16, 185, 129, 0.3)'],
+                            'Early Bird' => ['bg' => 'from-yellow-600/20 to-orange-500/10', 'icon' => 'text-yellow-400', 'glow' => 'rgba(251, 191, 36, 0.3)'],
+                            'Consistent Coder' => ['bg' => 'from-cyan-600/20 to-blue-500/10', 'icon' => 'text-cyan-400', 'glow' => 'rgba(34, 211, 238, 0.3)'],
+                            'Problem Solver' => ['bg' => 'from-purple-600/20 to-pink-500/10', 'icon' => 'text-purple-400', 'glow' => 'rgba(192, 38, 211, 0.3)'],
+                        ][$ub->badge->name] ?? ['bg' => 'from-brand-blue/20 to-brand-blue/10', 'icon' => 'text-brand-blue-light', 'glow' => 'rgba(59, 130, 246, 0.3)'];
+                    @endphp
+                    <div class="flex items-center gap-3.5 p-3 rounded-xl bg-slate-800/40 border border-gray-800/40 hover:bg-slate-800 hover:border-gray-700 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br {{ $badgeTheme['bg'] }} flex items-center justify-center border border-white/5 shadow-xl group-hover:scale-105 transition-all duration-300">
+                            <i class="{{ $ub->badge->icon ?? 'fa-solid fa-medal' }} {{ $badgeTheme['icon'] }} text-xl drop-shadow-[0_0_8px_{{ $badgeTheme['glow'] }}]"></i>
+                        </div>
+                        <div class="flex flex-col overflow-hidden">
+                            <span class="text-sm font-bold text-white truncate group-hover:{{ $badgeTheme['icon'] }} transition-colors">{{ $ub->badge->name }}</span>
+                            <span class="text-[11px] text-gray-500 font-medium">{{ optional($ub->earned_at)->diffForHumans() ?? 'Baru saja' }}</span>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="py-4 text-center text-gray-500 text-sm italic">Belum ada badge baru</div>
+                    @endforelse
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-xl border border-gray-800 p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="text-sm font-semibold text-white"><i class="fa-solid fa-star mr-2 text-amber-400"></i>Daily Quest</h3>
+                        <div class="flex gap-1.5 mt-1">
+                            @for($i = 1; $i <= 5; $i++)
+                                <div class="h-1.5 w-6 rounded-full {{ $i < ($dailyQuest ? $dailyQuest->current_step : 1) ? 'bg-green-500' : ($i == ($dailyQuest ? $dailyQuest->current_step : 1) && (!$dailyQuest || !$dailyQuest->completed) ? 'bg-amber-400 animate-pulse' : 'bg-gray-800') }}"></div>
+                            @endfor
+                        </div>
+                    </div>
+                    @if($dailyQuest && $dailyQuest->completed && $dailyQuest->current_step == $dailyQuest->total_steps)
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-green-500/15 text-green-400 text-[10px] font-bold uppercase tracking-wider">
                         <i class="fa-solid fa-check mr-1"></i>Selesai
                     </span>
                     @endif
@@ -216,71 +262,98 @@
                 
                 @if($dailyQuest && $dailyQuest->question)
                 <div class="mb-3">
-                    <p class="text-sm text-white mb-2">{{ $dailyQuest->question->question_text }}</p>
-                    
-                    @if($dailyQuest->question->code_snippet)
-                    <div class="bg-slate-950 rounded-lg p-3 font-mono text-xs text-gray-300 mb-3 overflow-x-auto">
-                        <pre>{{ $dailyQuest->question->code_snippet }}</pre>
-                    </div>
-                    @endif
-                    
                     @if(session('quest_result'))
-                    <div class="p-3 rounded-lg mb-3 {{ session('is_correct') ? 'bg-green-500/20 border border-green-500/30' : 'bg-red-500/20 border border-red-500/30' }}">
-                        <div class="flex items-center gap-2 mb-2">
-                            <i class="fa-solid {{ session('is_correct') ? 'fa-check-circle text-green-400' : 'fa-xmark-circle text-red-400' }}"></i>
-                            <span class="text-sm font-medium {{ session('is_correct') ? 'text-green-400' : 'text-red-400' }}">
-                                {{ session('is_correct') ? 'Benar!' : 'Salah' }}
-                            </span>
-                        </div>
-                        @if(!session('is_correct'))
-                        <div class="text-sm text-gray-300 mb-2">Jawaban benar: <span class="text-green-400 font-mono">{{ session('correct_answer') }}</span></div>
-                        @endif
-                        @if(session('xp_earned') > 0)
-                        <div class="text-sm text-amber-400">+{{ session('xp_earned') }} XP</div>
-                        @endif
-                    </div>
-                    @endif
-                    
-                    @if(!$dailyQuest->completed)
-                    <form method="POST" action="{{ route('daily-quest.submit') }}">
-                        @csrf
-                        <input type="hidden" name="question_id" value="{{ $dailyQuest->question_id }}">
-                        
-                        @if($dailyQuest->question->options)
-                            @php
-                                $options = json_decode($dailyQuest->question->options, true);
-                                shuffle($options);
-                            @endphp
-                            <div class="flex flex-col gap-2 mb-3">
-                                @foreach($options as $opt)
-                                    <label class="flex items-center gap-3 p-2.5 rounded-lg border border-gray-700 bg-slate-800 cursor-pointer hover:border-blue-500 hover:bg-slate-700 transition-all group">
-                                        <input type="radio" name="answer" value="{{ $opt }}" required class="accent-blue-500">
-                                        <span class="text-sm text-gray-300 group-hover:text-white">{{ $opt }}</span>
-                                    </label>
-                                @endforeach
+                        {{-- Result of the just submitted question --}}
+                        <div class="p-4 rounded-xl mb-5 {{ session('is_correct') ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20' }} animate-in fade-in slide-in-from-top-4 duration-500">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-8 h-8 rounded-full {{ session('is_correct') ? 'bg-green-500/20' : 'bg-red-500/20' }} flex items-center justify-center">
+                                    <i class="fa-solid {{ session('is_correct') ? 'fa-check text-green-400' : 'fa-xmark text-red-400' }}"></i>
+                                </div>
+                                <span class="text-sm font-bold {{ session('is_correct') ? 'text-green-400' : 'text-red-400' }}">
+                                    {{ session('is_correct') ? 'Jawaban Benar!' : 'Jawaban Salah' }}
+                                </span>
                             </div>
-                        @else
-                            <input type="text" name="answer" class="w-full bg-slate-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none mb-2" placeholder="Ketik jawabanmu..." required>
-                        @endif
+                            @if(!session('is_correct'))
+                            <p class="text-[11px] text-gray-400 mb-2">Jawaban yang benar: <span class="text-green-400 font-mono">{{ session('correct_answer') }}</span></p>
+                            @endif
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] text-amber-400 font-bold">+{{ session('xp_earned') }} XP</span>
+                                @if(!$dailyQuest->completed || $dailyQuest->current_step < $dailyQuest->total_steps)
+                                <a href="{{ route('dashboard.index') }}" class="text-[11px] font-bold text-white bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-all">Soal Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
 
-                        <button type="submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-400 transition-all">
-                            Kirim Jawaban
-                        </button>
-                    </form>
-                    @else
-                    <div class="p-3 rounded-lg bg-slate-800 text-center">
-                        <span class="text-sm text-gray-400">Jawabanmu: </span>
-                        <span class="text-sm text-white font-mono">{{ $dailyQuest->user_answer }}</span>
-                    </div>
+                    @if(!$dailyQuest->completed)
+                        <p class="text-sm text-gray-200 mb-4 font-medium leading-relaxed">{{ $dailyQuest->question->question_text }}</p>
+                        
+                        @if($dailyQuest->question->code_snippet)
+                        <div class="bg-slate-950 rounded-xl p-4 font-mono text-[11px] text-blue-300 mb-4 border border-white/5 overflow-x-auto shadow-inner">
+                            <pre>{{ $dailyQuest->question->code_snippet }}</pre>
+                        </div>
+                        @endif
+                        
+                        <form method="POST" action="{{ route('daily-quest.submit') }}">
+                            @csrf
+                            <input type="hidden" name="quest_id" value="{{ $dailyQuest->id }}">
+                            
+                            @if($dailyQuest->question->options)
+                                @php
+                                    $options = json_decode($dailyQuest->question->options, true);
+                                @endphp
+                                <div class="flex flex-col gap-2.5 mb-2">
+                                    @foreach($options as $opt)
+                                        <button type="submit" name="answer" value="{{ $opt }}" class="text-left flex items-center gap-3 p-3.5 rounded-xl border border-gray-800 bg-slate-800/30 hover:border-brand-blue/50 hover:bg-slate-800 hover:scale-[1.02] transition-all duration-200 group relative overflow-hidden">
+                                            <div class="absolute inset-0 bg-brand-blue/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
+                                            <span class="text-sm text-gray-400 group-hover:text-white transition-colors relative z-10">{{ $opt }}</span>
+                                        </button>
+                                    @endforeach
+                                </div>
+                            @else
+                                <input type="text" name="answer" required placeholder="Ketik jawaban kamu..." 
+                                    class="w-full bg-slate-800 border border-gray-700 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-brand-blue mb-4 transition-all">
+                                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-blue text-white text-sm font-bold hover:bg-brand-blue-light hover:shadow-[0_0_20px_rgba(59,124,244,0.3)] transition-all active:scale-[0.98]">
+                                    Kirim Jawaban
+                                </button>
+                            @endif
+                        </form>
+                    @elseif($dailyQuest->current_step == $dailyQuest->total_steps && !session('quest_result'))
+                        <div class="text-center py-8">
+                            <div class="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                                <i class="fa-solid fa-calendar-check text-green-400 text-2xl"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-1">Quest Hari Ini Selesai!</h4>
+                            <p class="text-xs text-gray-500 mb-6">Kamu telah menyelesaikan 5 soal hari ini. Bagus!</p>
+                            <div class="inline-flex items-center px-4 py-2 rounded-xl bg-slate-800/50 border border-gray-700 text-xs text-gray-300">
+                                <i class="fa-solid fa-bolt text-amber-400 mr-2"></i> Total: <span class="text-white font-bold ml-1">{{ $dailyQuest->all_quests->sum('xp_earned') }} XP</span>
+                            </div>
+                        </div>
                     @endif
                 </div>
                 @else
-                <div class="text-center py-4 text-gray-500 text-sm">
-                    <i class="fa-solid fa-clock mr-2"></i>Menunggu quest...
+                <div class="py-12 text-center">
+                    <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-clock-rotate-left text-gray-600"></i>
+                    </div>
+                    <p class="text-sm text-gray-500">Quest belum tersedia untuk saat ini.</p>
                 </div>
                 @endif
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    @keyframes bounce-subtle {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+    }
+    .animate-bounce-subtle {
+        animation: bounce-subtle 2s infinite ease-in-out;
+    }
+</style>
+@endsectioninite ease-in-out;
+    }
+</style>
 @endsection

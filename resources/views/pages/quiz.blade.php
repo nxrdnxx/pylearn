@@ -101,7 +101,7 @@
 
         <div class="flex justify-between items-center mt-6">
             <span class="text-sm text-text-muted">
-                <i class="fa-solid fa-circle-question mr-1"></i>{{ $current }} dari {{ $total }} soal
+                {{ $current }} dari {{ $total }} soal
             </span>
             @if($next)
                 <a href="{{ route('quiz.show', ['level'=>$level->id, 'q'=>$current+1]) }}" class="px-5 py-2.5 rounded-lg bg-brand-blue text-white font-medium text-base hover:bg-brand-blue-light hover:shadow-[0_4px_20px_rgba(59,124,244,0.4)] hover:-translate-y-0.5 transition-all duration-200">

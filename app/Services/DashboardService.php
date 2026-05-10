@@ -149,6 +149,8 @@ class DashboardService
         // ================= DAILY QUEST =================
         $dailyQuest = DailyQuestService::getTodayQuest($userId);
 
+        $totalBadge = Badge::count();
+
         return [
             'user' => $user,
             'xp' => $xp,
@@ -159,6 +161,7 @@ class DashboardService
             'currentAnswered' => $currentAnswered,
             'currentTotal' => $currentTotal,
             'badgeCount' => $badgeCount,
+            'totalBadge' => $totalBadge,
             'streak' => $streak,
             'rank' => $rank,
             'topUsers' => $topUsers,

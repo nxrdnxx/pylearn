@@ -45,11 +45,11 @@ class ProfileController extends Controller
             ->groupByRaw('DATE(created_at)')
             ->orderByDesc('date')
             ->pluck('date')
-            ->map(fn($date) => Carbon::parse($date)->toDate())
+            ->map(fn($date) => Carbon::parse($date)->startOfDay())
             ->values();
 
         $streak = 0;
-        $today = Carbon::now()->toDate();
+        $today = Carbon::now()->startOfDay();
         
         if ($allAnswerDates->count() > 0) {
             // Start checking from today or yesterday
