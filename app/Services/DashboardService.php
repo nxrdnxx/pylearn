@@ -131,12 +131,15 @@ class DashboardService
 
         // Get recent badges
         foreach ($recentBadges as $ub) {
+            $earnedAt = $ub->earned_at ?? now();
+            $timeAgo = $earnedAt instanceof \Carbon\Carbon ? $earnedAt->diffForHumans() : 'Baru saja';
+            
             $recentActivities->push([
                 'type' => 'badge',
                 'title' => 'Badge "' . $ub->badge->name . '" diraih',
-                'subtitle' => $ub->created_at->diffForHumans(),
+                'subtitle' => $timeAgo,
                 'xp' => 0,
-                'date' => $ub->created_at,
+                'date' => $earnedAt,
                 'badge' => $ub
             ]);
         }

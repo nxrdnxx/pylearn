@@ -30,7 +30,11 @@ class LeaderboardController extends Controller
 
         // user login
         $me = auth()->user();
-        $myRank = $users->firstWhere('id', $me->id)?->rank ?? '-';
+        $myRank = '-';
+        
+        if ($me) {
+            $myRank = $users->firstWhere('id', $me->id)?->rank ?? '-';
+        }
 
         return view('pages.leaderboard', compact(
             'users',

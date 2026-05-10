@@ -9,28 +9,55 @@ class BadgesSeeder extends Seeder
 {
     public function run(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('badges')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
         DB::table('badges')->insert([
             [
-                'name' => 'Pemula',
-                'description' => 'Menyelesaikan level pertama',
-                'icon' => 'badge1.png',
-                'condition' => json_encode(['type' => 'level_complete', 'level' => 1]),
+                'name' => 'First Blood',
+                'description' => 'Selesaikan setidaknya satu soal di Level 1',
+                'icon' => 'fa-solid fa-droplet',
+                'condition' => 'first_level',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Konsisten',
-                'description' => 'Streak 3 hari',
-                'icon' => 'badge2.png',
-                'condition' => json_encode(['type' => 'streak', 'days' => 3]),
+                'name' => 'Diamond Collector',
+                'description' => 'Kumpulkan total 5000 XP',
+                'icon' => 'fa-solid fa-gem',
+                'condition' => 'xp_5000',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Master Python',
-                'description' => 'Menyelesaikan semua level',
-                'icon' => 'badge3.png',
-                'condition' => json_encode(['type' => 'all_levels_complete']),
+                'name' => 'Streak Starter',
+                'description' => 'Pertahankan streak selama 3 hari',
+                'icon' => 'fa-solid fa-fire-burner',
+                'condition' => 'streak_3',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Python King',
+                'description' => 'Raih peringkat #1 di leaderboard',
+                'icon' => 'fa-solid fa-crown',
+                'condition' => 'rank_1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Night Owl',
+                'description' => 'Belajar di atas jam 11 malam',
+                'icon' => 'fa-solid fa-owl',
+                'condition' => 'night_study',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Quiz Master',
+                'description' => 'Selesaikan semua level dengan skor sempurna',
+                'icon' => 'fa-solid fa-graduation-cap',
+                'condition' => 'perfect_score',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

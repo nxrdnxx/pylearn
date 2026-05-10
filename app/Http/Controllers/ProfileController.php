@@ -39,11 +39,42 @@ class ProfileController extends Controller
             }
         }
         
-        // Streak
-        $streak = UserAnswer::where('user_id', $userId)
+        // Streak - calculate consecutive days
+        $allAnswerDates = UserAnswer::where('user_id', $userId)
             ->selectRaw('DATE(created_at) as date')
             ->groupByRaw('DATE(created_at)')
-            ->count();
+            ->orderByDesc('date')
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->toDate())
+            ->values();
+
+        $streak = 0;
+        $today = Carbon::now()->toDate();
+        
+        if ($allAnswerDates->count() > 0) {
+            // Start checking from today or yesterday
+            $currentDate = $allAnswerDates->first();
+            
+            if ($currentDate->diffInDays($today) > 1) {
+                // Last activity is more than 1 day ago
+                $streak = 0;
+            } else {
+                // Count consecutive days backwards
+                foreach ($allAnswerDates as $date) {
+                    if ($streak === 0) {
+                        $streak = 1;
+                        $expectedDate = $currentDate;
+                    } else {
+                        $expectedDate = $expectedDate->copy()->subDay();
+                        if ($date->equalTo($expectedDate)) {
+                            $streak++;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         
         // Aktivitas / Riwayat
         $activities = UserAnswer::select('user_answers.*', 'levels.name as level_name', 'levels.order_number', 'questions.level_id')

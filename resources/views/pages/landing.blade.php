@@ -115,7 +115,6 @@
                 <span>Built with <span class="text-red-500">❤</span> for Python learners</span>
             </div>
             <div class="flex items-center gap-4">
-                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-github text-lg"></i></a>
                 <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i></a>
                 <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-discord text-lg"></i></a>
             </div>

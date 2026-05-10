@@ -38,7 +38,7 @@
                 $isCompleted = $level['status'] == 'completed';
                 $isUnlocked  = $level['status'] == 'unlocked';
                 $isLocked    = $level['status'] == 'locked';
-                $percent = $level['total'] > 0 ? ($level['answered'] / $level['total']) * 100 : 0;
+                $percent = $level['total'] > 0 ? ($level['correct'] / $level['total']) * 100 : 0;
             @endphp
 
             <div class="bg-surface-1 rounded-xl border {{ $isCompleted ? 'border-brand-green/30' : ($isUnlocked ? 'border-brand-blue/30' : 'border-ink-700/14') }} p-5 transition-all duration-200 {{ $isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-ink-700/30 hover:bg-surface-2 cursor-pointer' }}"
@@ -73,14 +73,14 @@
                             <div class="flex-1 h-1 bg-surface-2 rounded-full overflow-hidden">
                                 <div class="h-full {{ $isCompleted ? 'bg-brand-green' : 'bg-brand-blue' }} rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
                             </div>
-                            <span class="text-xs text-text-secondary font-mono">{{ $level['answered'] }}/{{ $level['total'] }}</span>
+                            <span class="text-xs text-text-secondary font-mono">{{ $level['correct'] }}/{{ $level['total'] }} Benar</span>
                         </div>
                         @endif
                     </div>
 
                     @if($level['answered'] > 0)
                     <div class="text-right flex-shrink-0">
-                        <div class="text-[22px] font-bold font-mono {{ $level['score'] >= 60 ? 'text-green-400' : ($level['score'] >= 40 ? 'text-amber-400' : 'text-red-500') }}">
+                        <div class="text-[22px] font-bold font-mono {{ $level['score'] >= 80 ? 'text-green-400' : ($level['score'] >= 50 ? 'text-amber-400' : 'text-red-500') }}">
                             {{ $level['score'] }}
                         </div>
                         <div class="text-[11px] text-gray-500 mt-0.5">skor</div>

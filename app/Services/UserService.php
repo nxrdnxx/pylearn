@@ -11,22 +11,35 @@ class UserService
 {
     public static function handleLoginStreak(User $user)
     {
-        $today = Carbon::now()->toDateString();
-        $lastLogin = $user->last_login_date ? $user->last_login_date->toDateString() : null;
-        
-        if ($lastLogin !== $today) {
-            $yesterday = Carbon::yesterday()->toDateString();
-            
-            if ($lastLogin === $yesterday) {
-                $user->increment('login_streak');
-            } else {
-                $user->update(['login_streak' => 1]);
+        try {
+            if (!$user || !$user->id) {
+                \Log::warning("UserService: Invalid user provided to handleLoginStreak");
+                return [];
             }
-            $user->update(['last_login_date' => $today]);
+
+            $today = Carbon::now()->toDateString();
+            $lastLogin = $user->last_login_date ? $user->last_login_date->toDateString() : null;
             
-            return BadgeService::checkAndAward($user->id);
+            if ($lastLogin !== $today) {
+                $yesterday = Carbon::yesterday()->toDateString();
+                
+                if ($lastLogin === $yesterday) {
+                    $user->increment('login_streak');
+                } else {
+                    $user->update(['login_streak' => 1]);
+                }
+                $user->update(['last_login_date' => $today]);
+                
+                return BadgeService::checkAndAward($user->id);
+            }
+            
+            return [];
+        } catch (\Exception $e) {
+            \Log::error("UserService::handleLoginStreak failed: " . $e->getMessage(), [
+                'user_id' => $user->id ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return [];
         }
-        
-        return [];
     }
 }

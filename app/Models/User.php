@@ -10,7 +10,19 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'xp'
+        'xp',
+        'login_streak',
+        'last_login_date'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'password' => 'hashed',
+        'last_login_date' => 'datetime',
     ];
 
     // 🔥 RELASI

@@ -65,33 +65,68 @@
     </main>
 
     @if(session('new_badges'))
-    <div id="badgePopup" class="fixed inset-0 z-[999] flex items-center justify-center p-4" style="display:flex">
-        <div class="absolute inset-0 bg-black/70" onclick="closeBadgePopup()"></div>
-        <div class="relative bg-gradient-to-b from-slate-800 to-slate-900 rounded-2xl border border-amber-500/50 p-8 text-center max-w-sm w-full shadow-[0_0_60px_rgba(245,158,11,0.3)] animate-bounce-in">
-            <div class="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center cursor-pointer" onclick="closeBadgePopup()">
-                <i class="fa-solid fa-xmark text-white"></i>
+    @php
+        $badge = is_array(session('new_badges')) ? session('new_badges')[0] : session('new_badges')->first();
+    @endphp
+    <div id="badgePopup" class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-[#04091a]/80 backdrop-blur-md animate-fade-in">
+        <div class="relative max-w-sm w-full animate-premium-pop">
+            <!-- Glow Background Effect -->
+            <div class="absolute inset-0 bg-brand-blue/20 blur-[100px] rounded-full"></div>
+            
+            <div class="relative bg-gradient-to-b from-surface-2 to-ink-950 rounded-[32px] border border-white/10 p-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
+                <!-- Decorative Elements -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-blue to-transparent"></div>
+                
+                <div class="relative z-10">
+                    <div class="w-24 h-24 mx-auto mb-6 relative">
+                        <div class="absolute inset-0 bg-brand-blue/30 blur-2xl rounded-full animate-pulse"></div>
+                        <div class="relative w-full h-full rounded-full bg-gradient-to-br from-brand-blue to-brand-blue-light flex items-center justify-center text-white shadow-2xl">
+                            <i class="{{ $badge->icon ?? 'fa-solid fa-medal' }} text-4xl"></i>
+                        </div>
+                    </div>
+
+                    <div class="text-brand-blue-light text-xs font-bold tracking-[0.2em] uppercase mb-3">Achievement Unlocked</div>
+                    <h3 class="text-2xl font-serif font-bold text-white mb-3 tracking-tight">{{ $badge->name }}</h3>
+                    <p class="text-[15px] text-text-secondary mb-8 leading-relaxed px-2">
+                        {{ $badge->description }}
+                    </p>
+
+                    <button onclick="closeBadgePopup()" class="w-full py-4 rounded-2xl bg-brand-blue text-white font-bold hover:bg-brand-blue-light hover:shadow-[0_0_25px_rgba(59,124,244,0.4)] transition-all duration-300 active:scale-[0.97]">
+                        Terima Kasih!
+                    </button>
+                </div>
             </div>
-            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
-                <i class="fa-solid fa-medal text-4xl text-white"></i>
-            </div>
-            <div class="text-sm text-amber-400 font-medium mb-2">BADGE DIRAI</div>
-            <h3 class="text-2xl font-serif font-bold text-white mb-2">{{ session('new_badges')->first()->name }}</h3>
-            <p class="text-sm text-gray-400 mb-4">{{ session('new_badges')->first()->description }}</p>
-            <button onclick="closeBadgePopup()" class="px-6 py-2 rounded-lg bg-amber-500 text-white font-medium hover:bg-amber-400 transition-all">
-                OK
-            </button>
         </div>
     </div>
     <script>
         function closeBadgePopup() { 
-            var popup = document.getElementById('badgePopup');
-            popup.style.opacity = '0';
-            setTimeout(() => popup.style.display = 'none', 300);
+            const popup = document.getElementById('badgePopup');
+            popup.classList.add('animate-fade-out');
+            setTimeout(() => popup.remove(), 400);
         }
     </script>
     <style>
-        @keyframes bounce-in { 0% { transform: scale(0.5); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
-        .animate-bounce-in { animation: bounce-in 0.5s ease-out forwards; }
+        @keyframes premium-pop {
+            0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fade-out {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.9); }
+        }
+        .animate-premium-pop {
+            animation: premium-pop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-fade-in {
+            animation: fade-in 0.4s ease-out forwards;
+        }
+        .animate-fade-out {
+            animation: fade-out 0.4s ease-in forwards;
+        }
     </style>
     @endif
 

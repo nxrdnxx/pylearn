@@ -245,8 +245,25 @@
                     <form method="POST" action="{{ route('daily-quest.submit') }}">
                         @csrf
                         <input type="hidden" name="question_id" value="{{ $dailyQuest->question_id }}">
-                        <input type="text" name="answer" class="w-full bg-slate-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none" placeholder="Ketik jawabanmu..." required>
-                        <button type="submit" class="w-full mt-2 px-3 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-400 transition-all">
+                        
+                        @if($dailyQuest->question->options)
+                            @php
+                                $options = json_decode($dailyQuest->question->options, true);
+                                shuffle($options);
+                            @endphp
+                            <div class="flex flex-col gap-2 mb-3">
+                                @foreach($options as $opt)
+                                    <label class="flex items-center gap-3 p-2.5 rounded-lg border border-gray-700 bg-slate-800 cursor-pointer hover:border-blue-500 hover:bg-slate-700 transition-all group">
+                                        <input type="radio" name="answer" value="{{ $opt }}" required class="accent-blue-500">
+                                        <span class="text-sm text-gray-300 group-hover:text-white">{{ $opt }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        @else
+                            <input type="text" name="answer" class="w-full bg-slate-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none mb-2" placeholder="Ketik jawabanmu..." required>
+                        @endif
+
+                        <button type="submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-400 transition-all">
                             Kirim Jawaban
                         </button>
                     </form>

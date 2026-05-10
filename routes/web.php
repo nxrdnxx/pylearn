@@ -45,16 +45,24 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::get('/levels', [LevelController::class, 'index'])
     ->name('level.index')
     ->middleware('auth');
-Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
-Route::get('/badge', [BadgeController::class, 'index'])->name('badge.index');
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])
+    ->name('leaderboard.index')
+    ->middleware('auth');
+Route::get('/badge', [BadgeController::class, 'index'])
+    ->name('badge.index')
+    ->middleware('auth');
+Route::get('/profile', [ProfileController::class, 'index'])
+    ->name('profile.index')
+    ->middleware('auth');
 Route::get('/quiz/{level}', [QuizController::class, 'show'])
     ->name('quiz.show')
     ->middleware('auth');
 Route::get('/quiz/{level}/result', [QuizController::class, 'result'])
-    ->name('quiz.result');
+    ->name('quiz.result')
+    ->middleware('auth');
 Route::post('/quiz/answer', [QuizController::class, 'answer'])
-    ->name('quiz.answer');
+    ->name('quiz.answer')
+    ->middleware('auth');
 
 // DAILY QUEST
 Route::get('/daily-quest', [DailyQuestController::class, 'show'])

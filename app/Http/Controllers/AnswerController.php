@@ -70,42 +70,4 @@ class AnswerController extends Controller
             'xp' => $user->xp
         ]);
     }
-    private function checkBadge($user)
-{
-    $badges = Badge::all();
-
-    foreach ($badges as $badge) {
-        $condition = json_decode($badge->condition, true);
-
-        $earned = false;
-
-        switch ($condition['type']) {
-            case 'level_complete':
-                $earned = \App\Models\UserProgress::where('user_id', $user->id)
-                    ->where('level_id', $condition['level'])
-                    ->where('status', 'completed')
-                    ->exists();
-                break;
-
-            case 'streak':
-                $earned = $user->streak->current_streak >= $condition['days'];
-                break;
-
-            case 'all_levels_complete':
-                $total = \App\Models\Level::count();
-                $completed = \App\Models\UserProgress::where('user_id', $user->id)
-                    ->where('status', 'completed')
-                    ->count();
-                $earned = $total == $completed;
-                break;
-        }
-
-        if ($earned) {
-            UserBadge::firstOrCreate([
-                'user_id' => $user->id,
-                'badge_id' => $badge->id
-            ]);
-        }
-    }
-}
 }

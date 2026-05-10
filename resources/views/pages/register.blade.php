@@ -104,9 +104,6 @@
                 <button class="flex-1 px-3 py-2 rounded-lg bg-slate-800 text-gray-400 text-sm border border-gray-700 hover:bg-slate-700 hover:text-white hover:border-gray-600 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center">
                     <i class="fa-brands fa-google mr-2"></i>Google
                 </button>
-                <button class="flex-1 px-3 py-2 rounded-lg bg-slate-800 text-gray-400 text-sm border border-gray-700 hover:bg-slate-700 hover:text-white hover:border-gray-600 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center">
-                    <i class="fa-brands fa-github mr-2"></i>GitHub
-                </button>
             </div>
 
             <p class="text-center text-sm text-gray-400 mt-6">

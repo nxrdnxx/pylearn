@@ -24,14 +24,18 @@
         </div>
 
         <div class="mb-9">
-            <div class="font-serif text-[96px] tracking-tighter leading-none text-text-primary {{ $percentage >= 70 ? 'text-brand-green-light' : 'text-brand-red' }}">
+            <div class="font-serif text-[96px] tracking-tighter leading-none text-text-primary {{ $percentage >= 80 ? 'text-brand-green-light' : 'text-brand-red' }}">
                 {{ $percentage }}
             </div>
-            <div class="text-[15px] text-text-secondary mt-2 mb-4">dari {{ $maxScore }} poin</div>
-            <span class="inline-flex items-center px-4 py-1.5 rounded-lg text-sm font-medium {{ $percentage >= 70 ? 'bg-brand-green/15 text-brand-green-light' : 'bg-brand-red/15 text-brand-red' }}">
-                <i class="fa-solid {{ $percentage >= 70 ? 'fa-check' : 'fa-xmark' }} mr-1.5"></i>
-                {{ $percentage >= 70 ? 'Lulus' : 'Tidak Lulus' }}
+            <div class="text-[15px] text-text-secondary mt-2 mb-4">dari 100 poin</div>
+            <span class="inline-flex items-center px-4 py-1.5 rounded-lg text-sm font-medium {{ $percentage >= 80 ? 'bg-brand-green/15 text-brand-green-light' : 'bg-brand-red/15 text-brand-red' }}">
+                <i class="fa-solid {{ $percentage >= 80 ? 'fa-check' : 'fa-xmark' }} mr-1.5"></i>
+                {{ $percentage >= 80 ? 'Lulus' : 'Tidak Lulus' }}
             </span>
+            
+            @if($percentage < 80)
+                <p class="text-xs text-brand-red mt-4 italic">Kamu butuh skor minimal 80 untuk membuka level berikutnya.</p>
+            @endif
         </div>
 
         <div class="grid grid-cols-3 gap-3 mb-7">
@@ -50,15 +54,31 @@
         </div>
 
         <div class="flex flex-col gap-3">
-            <a href="{{ route('quiz.show', ['level' => $levelId + 1, 'q' => 1]) }}" class="px-5 py-2.5 rounded-lg bg-brand-blue text-white font-medium text-base hover:bg-brand-blue-light hover:shadow-[0_4px_20px_rgba(59,124,244,0.4)] hover:-translate-y-0.5 transition-all duration-200">
-                Lanjut ke Level {{ $levelId + 1 }} <i class="fa-solid fa-arrow-right ml-2"></i>
-            </a>
+            @if($percentage >= 80)
+                @php
+                    $currentLevel = \App\Models\Level::find($levelId);
+                    $nextLevel = \App\Models\Level::where('order_number', '>', $currentLevel->order_number)
+                        ->orderBy('order_number')
+                        ->first();
+                @endphp
+                
+                @if($nextLevel)
+                    <a href="{{ route('quiz.show', $nextLevel->id) }}" class="px-5 py-2.5 rounded-lg bg-brand-blue text-white font-medium text-base hover:bg-brand-blue-light hover:shadow-[0_4px_20px_rgba(59,124,244,0.4)] hover:-translate-y-0.5 transition-all duration-200">
+                        Lanjut ke Level {{ $nextLevel->order_number }} <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                @endif
+            @else
+                <a href="{{ route('quiz.show', ['level' => $levelId, 'q' => 1]) }}" class="px-5 py-2.5 rounded-lg bg-brand-red text-white font-medium text-base hover:bg-red-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+                    <i class="fa-solid fa-rotate mr-2"></i>Coba Lagi Level Ini
+                </a>
+            @endif
+            
             <div class="flex gap-3">
                 <a href="{{ route('quiz.show', ['level' => $levelId, 'q' => 1]) }}" class="flex-1 px-3 py-1.5 rounded-lg bg-transparent text-text-secondary font-medium text-xs border border-ink-700/26 hover:bg-surface-2 hover:text-text-primary hover:border-ink-700/40 transition-all duration-200 flex items-center justify-center">
                     <i class="fa-solid fa-rotate mr-1.5"></i>Ulangi Quiz
                 </a>
                 <a href="{{ route('level.index') }}" class="flex-1 px-3 py-1.5 rounded-lg bg-transparent text-text-secondary font-medium text-xs border border-ink-700/26 hover:bg-surface-2 hover:text-text-primary hover:border-ink-700/40 transition-all duration-200 flex items-center justify-center">
-                    <i class="fa-solid fa-layer-group mr-1.5"></i>Level
+                    <i class="fa-solid fa-layer-group mr-1.5"></i>Daftar Level
                 </a>
             </div>
         </div>

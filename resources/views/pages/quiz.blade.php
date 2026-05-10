@@ -57,7 +57,7 @@
     </div>
 
     @if(session('feedback_question_id') == $question->id)
-        <div class="flex items-start gap-4 mb-6 p-4 rounded-xl {{ session('is_correct') ? 'bg-brand-green/10 border border-brand-green/30' : 'bg-brand-red/10 border border-brand-red/30' }}">
+        <div id="feedback-container" class="flex items-start gap-4 mb-6 p-4 rounded-xl {{ session('is_correct') ? 'bg-brand-green/10 border border-brand-green/30 animate-success' : 'bg-brand-red/10 border border-brand-red/30 animate-shake' }}">
             <div class="w-7 h-7 rounded-full flex items-center justify-center text-sm flex-shrink-0 {{ session('is_correct') ? 'bg-brand-green/20' : 'bg-brand-red/20' }}">
                 <i class="fa-solid {{ session('is_correct') ? 'fa-check text-brand-green-light' : 'fa-xmark text-red-400' }}"></i>
             </div>
@@ -77,50 +77,21 @@
                 </div>
             </div>
         </div>
-    @endif
 
-    @if(session('feedback_question_id') != $question->id)
-        <form method="POST" action="{{ route('quiz.answer') }}">
-            @csrf
-            <input type="hidden" name="question_id" value="{{ $question->id }}">
-            <input type="hidden" name="level_id" value="{{ $level->id }}">
-            <input type="hidden" name="current" value="{{ $current }}">
+        <audio id="sound-correct" src="https://cdn.pixabay.com/audio/2022/03/15/audio_276037000d.mp3" preload="auto"></audio>
+        <audio id="sound-incorrect" src="https://cdn.pixabay.com/audio/2022/03/10/audio_c3527054eb.mp3" preload="auto"></audio>
 
-            @if($question->answer_type === 'mcq')
-                @php
-                    $optionsData = json_decode($question->options, true);
-                    $correctAnswer = $question->correct_answer;
-                    $optionsWithKeys = [];
-                    foreach ($optionsData as $opt) {
-                        $optionsWithKeys[] = ['key' => $opt, 'is_correct' => $opt === $correctAnswer];
-                    }
-                    shuffle($optionsWithKeys);
-                    $keys = ['A', 'B', 'C', 'D', 'E'];
-                @endphp
+        <script>
+            window.addEventListener('load', function() {
+                const isCorrect = {{ session('is_correct') ? 'true' : 'false' }};
+                const sound = document.getElementById(isCorrect ? 'sound-correct' : 'sound-incorrect');
+                if (sound) {
+                    sound.volume = 0.5;
+                    sound.play().catch(e => console.log('Autoplay blocked'));
+                }
+            });
+        </script>
 
-                <div class="flex flex-col gap-3 mb-7">
-                    @foreach($optionsWithKeys as $i => $opt)
-                        <label class="flex items-center gap-4 p-4 rounded-xl border border-ink-700/26 bg-surface-1 cursor-pointer transition-all duration-200 hover:border-brand-blue/50 hover:bg-surface-2">
-                            <input type="radio" name="answer" value="{{ $opt['key'] }}" required class="w-4 h-4 accent-brand-blue">
-                            <span class="w-7 h-7 rounded-lg bg-surface-2 border border-ink-700/26 flex items-center justify-center text-xs font-semibold text-text-secondary font-mono flex-shrink-0">{{ $keys[$i] }}</span>
-                            <span class="text-sm leading-relaxed text-text-primary">{{ $opt['key'] }}</span>
-                        </label>
-                    @endforeach
-                </div>
-            @else
-                <div class="mb-7">
-                    <label class="text-xs font-medium text-text-secondary tracking-wide block mb-2">
-                        <i class="fa-solid fa-pen mr-1.5"></i>Jawaban kamu
-                    </label>
-                    <textarea name="answer" class="w-full bg-surface-1 border border-ink-700/26 rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-muted transition-all duration-200 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 font-mono min-h-[120px] resize-y" placeholder="Tulis jawaban kamu di sini..." required rows="5"></textarea>
-                </div>
-            @endif
-
-            <button type="submit" class="w-full px-5 py-2.5 rounded-lg bg-brand-blue text-white font-medium text-base hover:bg-brand-blue-light hover:shadow-[0_4px_20px_rgba(59,124,244,0.4)] hover:-translate-y-0.5 transition-all duration-200">
-                Kirim Jawaban
-            </button>
-        </form>
-    @else
         @php
             $next = \App\Models\Question::where('level_id', $level->id)
                 ->where('id', '>', $question->id)
@@ -142,8 +113,118 @@
                 </a>
             @endif
         </div>
+
+    @else
+        <form method="POST" action="{{ route('quiz.answer') }}" id="quiz-form">
+            @csrf
+            <input type="hidden" name="question_id" value="{{ $question->id }}">
+            <input type="hidden" name="level_id" value="{{ $level->id }}">
+            <input type="hidden" name="current" value="{{ $current }}">
+
+            @if($question->answer_type === 'mcq' && $question->options)
+                @php
+                    $optionsData = json_decode($question->options, true);
+                    $correctAnswer = $question->correct_answer;
+                    $optionsWithKeys = [];
+                    
+                    if ($optionsData && is_array($optionsData)) {
+                        foreach ($optionsData as $opt) {
+                            $optionsWithKeys[] = ['key' => $opt, 'is_correct' => $opt === $correctAnswer];
+                        }
+                        shuffle($optionsWithKeys);
+                    }
+                    
+                    $keys = ['A', 'B', 'C', 'D', 'E'];
+                @endphp
+
+                @if(count($optionsWithKeys) > 0)
+                <div class="flex flex-col gap-3 mb-7">
+                    @foreach($optionsWithKeys as $i => $opt)
+                        <label class="option-label flex items-center gap-4 p-4 rounded-xl border border-ink-700/26 bg-surface-1 cursor-pointer transition-all duration-300 hover:border-brand-blue/50 hover:bg-surface-2 group relative overflow-hidden">
+                            <div class="absolute inset-0 bg-brand-blue/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 pointer-events-none"></div>
+                            <span class="option-key w-7 h-7 rounded-lg bg-surface-2 border border-ink-700/26 flex items-center justify-center text-xs font-semibold text-text-secondary font-mono flex-shrink-0 transition-all duration-300">{{ $keys[$i] }}</span>
+                            <span class="text-sm leading-relaxed text-text-primary z-10">{{ $opt['key'] }}</span>
+                            <input type="radio" name="answer" value="{{ $opt['key'] }}" required class="hidden option-input">
+                            <div class="ml-auto opacity-0 group-[.selected]:opacity-100 transition-opacity duration-300">
+                                <i class="fa-solid fa-circle-check text-brand-blue"></i>
+                            </div>
+                        </label>
+                    @endforeach
+                </div>
+                @endif
+            @else
+                <div class="mb-7">
+                    <label class="text-xs font-medium text-text-secondary tracking-wide block mb-2">
+                        <i class="fa-solid fa-pen mr-1.5"></i>Jawaban kamu
+                    </label>
+                    <textarea name="answer" class="w-full bg-surface-1 border border-ink-700/26 rounded-lg px-4 py-3 text-sm text-text-primary placeholder:text-text-muted transition-all duration-200 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 font-mono min-h-[120px] resize-y" placeholder="Tulis jawaban kamu di sini..." required rows="5"></textarea>
+                </div>
+            @endif
+
+            <button type="submit" class="w-full px-5 py-2.5 rounded-lg bg-brand-blue text-white font-medium text-base hover:bg-brand-blue-light hover:shadow-[0_4px_20px_rgba(59,124,244,0.4)] hover:-translate-y-0.5 transition-all duration-200 active:scale-[0.98]">
+                Kirim Jawaban
+            </button>
+        </form>
+
+        <script>
+            document.querySelectorAll('.option-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    document.querySelectorAll('.option-label').forEach(label => {
+                        label.classList.remove('selected', 'border-brand-blue', 'bg-brand-blue/5', 'ring-2', 'ring-brand-blue/20');
+                        label.querySelector('.option-key').classList.remove('bg-brand-blue', 'text-white', 'border-brand-blue');
+                    });
+                    
+                    if (this.checked) {
+                        const label = this.closest('.option-label');
+                        label.classList.add('selected', 'border-brand-blue', 'bg-brand-blue/5', 'ring-2', 'ring-brand-blue/20');
+                        label.querySelector('.option-key').classList.add('bg-brand-blue', 'text-white', 'border-brand-blue');
+                        
+                        label.style.transform = 'scale(1.02)';
+                        setTimeout(() => {
+                            label.style.transform = 'scale(1)';
+                        }, 200);
+                    }
+                });
+            });
+        </script>
     @endif
 
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
+        }
+        
+        @keyframes success-pop {
+            0% { transform: scale(0.95); opacity: 0; }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .animate-shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        .animate-success {
+            animation: success-pop 0.5s ease-out forwards;
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out forwards;
+        }
+        
+        .option-label {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+    </style>
 @else
     <div class="text-center py-10">
         <div class="text-5xl mb-4 text-brand-green">
