@@ -16,11 +16,31 @@ use App\Http\Controllers\DailyQuestController;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
+
+Route::get('/fix-db', function() {
+    try {
+        // Clear caches
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        
+        // Ensure questions exist
+        if (\App\Models\DailyQuestQuestion::count() === 0) {
+            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'DailyQuestQuestionsSeeder', '--force' => true]);
+        }
+        
+        // Reset quest data for current user to allow fresh start
+        if (auth()->check()) {
+             \App\Models\DailyQuest::where('user_id', auth()->id())->delete();
+             $output = "Quest history cleared for " . auth()->user()->name . ". New quests will be generated on dashboard.";
+        } else {
+             $output = "No user logged in. Database questions checked.";
+        }
+
+        return "<h3>System Reset Successful</h3><p>" . $output . "</p><br><a href='/dashboard' style='padding: 10px 20px; background: #3b82f6; color: white; border-radius: 8px; text-decoration: none;'>Go to Dashboard</a>";
+    } catch (\Exception $e) {
+        return "Fix failed: " . $e->getMessage();
+    }
+});
 
 // Route::get('/', function () {
 //     return view('landing.blade.php');
@@ -67,6 +87,9 @@ Route::post('/quiz/answer', [QuizController::class, 'answer'])
 // DAILY QUEST
 Route::get('/daily-quest', [DailyQuestController::class, 'show'])
     ->name('daily-quest.show')
+    ->middleware('auth');
+Route::get('/daily-quest/data', [DailyQuestController::class, 'getQuestData'])
+    ->name('daily-quest.data')
     ->middleware('auth');
 Route::post('/daily-quest', [DailyQuestController::class, 'submit'])
     ->name('daily-quest.submit')

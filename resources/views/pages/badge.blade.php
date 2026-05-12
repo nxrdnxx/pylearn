@@ -1,73 +1,101 @@
 @extends('layouts.app')
-@section('title', 'Badge')
+
+@section('title', 'Koleksi Badge')
 
 @section('content')
-<div class="pt-16 min-h-screen" style="background: linear-gradient(135deg, #04091a 0%, #070f26 100%);">
-    <div class="max-w-[1100px] mx-auto px-7 pt-10 pb-14">
-        <div class="flex items-center justify-between gap-4 flex-wrap mb-8">
-            <h1 class="font-serif text-[32px] text-white">
-                <i class="fa-solid fa-medal text-amber-400 mr-3"></i>Badge
-            </h1>
-            <div class="flex items-center gap-3">
-                <div class="flex-1 max-w-[200px] h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-amber-500 rounded-full transition-all duration-500" style="width:{{ $percent }}%"></div>
+<div class="pt-16 min-h-screen bg-ink-950">
+    <!-- Premium Header -->
+    <div class="relative overflow-hidden pt-12 pb-16">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-[1200px] pointer-events-none">
+            <div class="absolute top-[-100px] right-[-100px] w-[400px] h-[400px] bg-brand-amber/10 blur-[120px] rounded-full"></div>
+            <div class="absolute bottom-[-50px] left-[-100px] w-[300px] h-[300px] bg-brand-blue/10 blur-[100px] rounded-full"></div>
+        </div>
+
+        <div class="max-w-[1100px] mx-auto px-7 relative z-10">
+            <div class="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
+                <div class="text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-amber/10 border border-brand-amber/20 text-brand-amber text-[11px] font-bold uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-medal text-[10px]"></i> Pencapaian Terkumpul
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-3 tracking-tight">Koleksi <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">Badge</span></h1>
+                    <p class="text-lg text-text-secondary max-w-xl">
+                        Kumpulkan semua badge spesial sebagai bukti dedikasi dan keahlianmu dalam menguasai Python.
+                    </p>
                 </div>
-                <span class="text-sm text-gray-400">{{ $owned }}/{{ $total }}</span>
+
+                <div class="bg-surface-1/50 backdrop-blur-xl border border-white/5 rounded-[32px] p-6 min-w-[240px] shadow-2xl">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                        <span class="text-xs font-bold text-text-muted uppercase tracking-widest">Progress Koleksi</span>
+                        <span class="text-sm font-serif font-bold text-white">{{ $owned }}/{{ $total }}</span>
+                    </div>
+                    <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden mb-2">
+                        <div class="h-full bg-gradient-to-r from-brand-amber to-brand-amber-light rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(232,160,34,0.4)]" style="width:{{ $percent }}%"></div>
+                    </div>
+                    <div class="text-[10px] text-text-muted text-center italic">Terus belajar untuk mendapatkan semuanya!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-[1100px] mx-auto px-7 pb-24">
+        <!-- Section: Earned -->
+        <div class="mb-14">
+            <div class="flex items-center gap-3 mb-8 px-2">
+                <div class="w-2 h-2 rounded-full bg-brand-green shadow-[0_0_10px_rgba(31,184,122,0.8)]"></div>
+                <h3 class="text-xs font-bold text-white uppercase tracking-[0.2em]">Badge Yang Telah Diraih</h3>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                @forelse($earned as $badge)
+                @php
+                    $badgeTheme = [
+                        'First Blood' => ['bg' => 'from-red-500 to-red-600', 'icon' => 'fa-fire-alt'],
+                        'Diamond Collector' => ['bg' => 'from-blue-500 to-blue-600', 'icon' => 'fa-gem'],
+                        'Streak Starter' => ['bg' => 'from-orange-500 to-orange-600', 'icon' => 'fa-bolt'],
+                        'Python King' => ['bg' => 'from-amber-500 to-amber-600', 'icon' => 'fa-crown'],
+                        'Night Owl' => ['bg' => 'from-indigo-600 to-indigo-700', 'icon' => 'fa-moon'],
+                        'Quiz Master' => ['bg' => 'from-emerald-500 to-emerald-600', 'icon' => 'fa-brain'],
+                    ][$badge->name] ?? ['bg' => 'from-brand-blue to-brand-blue-light', 'icon' => 'fa-medal'];
+                @endphp
+                <div class="group relative">
+                    <div class="absolute inset-0 bg-gradient-to-br {{ $badgeTheme['bg'] }} rounded-[32px] blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                    <div class="relative bg-surface-1 border border-white/5 rounded-[32px] p-6 flex flex-col items-center text-center transition-all duration-500 hover:-translate-y-2 hover:border-white/10 shadow-lg">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br {{ $badgeTheme['bg'] }} flex items-center justify-center mb-4 shadow-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid {{ $badgeTheme['icon'] }} text-2xl text-white"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white mb-2 group-hover:text-brand-amber transition-colors">{{ $badge->name }}</h4>
+                        <p class="text-[10px] text-text-muted leading-relaxed line-clamp-2">{{ $badge->description }}</p>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-full py-16 bg-surface-1/30 border border-dashed border-white/10 rounded-[40px] text-center">
+                    <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-medal text-text-muted text-xl"></i>
+                    </div>
+                    <p class="text-text-secondary text-sm">Belum ada badge yang diraih. Selesaikan tantangan pertama kamu!</p>
+                </div>
+                @endforelse
             </div>
         </div>
 
-        <div class="flex items-center gap-3 mb-5">
-            <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
-            <span class="text-xs font-semibold text-green-400 uppercase tracking-wide">Diraih</span>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-10">
-            @forelse($earned as $badge)
-            @php
-                $badgeTheme = [
-                    'First Blood' => ['bg' => 'from-red-500 to-red-600', 'icon' => 'text-white'],
-                    'Diamond Collector' => ['bg' => 'from-blue-500 to-blue-600', 'icon' => 'text-white'],
-                    'Streak Starter' => ['bg' => 'from-orange-500 to-orange-600', 'icon' => 'text-white'],
-                    'Python King' => ['bg' => 'from-amber-500 to-amber-600', 'icon' => 'text-white'],
-                    'Night Owl' => ['bg' => 'from-indigo-600 to-indigo-700', 'icon' => 'text-white'],
-                    'Quiz Master' => ['bg' => 'from-emerald-500 to-emerald-600', 'icon' => 'text-white'],
-                    'Early Bird' => ['bg' => 'from-yellow-400 to-orange-500', 'icon' => 'text-white'],
-                    'Consistent Coder' => ['bg' => 'from-cyan-500 to-blue-500', 'icon' => 'text-white'],
-                    'Problem Solver' => ['bg' => 'from-purple-500 to-pink-500', 'icon' => 'text-white'],
-                ][$badge->name] ?? ['bg' => 'from-brand-blue to-brand-blue-light', 'icon' => 'text-white'];
-            @endphp
-            <div class="bg-slate-800 rounded-xl border border-gray-700 p-4 flex flex-col items-center text-center transition-all duration-200 hover:border-white/20 hover:scale-105 group">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br {{ $badgeTheme['bg'] }} flex items-center justify-center mb-3 shadow-lg group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all">
-                    <i class="fa-solid {{ $badge->icon ?? 'fa-medal' }} text-xl {{ $badgeTheme['icon'] }}"></i>
-                </div>
-                <div class="text-sm font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors">{{ $badge->name }}</div>
-                <div class="text-[11px] text-gray-400">{{ $badge->description }}</div>
+        <!-- Section: Locked -->
+        <div>
+            <div class="flex items-center gap-3 mb-8 px-2">
+                <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                <h3 class="text-xs font-bold text-text-muted uppercase tracking-[0.2em]">Masih Terkunci</h3>
             </div>
-            @empty
-            <div class="col-span-full text-center py-10 text-gray-500">
-                <div class="text-4xl mb-3">
-                    <i class="fa-solid fa-medal"></i>
-                </div>
-                <div>Belum ada badge diraih. Terus belajar!</div>
-            </div>
-            @endforelse
-        </div>
 
-        <div class="flex items-center gap-3 mb-5">
-            <div class="w-2 h-2 rounded-full bg-gray-600"></div>
-            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Belum diraih</span>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            @foreach($locked as $badge)
-            <div class="bg-slate-900 rounded-xl border border-gray-800 p-4 flex flex-col items-center text-center opacity-50">
-                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mb-3">
-                    <i class="fa-solid fa-lock text-gray-600"></i>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                @foreach($locked as $badge)
+                <div class="relative bg-surface-1/30 border border-white/5 rounded-[32px] p-6 flex flex-col items-center text-center opacity-60 filter grayscale">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4 border border-white/5">
+                        <i class="fa-solid fa-lock text-text-muted text-xl"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-text-muted mb-2">{{ $badge->name }}</h4>
+                    <p class="text-[10px] text-text-muted/60 leading-relaxed">{{ $badge->description }}</p>
                 </div>
-                <div class="text-sm font-semibold text-gray-400 mb-1">{{ $badge->name }}</div>
-                <div class="text-[11px] text-gray-600">{{ $badge->description }}</div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </div>
 </div>

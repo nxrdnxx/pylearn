@@ -78,27 +78,6 @@ class DashboardService
             ->take(5)
             ->get();
 
-        // ================= WEEKLY XP (Optimized) =================
-        $weekStart = Carbon::now()->startOfWeek();
-        $weekEnd = Carbon::now()->endOfWeek();
-        
-        $weeklyXpData = UserAnswer::where('user_id', $userId)
-            ->whereBetween('created_at', [$weekStart, $weekEnd])
-            ->select(DB::raw('DATE(created_at) as date'), DB::raw('sum(xp_earned) as total_xp'))
-            ->groupBy('date')
-            ->pluck('total_xp', 'date');
-
-        $weeklyXp = [];
-        for ($i = 0; $i < 7; $i++) {
-            $date = $weekStart->copy()->addDays($i)->toDateString();
-            $weeklyXp[] = $weeklyXpData[$date] ?? 0;
-        }
-        
-        $totalWeeklyXp = array_sum($weeklyXp);
-        $maxWeeklyXp = max($weeklyXp) > 0 ? max($weeklyXp) : 1;
-        $heights = array_map(function ($xp) use ($maxWeeklyXp) {
-            return round(($xp / $maxWeeklyXp) * 100);
-        }, $weeklyXp);
 
         // ================= RECENT ACTIVITIES (Optimized) =================
         $recentActivities = collect();
@@ -167,8 +146,6 @@ class DashboardService
             'topUsers' => $topUsers,
             'recentBadges' => $recentBadges,
             'recentActivities' => $recentActivities,
-            'heights' => $heights,
-            'totalWeeklyXp' => $totalWeeklyXp,
             'dailyQuest' => $dailyQuest
         ];
     }
