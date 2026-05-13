@@ -15,7 +15,7 @@
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-amber/10 border border-brand-amber/20 text-brand-amber text-[11px] font-bold uppercase tracking-wider mb-4">
                 <i class="fa-solid fa-trophy text-[10px]"></i> Klasemen Global
             </div>
-            <h1 class="font-serif text-4xl md:text-5xl text-white mb-4 tracking-tight leading-tight">
+            <h1 class="font-semibold text-4xl md:text-5xl text-white mb-4 tracking-tight leading-tight">
                 Para <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">Legenda Python</span>
             </h1>
             <p class="text-lg text-text-secondary max-w-xl mx-auto">

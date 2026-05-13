@@ -1,11 +1,11 @@
 <nav class="fixed top-0 left-0 right-0 z-[100] h-16 flex items-center px-4 lg:px-7 gap-1.5 bg-slate-950/80 backdrop-blur-2xl border-b border-gray-800">
     <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-blue-500/0 via-blue-500/40 to-blue-500/0"></div>
 
-    <a href="{{ route('dashboard.index') }}" class="flex items-center gap-2.5 font-serif text-xl text-white no-underline transition-all duration-300 group">
-        <div class="relative w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-blue-400 flex items-center justify-center shadow-lg">
-            <i class="fa-brands fa-python text-white text-base"></i>
+    <a href="{{ route('dashboard.index') }}" class="flex items-center gap-2.5 font-semibold text-xl text-white no-underline transition-all duration-300 group">
+        <div class="relative w-9 h-9 rounded-xl bg-blue-500 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.4)]">
+            <i class="fa-brands fa-python text-white text-lg"></i>
         </div>
-        <span class="font-serif text-xl hidden md:block">Py<em class="italic text-blue-400">Learn</em></span>
+        <span class="font-semibold text-xl hidden md:block">Py<em class="text-blue-400">Learn</em></span>
     </a>
 
     <div class="hidden lg:flex items-center gap-1 ml-8">

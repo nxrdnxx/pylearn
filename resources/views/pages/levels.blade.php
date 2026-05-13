@@ -24,7 +24,7 @@
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue-light text-[11px] font-bold uppercase tracking-wider mb-4">
                         <i class="fa-solid fa-book-bookmark text-[10px]"></i> Jalur Pembelajaran
                     </div>
-                    <h1 class="font-serif text-4xl md:text-5xl text-white mb-4 tracking-tight leading-tight">
+                    <h1 class="font-semibold text-4xl md:text-5xl text-white mb-4 tracking-tight leading-tight">
                         Kuasai Python dari <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue-light to-brand-purple">Nol sampai Mahir</span>
                     </h1>
                     <p class="text-lg text-text-secondary leading-relaxed">
@@ -35,7 +35,7 @@
                 <div class="bg-surface-1/50 backdrop-blur-xl border border-white/5 rounded-[32px] p-6 md:p-8 min-w-[280px] shadow-2xl">
                     <div class="flex items-center justify-between mb-4">
                         <span class="text-sm font-bold text-white">Progres Belajar</span>
-                        <span class="text-2xl font-serif font-bold text-brand-green-light">{{ round($percent) }}%</span>
+                        <span class="text-2xl font-semibold font-bold text-brand-green-light">{{ round($percent) }}%</span>
                     </div>
                     <div class="w-full h-2.5 bg-ink-950 rounded-full overflow-hidden mb-4 shadow-inner">
                         <div class="h-full bg-gradient-to-r from-brand-green to-brand-green-light rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(31,184,122,0.4)]" style="width:{{ $percent }}%"></div>

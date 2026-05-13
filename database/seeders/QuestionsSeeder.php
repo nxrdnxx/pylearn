@@ -9,6 +9,11 @@ class QuestionsSeeder extends Seeder
 {
     public function run(): void
     {
+        // Hapus data lama agar tidak ada soal yang double
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('questions')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         // Level 1 - Dasar Python
         $level1Questions = [
             [

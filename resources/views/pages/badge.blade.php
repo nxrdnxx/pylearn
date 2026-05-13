@@ -17,7 +17,7 @@
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-amber/10 border border-brand-amber/20 text-brand-amber text-[11px] font-bold uppercase tracking-wider mb-4">
                         <i class="fa-solid fa-medal text-[10px]"></i> Pencapaian Terkumpul
                     </div>
-                    <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-3 tracking-tight">Koleksi <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">Badge</span></h1>
+                    <h1 class="text-4xl md:text-5xl font-semibold font-bold text-white mb-3 tracking-tight">Koleksi <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">Badge</span></h1>
                     <p class="text-lg text-text-secondary max-w-xl">
                         Kumpulkan semua badge spesial sebagai bukti dedikasi dan keahlianmu dalam menguasai Python.
                     </p>

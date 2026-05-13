@@ -8,7 +8,7 @@
                 <span class="text-sm text-gray-400 font-medium">
                     <i class="fa-solid fa-hand-wave text-amber-400 mr-2 animate-pulse"></i>Halo, {{ $user->name ?? 'User' }}
                 </span>
-                <h1 class="font-serif text-[36px] tracking-tight leading-[1.15] text-white">Lanjutkan dimana kamu berhenti</h1>
+                <h1 class="text-[36px] font-semibold text-white">Lanjutkan dimana kamu berhenti</h1>
             </div>
             <a href="{{ route('level.index') }}" class="px-5 py-2.5 rounded-lg bg-blue-500 text-white font-medium text-base hover:bg-blue-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                 <i class="fa-solid fa-play mr-2 text-xs"></i>Lanjutkan Belajar
@@ -22,7 +22,7 @@
                 <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center mb-3">
                     <i class="fa-solid fa-bolt text-blue-400 text-lg"></i>
                 </div>
-                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ number_format($xp) }}</div>
+                <div class="text-xl font-semibold text-white">{{ number_format($xp) }}</div>
                 <div class="text-xs text-gray-400 mt-1">Total XP</div>
             </div>
             
@@ -30,7 +30,7 @@
                 <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center mb-3">
                     <i class="fa-solid fa-layer-group text-green-400 text-lg"></i>
                 </div>
-                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ $completedLevel }}<span class="text-lg text-gray-400">/{{ $totalLevel }}</span></div>
+                <div class="text-xl font-semibold text-white">{{ $completedLevel }}<span class="text-lg text-gray-400">/{{ $totalLevel }}</span></div>
                 <div class="text-xs text-gray-400 mt-1">Level selesai</div>
                 <div class="mt-3">
                     <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
@@ -43,7 +43,7 @@
                 <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center mb-3">
                     <i class="fa-solid fa-fire text-amber-400 text-lg"></i>
                 </div>
-                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ $streak }}</div>
+                <div class="text-xl font-semibold text-white">{{ $streak }}</div>
                 <div class="text-xs text-gray-400 mt-1">Hari streak</div>
             </div>
             
@@ -51,10 +51,10 @@
                 <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3">
                     <i class="fa-solid fa-medal text-purple-400 text-lg"></i>
                 </div>
-                <div class="text-3xl font-bold text-white font-serif tracking-tight">{{ $badgeCount }}</div>
+                <div class="text-xl font-semibold text-white">{{ $badgeCount }}</div>
                 <div class="text-xs text-gray-400 mt-1">Badge diraih</div>
                 <div class="mt-2 text-xs text-gray-500">
-                    <i class="fa-solid fa-box-open text-purple-500 mr-1"></i>24 tersedia
+                    <i class="fa-solid fa-box-open text-purple-500 mr-1"></i>9 tersedia
                 </div>
             </div>
         </div>
