@@ -5,11 +5,11 @@
     <!-- Premium Navbar -->
     <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-[1200px] mx-auto w-full flex items-center justify-between">
-            <div class="flex items-center gap-3 font-serif text-2xl text-white">
+            <div class="flex items-center gap-3 font-semibold text-2xl text-white">
                 <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center shadow-[0_0_20px_rgba(59,124,244,0.3)]">
                     <i class="fa-brands fa-python text-white"></i>
                 </div>
-                <span class="font-serif text-2xl">Py<em class="italic text-brand-blue-light">Learn</em></span>
+                <span class="font-semibold text-2xl">Py<em class="italic text-brand-blue-light">Learn</em></span>
             </div>
             <div class="hidden md:flex items-center gap-8 ml-12">
                 <a href="#fitur" class="text-sm font-bold text-text-muted hover:text-white transition-colors uppercase tracking-widest">Fitur</a>
@@ -46,7 +46,7 @@
                         </span>
                         Edisi Terbaru 2024 Telah Hadir
                     </div>
-                    <h1 class="font-serif text-6xl md:text-8xl text-white mb-8 tracking-tighter leading-[0.95]">
+                    <h1 class="font-semibold text-6xl md:text-8xl text-white mb-8 tracking-tighter leading-[0.95]">
                         Kuasai <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-blue-light">Python</span><br>
                         Dengan Gaya.
                     </h1>
@@ -89,7 +89,7 @@
                 <div class="hidden lg:block animate-in fade-in zoom-in duration-1000 delay-300">
                     <div class="relative">
                         <div class="absolute inset-0 bg-brand-blue/20 blur-[100px] rounded-full"></div>
-                        <div class="relative bg-surface-1 rounded-[40px] border border-white/10 p-4 shadow-2xl overflow-hidden group">
+                        <div class="relative bg-surface-1 rounded-[40px] border border-white/10 p-4 shadow-2xl group">
                             <div class="bg-ink-950 rounded-[32px] p-8 font-mono text-sm leading-relaxed border border-white/5">
                                 <div class="flex gap-2 mb-6">
                                     <div class="w-3 h-3 rounded-full bg-brand-red/50"></div>
@@ -109,17 +109,17 @@
                                     <p class="text-text-muted">student.<span class="text-brand-blue-light">level_up</span>()</p>
                                 </div>
                             </div>
-                            
-                            <!-- Floating Card -->
-                            <div class="absolute bottom-10 -left-10 bg-surface-2 border border-white/10 rounded-2xl p-5 shadow-2xl animate-bounce-subtle">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-xl bg-brand-green/20 flex items-center justify-center">
-                                        <i class="fa-solid fa-check text-brand-green"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-[10px] font-bold text-text-muted uppercase tracking-widest">Level 1 Selesai</div>
-                                        <div class="text-sm font-bold text-white">+100 XP Didapat</div>
-                                    </div>
+                        </div>
+                        
+                        <!-- Floating Card -->
+                        <div class="absolute bottom-10 -left-10 bg-surface-2 border border-white/10 rounded-2xl p-5 shadow-2xl animate-bounce-subtle z-20">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-brand-green/20 flex items-center justify-center">
+                                    <i class="fa-solid fa-check text-brand-green"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] font-bold text-text-muted uppercase tracking-widest">Level 1 Selesai</div>
+                                    <div class="text-sm font-bold text-white">+100 XP Didapat</div>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-text-muted uppercase tracking-widest mb-6">
                     Masa Depan Pembelajaran
                 </div>
-                <h2 class="font-serif text-5xl md:text-6xl text-white mb-6 tracking-tight">Lebih Dari Sekedar Kursus</h2>
+                <h2 class="font-semibold text-5xl md:text-6xl text-white mb-6 tracking-tight">Lebih Dari Sekedar Kursus</h2>
                 <p class="text-lg text-text-secondary max-w-2xl mx-auto">Kami menggabungkan kurikulum industri dengan mekanisme permainan untuk memastikan kamu tidak pernah bosan saat belajar.</p>
             </div>
 
@@ -184,7 +184,7 @@
     <section class="py-32 relative overflow-hidden">
         <div class="absolute inset-0 bg-brand-blue/5"></div>
         <div class="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
-            <h2 class="font-serif text-5xl md:text-7xl text-white mb-8 tracking-tighter">Sudah Siap Menjadi<br><span class="text-brand-blue-light italic">Python Master?</span></h2>
+            <h2 class="font-semibold text-5xl md:text-7xl text-white mb-8 tracking-tighter">Sudah Siap Menjadi<br><span class="text-brand-blue-light italic">Python Master?</span></h2>
             <p class="text-xl text-text-secondary mb-12 max-w-xl mx-auto">Gabung bersama 12,000+ pelajar lainnya dan mulai perjalanan kodemu hari ini secara gratis.</p>
             <div class="flex flex-col sm:flex-row gap-5 justify-center">
                 <a href="{{ route('register') }}" class="px-12 py-5 rounded-2xl bg-brand-blue text-white font-bold text-lg hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.4)] transition-all">
@@ -197,7 +197,7 @@
     <!-- Footer -->
     <footer class="py-12 border-t border-white/5">
         <div class="max-w-[1200px] mx-auto px-7 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="flex items-center gap-3 font-serif text-xl text-white opacity-50">
+            <div class="flex items-center gap-3 font-semibold text-xl text-white opacity-50">
                 <div class="w-7 h-7 rounded-lg bg-white flex items-center justify-center">
                     <i class="fa-brands fa-python text-ink-950 text-sm"></i>
                 </div>

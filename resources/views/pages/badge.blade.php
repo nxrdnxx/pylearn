@@ -17,7 +17,7 @@
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-amber/10 border border-brand-amber/20 text-brand-amber text-[11px] font-bold uppercase tracking-wider mb-4">
                         <i class="fa-solid fa-medal text-[10px]"></i> Pencapaian Terkumpul
                     </div>
-                    <h1 class="text-4xl md:text-5xl font-semibold font-bold text-white mb-3 tracking-tight">Koleksi <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">Badge</span></h1>
+                    <h1 class="text-4xl md:text-5xl font-semibold text-white mb-3 tracking-tight">Koleksi <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">Badge</span></h1>
                     <p class="text-lg text-text-secondary max-w-xl">
                         Kumpulkan semua badge spesial sebagai bukti dedikasi dan keahlianmu dalam menguasai Python.
                     </p>
@@ -26,7 +26,7 @@
                 <div class="bg-surface-1/50 backdrop-blur-xl border border-white/5 rounded-[32px] p-6 min-w-[240px] shadow-2xl">
                     <div class="flex items-center justify-between mb-3 px-1">
                         <span class="text-xs font-bold text-text-muted uppercase tracking-widest">Progress Koleksi</span>
-                        <span class="text-sm font-serif font-bold text-white">{{ $owned }}/{{ $total }}</span>
+                        <span class="text-sm font-semibold text-white">{{ $owned }}/{{ $total }}</span>
                     </div>
                     <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden mb-2">
                         <div class="h-full bg-gradient-to-r from-brand-amber to-brand-amber-light rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(232,160,34,0.4)]" style="width:{{ $percent }}%"></div>

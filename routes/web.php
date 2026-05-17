@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\DailyQuestController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,3 +95,26 @@ Route::get('/daily-quest/data', [DailyQuestController::class, 'getQuestData'])
 Route::post('/daily-quest', [DailyQuestController::class, 'submit'])
     ->name('daily-quest.submit')
     ->middleware('auth');
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/materials', [AdminController::class, 'materials'])->name('admin.materials');
+    Route::post('/materials', [AdminController::class, 'storeMaterial'])->name('admin.materials.store');
+    Route::put('/materials/{level}', [AdminController::class, 'updateMaterial'])->name('admin.materials.update');
+    Route::delete('/materials/{level}', [AdminController::class, 'destroyMaterial'])->name('admin.materials.destroy');
+    Route::get('/quizzes', [AdminController::class, 'quizzes'])->name('admin.quizzes');
+    Route::post('/quizzes', [AdminController::class, 'storeQuiz'])->name('admin.quizzes.store');
+    Route::put('/quizzes/{question}', [AdminController::class, 'updateQuiz'])->name('admin.quizzes.update');
+    Route::delete('/quizzes/{question}', [AdminController::class, 'destroyQuiz'])->name('admin.quizzes.destroy');
+    Route::get('/badges', [AdminController::class, 'badges'])->name('admin.badges');
+    Route::post('/badges', [AdminController::class, 'storeBadge'])->name('admin.badges.store');
+    Route::put('/badges/{badge}', [AdminController::class, 'updateBadge'])->name('admin.badges.update');
+    Route::delete('/badges/{badge}', [AdminController::class, 'destroyBadge'])->name('admin.badges.destroy');
+    Route::get('/levels', [AdminController::class, 'levels'])->name('admin.levels');
+    Route::put('/levels/{level}', [AdminController::class, 'updateLevel'])->name('admin.levels.update');
+    Route::get('/leaderboard', [AdminController::class, 'leaderboard'])->name('admin.leaderboard');
+    Route::post('/leaderboard/reset', [AdminController::class, 'resetLeaderboard'])->name('admin.leaderboard.reset');
+    Route::get('/quiz-results', [AdminController::class, 'quizResults'])->name('admin.quiz-results');
+    Route::get('/students', [AdminController::class, 'students'])->name('admin.students');
+    Route::put('/students/{user}', [AdminController::class, 'updateStudent'])->name('admin.students.update');
+});

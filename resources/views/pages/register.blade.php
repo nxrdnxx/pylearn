@@ -33,7 +33,6 @@
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                 }
@@ -56,13 +55,13 @@
 
     <div class="w-full max-w-[480px] relative z-10 py-12">
         <div class="text-center mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
-            <a href="{{ route('landing.index') }}" class="inline-flex items-center gap-3 font-serif text-3xl text-white no-underline mb-8 group">
+            <a href="{{ route('landing.index') }}" class="inline-flex items-center gap-3 font-semibold text-3xl text-white no-underline mb-8 group">
                 <div class="w-12 h-12 rounded-2xl bg-brand-blue flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
                     <i class="fa-brands fa-python text-white text-xl"></i>
                 </div>
                 <span>Py<em class="italic text-brand-blue-light">Learn</em></span>
             </a>
-            <h1 class="text-4xl font-serif font-bold tracking-tight text-white mb-3">Mulai Petualanganmu</h1>
+            <h1 class="text-4xl font-semibold tracking-tight text-white mb-3">Mulai Petualanganmu</h1>
             <p class="text-text-secondary">Daftar sekarang dan jadilah ahli Python secara gratis.</p>
         </div>
 
@@ -133,21 +132,7 @@
                 </button>
             </form>
 
-            <div class="relative my-10">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-white/5"></div>
-                </div>
-                <div class="relative flex justify-center text-[10px] font-bold text-text-muted uppercase tracking-[0.3em]">
-                    <span class="bg-surface-1 px-4">Atau Daftar Dengan</span>
-                </div>
-            </div>
 
-            <div class="grid grid-cols-1 gap-4">
-                <button class="flex items-center justify-center gap-3 py-4 rounded-[20px] bg-white/5 border border-white/10 text-white text-sm font-bold hover:bg-white/10 transition-all">
-                    <i class="fa-brands fa-google text-lg"></i>
-                    Google
-                </button>
-            </div>
 
             <p class="text-center text-[15px] text-text-secondary mt-10">
                 Sudah punya akun?

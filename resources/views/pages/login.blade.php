@@ -33,7 +33,6 @@
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                 }
@@ -56,13 +55,13 @@
 
     <div class="w-full max-w-[440px] relative z-10">
         <div class="text-center mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
-            <a href="{{ route('landing.index') }}" class="inline-flex items-center gap-3 font-serif text-3xl text-white no-underline mb-8 group">
+            <a href="{{ route('landing.index') }}" class="inline-flex items-center gap-3 font-semibold text-3xl text-white no-underline mb-8 group">
                 <div class="w-12 h-12 rounded-2xl bg-brand-blue flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
                     <i class="fa-brands fa-python text-white text-xl"></i>
                 </div>
                 <span>Py<em class="italic text-brand-blue-light">Learn</em></span>
             </a>
-            <h1 class="text-4xl font-serif font-bold tracking-tight text-white mb-3">Selamat Datang</h1>
+            <h1 class="text-4xl font-semibold tracking-tight text-white mb-3">Selamat Datang</h1>
             <p class="text-text-secondary">Masuk untuk melanjutkan petualangan kodemu.</p>
         </div>
 
@@ -100,13 +99,20 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 px-2">
+                <div class="flex items-center justify-between px-2">
                     <label class="flex items-center gap-3 text-[13px] text-text-secondary cursor-pointer group">
                         <div class="relative flex items-center">
                             <input type="checkbox" class="peer h-5 w-5 appearance-none rounded-lg bg-ink-950 border border-white/10 checked:bg-brand-blue checked:border-brand-blue transition-all cursor-pointer">
                             <i class="fa-solid fa-check absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] text-white opacity-0 peer-checked:opacity-100 transition-opacity"></i>
                         </div>
                         <span class="group-hover:text-white transition-colors">Ingat Sesi Saya</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-[13px] text-brand-amber cursor-pointer group">
+                        <div class="relative flex items-center">
+                            <input type="checkbox" name="login_as_admin" class="peer h-5 w-5 appearance-none rounded-lg bg-ink-950 border border-white/10 checked:bg-brand-amber checked:border-brand-amber transition-all cursor-pointer">
+                            <i class="fa-solid fa-check absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] text-white opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                        </div>
+                        <span class="group-hover:text-white transition-colors">Masuk sebagai Admin</span>
                     </label>
                 </div>
 
@@ -115,21 +121,7 @@
                 </button>
             </form>
 
-            <div class="relative my-10">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-white/5"></div>
-                </div>
-                <div class="relative flex justify-center text-[10px] font-bold text-text-muted uppercase tracking-[0.3em]">
-                    <span class="bg-surface-1 px-4">Atau Masuk Dengan</span>
-                </div>
-            </div>
 
-            <div class="grid grid-cols-1 gap-4">
-                <button class="flex items-center justify-center gap-3 py-4 rounded-[20px] bg-white/5 border border-white/10 text-white text-sm font-bold hover:bg-white/10 transition-all">
-                    <i class="fa-brands fa-google text-lg"></i>
-                    Google
-                </button>
-            </div>
 
             <p class="text-center text-[15px] text-text-secondary mt-10">
                 Belum punya akun?

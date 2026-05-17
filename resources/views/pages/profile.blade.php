@@ -26,7 +26,7 @@
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue-light text-[11px] font-bold uppercase tracking-wider mb-3">
                             <i class="fa-solid fa-user-graduate text-[10px]"></i> Profil Pelajar
                         </div>
-                        <h1 class="text-4xl font-serif font-bold text-white mb-2 tracking-tight">{{ Auth::user()->name }}</h1>
+                        <h1 class="text-4xl font-semibold text-white mb-2 tracking-tight">{{ Auth::user()->name }}</h1>
                         <p class="text-text-secondary mb-5">{{ Auth::user()->email }}</p>
                         
                         <div class="flex items-center justify-center md:justify-start gap-3">
@@ -57,7 +57,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-brand-blue/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-bolt text-brand-blue text-xl"></i>
                 </div>
-                <div class="text-3xl font-serif font-bold text-white mb-1">{{ number_format($xp) }}</div>
+                <div class="text-3xl font-semibold text-white mb-1">{{ number_format($xp) }}</div>
                 <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Total XP</div>
             </div>
             
@@ -65,7 +65,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-check-double text-brand-green text-xl"></i>
                 </div>
-                <div class="text-3xl font-serif font-bold text-white mb-1">
+                <div class="text-3xl font-semibold text-white mb-1">
                     {{ $completedLevel }}<span class="text-lg text-text-muted">/{{ $totalLevel }}</span>
                 </div>
                 <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Level Selesai</div>
@@ -75,7 +75,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-brand-purple/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-medal text-brand-purple text-xl"></i>
                 </div>
-                <div class="text-3xl font-serif font-bold text-white mb-1">{{ $badgeCount }}</div>
+                <div class="text-3xl font-semibold text-white mb-1">{{ $badgeCount }}</div>
                 <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Badge Diraih</div>
             </div>
             
@@ -83,7 +83,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-brand-amber/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-fire text-brand-amber text-xl"></i>
                 </div>
-                <div class="text-3xl font-serif font-bold text-white mb-1">{{ $streak }}</div>
+                <div class="text-3xl font-semibold text-white mb-1">{{ $streak }}</div>
                 <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Hari Streak</div>
             </div>
         </div>
@@ -114,12 +114,12 @@
                                 <div class="text-sm font-bold text-white group-hover:text-brand-blue-light transition-colors">{{ $activity['level_name'] }}</div>
                             </td>
                             <td class="px-8 py-5 text-center">
-                                <div class="text-sm font-serif font-bold {{ $activity['score'] >= 80 ? 'text-brand-green' : ($activity['score'] >= 50 ? 'text-brand-amber' : 'text-brand-red') }}">
+                                <div class="text-sm font-semibold {{ $activity['score'] >= 80 ? 'text-brand-green' : ($activity['score'] >= 50 ? 'text-brand-amber' : 'text-brand-red') }}">
                                     {{ $activity['score'] }}
                                 </div>
                             </td>
                             <td class="px-8 py-5 text-center">
-                                <div class="text-sm font-serif font-bold text-brand-amber">+{{ $activity['xp'] }}</div>
+                                <div class="text-sm font-semibold text-brand-amber">+{{ $activity['xp'] }}</div>
                             </td>
                             <td class="px-8 py-5">
                                 <div class="text-xs text-text-secondary">{{ $activity['date']->diffForHumans() }}</div>

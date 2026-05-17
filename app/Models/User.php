@@ -10,6 +10,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
         'xp',
         'login_streak',
         'last_login_date'

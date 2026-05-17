@@ -25,7 +25,7 @@
             <div class="mt-8 inline-flex items-center gap-4 px-5 py-2.5 rounded-2xl bg-surface-1/50 border border-white/5 backdrop-blur-xl">
                 <span class="text-sm text-text-secondary">Posisi Kamu</span>
                 <div class="h-4 w-px bg-white/10"></div>
-                <span class="text-xl font-serif font-bold text-brand-blue-light">#{{ $myRank }}</span>
+                <span class="text-xl font-semibold text-brand-blue-light">#{{ $myRank }}</span>
                 <span class="text-xs text-text-muted">dari {{ $users->count() }}</span>
             </div>
         </div>
@@ -76,7 +76,7 @@
 
                         <h3 class="text-lg font-bold text-white mb-1 truncate">{{ $user->name }}</h3>
                         <div class="flex items-center justify-center gap-1.5 mb-4">
-                            <span class="text-2xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">{{ number_format($user->xp) }}</span>
+                            <span class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-brand-amber to-brand-amber-light">{{ number_format($user->xp) }}</span>
                             <span class="text-[10px] font-bold text-text-muted uppercase tracking-widest">XP</span>
                         </div>
                         
@@ -100,7 +100,7 @@
             <div class="p-2">
                 @foreach($users as $user)
                 <div class="flex items-center gap-4 py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-white/[0.02] group @if($user->id == $me->id) bg-brand-blue/10 border border-brand-blue/20 @endif">
-                    <div class="w-8 text-sm font-serif font-bold text-text-muted group-hover:text-white transition-colors">
+                    <div class="w-8 text-sm font-semibold text-text-muted group-hover:text-white transition-colors">
                         #{{ $user->rank }}
                     </div>
                     
@@ -119,7 +119,7 @@
                     </div>
 
                     <div class="text-right">
-                        <div class="text-sm font-serif font-bold text-brand-amber">{{ number_format($user->xp) }}</div>
+                        <div class="text-sm font-semibold text-brand-amber">{{ number_format($user->xp) }}</div>
                         <div class="text-[9px] font-bold text-text-muted uppercase tracking-tighter">Total XP</div>
                     </div>
                 </div>

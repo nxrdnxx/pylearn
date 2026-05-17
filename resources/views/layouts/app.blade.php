@@ -50,7 +50,6 @@
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                 }
@@ -64,7 +63,7 @@
             font-family: 'Outfit', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        .font-serif { font-family: 'Playfair Display', serif; }
+        /* Removed font-serif helper */
         
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 10px; }
@@ -108,7 +107,7 @@
                     </div>
 
                     <div class="text-brand-blue-light text-[10px] font-bold tracking-[0.3em] uppercase mb-4">Pencapaian Baru Dibuka</div>
-                    <h3 class="text-3xl font-serif font-bold text-white mb-4 tracking-tight">{{ $badge->name }}</h3>
+                    <h3 class="text-3xl font-semibold text-white mb-4 tracking-tight">{{ $badge->name }}</h3>
                     <p class="text-sm text-text-secondary mb-10 leading-relaxed px-4">
                         {{ $badge->description }}
                     </p>

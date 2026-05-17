@@ -27,15 +27,31 @@ class AuthController extends Controller
     public function login(\App\Http\Requests\LoginRequest $request)
     {
         try {
-            if (Auth::attempt($request->validated())) {
+            $credentials = $request->validated();
+            $loginAsAdmin = $request->boolean('login_as_admin');
+
+            if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
                 
                 $user = Auth::user();
+
+                if ($loginAsAdmin && $user->role !== 'admin') {
+                    Auth::logout();
+                    return back()->with('error', 'Akun ini bukan admin');
+                }
+
+                if (!$loginAsAdmin && $user->role === 'admin') {
+                    return redirect()->intended(route('admin.dashboard'));
+                }
                 
                 $earnedBadges = \App\Services\UserService::handleLoginStreak($user);
                 
                 if (count($earnedBadges) > 0) {
                     session()->flash('new_badges', $earnedBadges);
+                }
+
+                if ($user->role === 'admin') {
+                    return redirect()->intended(route('admin.dashboard'));
                 }
                 
                 return redirect()->intended(route('dashboard.index'));

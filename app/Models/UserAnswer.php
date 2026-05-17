@@ -19,7 +19,8 @@ class UserAnswer extends Model
     public $timestamps = false; // karena cuma pakai created_at
 
     protected $casts = [
-        'is_correct' => 'boolean'
+        'is_correct' => 'boolean',
+        'created_at' => 'datetime'
     ];
 
     public function user()

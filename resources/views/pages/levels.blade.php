@@ -79,7 +79,7 @@
                                 <i class="fa-solid fa-lock text-text-muted text-2xl relative z-10"></i>
                             @else
                                 <div class="absolute inset-0 @if($isCompleted) bg-brand-green @else bg-brand-blue @endif opacity-10"></div>
-                                <span class="text-2xl font-serif font-bold @if($isCompleted) text-brand-green-light @else text-brand-blue-light @endif relative z-10">
+                                <span class="text-2xl font-semibold @if($isCompleted) text-brand-green-light @else text-brand-blue-light @endif relative z-10">
                                     {{ $level['order'] }}
                                 </span>
                             @endif

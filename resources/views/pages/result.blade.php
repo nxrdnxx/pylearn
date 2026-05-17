@@ -6,7 +6,7 @@
 <!-- Simplified Premium Navbar -->
 <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-[1100px] mx-auto w-full flex items-center justify-between">
-        <a href="{{ route('dashboard.index') }}" class="flex items-center gap-3 font-serif text-2xl text-white no-underline group">
+        <a href="{{ route('dashboard.index') }}" class="flex items-center gap-3 font-semibold text-2xl text-white no-underline group">
             <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center group-hover:scale-110 transition-transform">
                 <i class="fa-brands fa-python text-white"></i>
             </div>
@@ -32,12 +32,12 @@
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-text-muted uppercase tracking-widest mb-4">
                 <i class="fa-solid fa-flag-checkered"></i> Level Selesai
             </div>
-            <h1 class="font-serif text-4xl text-white mb-8 tracking-tight">{{ $levelName ?? 'Level ' . $levelId }}</h1>
+            <h1 class="font-semibold text-4xl text-white mb-8 tracking-tight">{{ $levelName ?? 'Level ' . $levelId }}</h1>
 
             <div class="relative inline-block">
                 <!-- Score Circle/Value -->
                 <div class="relative z-10">
-                    <div class="text-[120px] font-serif font-bold tracking-tighter leading-none {{ $percentage >= 80 ? 'text-brand-green-light drop-shadow-[0_0_30px_rgba(31,184,122,0.3)]' : 'text-brand-red drop-shadow-[0_0_30px_rgba(224,82,82,0.3)]' }}">
+                    <div class="text-[120px] font-semibold tracking-tighter leading-none {{ $percentage >= 80 ? 'text-brand-green-light drop-shadow-[0_0_30px_rgba(31,184,122,0.3)]' : 'text-brand-red drop-shadow-[0_0_30px_rgba(224,82,82,0.3)]' }}">
                         {{ $percentage }}
                     </div>
                     <div class="text-sm font-bold text-text-muted uppercase tracking-[0.3em] mt-2">Skor Akhir</div>
@@ -59,15 +59,15 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-3 gap-4 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-400">
             <div class="bg-surface-1 rounded-[24px] border border-white/5 p-5 transition-all hover:border-white/10">
-                <div class="text-2xl font-serif font-bold text-brand-amber mb-1">+{{ $xp }}</div>
+                <div class="text-2xl font-semibold text-brand-amber mb-1">+{{ $xp }}</div>
                 <div class="text-[9px] font-bold text-text-muted uppercase tracking-widest">XP Diraih</div>
             </div>
             <div class="bg-surface-1 rounded-[24px] border border-white/5 p-5 transition-all hover:border-white/10">
-                <div class="text-2xl font-serif font-bold text-brand-green-light mb-1">{{ $correct }}</div>
+                <div class="text-2xl font-semibold text-brand-green-light mb-1">{{ $correct }}</div>
                 <div class="text-[9px] font-bold text-text-muted uppercase tracking-widest">Benar</div>
             </div>
             <div class="bg-surface-1 rounded-[24px] border border-white/5 p-5 transition-all hover:border-white/10">
-                <div class="text-2xl font-serif font-bold text-brand-red mb-1">{{ $wrong }}</div>
+                <div class="text-2xl font-semibold text-brand-red mb-1">{{ $wrong }}</div>
                 <div class="text-[9px] font-bold text-text-muted uppercase tracking-widest">Salah</div>
             </div>
         </div>

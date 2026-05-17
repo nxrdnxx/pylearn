@@ -13,7 +13,7 @@
 <!-- Fixed Premium Quiz Navbar -->
 <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-[1100px] mx-auto w-full flex items-center justify-between gap-8">
-        <a href="{{ route('level.index') }}" class="hidden md:flex items-center gap-3 font-serif text-2xl text-white no-underline group">
+        <a href="{{ route('level.index') }}" class="hidden md:flex items-center gap-3 font-semibold text-2xl text-white no-underline group">
             <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center group-hover:scale-110 transition-transform">
                 <i class="fa-brands fa-python text-white"></i>
             </div>
@@ -24,7 +24,7 @@
             <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden shadow-inner">
                 <div class="h-full bg-gradient-to-r from-brand-blue to-brand-blue-light rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(59,124,244,0.4)]" style="width:{{ $percent }}%"></div>
             </div>
-            <div class="flex items-center gap-2 font-serif font-bold text-white whitespace-nowrap">
+            <div class="flex items-center gap-2 font-semibold text-white whitespace-nowrap">
                 <span class="text-xl">{{ $current }}</span>
                 <span class="text-xs text-text-muted mt-1">/ {{ $total }}</span>
             </div>
@@ -161,7 +161,7 @@
                             <label class="option-label group relative flex items-center gap-5 p-6 rounded-[24px] bg-surface-1 border-2 border-white/5 cursor-pointer transition-all duration-300 hover:border-brand-blue/30 hover:bg-surface-2 overflow-hidden">
                                 <input type="radio" name="answer" value="{{ $opt['key'] }}" required class="hidden option-input">
                                 
-                                <div class="option-indicator w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xs font-serif font-bold text-text-muted group-hover:text-brand-blue-light transition-all">
+                                <div class="option-indicator w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xs font-semibold text-text-muted group-hover:text-brand-blue-light transition-all">
                                     {{ $keys[$i] }}
                                 </div>
                                 
@@ -219,7 +219,7 @@
             <div class="w-24 h-24 rounded-[40px] bg-brand-green/10 flex items-center justify-center mx-auto mb-8 border border-brand-green/20">
                 <i class="fa-solid fa-check-double text-brand-green text-4xl"></i>
             </div>
-            <h2 class="font-serif text-3xl font-bold mb-4 text-white">Selesai Berhasil!</h2>
+            <h2 class="font-semibold text-3xl mb-4 text-white">Selesai Berhasil!</h2>
             <p class="text-text-secondary text-lg mb-10 max-w-sm mx-auto">Kamu sudah menamatkan semua soal di level ini. Siap untuk tantangan berikutnya?</p>
             <a href="{{ route('level.index') }}" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-brand-blue text-white font-bold text-base hover:bg-brand-blue-light transition-all shadow-xl shadow-brand-blue/20">
                 <i class="fa-solid fa-arrow-left"></i> Kembali ke Kurikulum
