@@ -58,6 +58,10 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 // LOGOUT
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// GOOGLE OAUTH
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
 // WEBSITE
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/dashboard', [DashboardController::class, 'index'])

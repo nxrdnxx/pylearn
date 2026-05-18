@@ -132,6 +132,17 @@
                 </button>
             </form>
 
+            <div class="relative flex py-6 items-center">
+                <div class="flex-grow border-t border-white/5"></div>
+                <span class="flex-shrink mx-4 text-text-muted text-[10px] font-bold uppercase tracking-[0.2em]">atau daftar dengan</span>
+                <div class="flex-grow border-t border-white/5"></div>
+            </div>
+
+            <a href="{{ route('auth.google') }}" class="w-full py-4 rounded-[20px] border border-white/5 bg-ink-950/40 hover:bg-white/5 hover:border-white/10 text-white font-bold text-[15px] flex items-center justify-center gap-3 transition-all duration-300 active:scale-[0.98] shadow-lg group">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-5 h-5 group-hover:scale-110 transition-transform">
+                <span>Google</span>
+            </a>
+
 
 
             <p class="text-center text-[15px] text-text-secondary mt-10">
