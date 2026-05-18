@@ -11,8 +11,8 @@
 @endphp
 
 <!-- Fixed Premium Quiz Navbar -->
-<nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
-    <div class="max-w-[1100px] mx-auto w-full flex items-center justify-between gap-8">
+<nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-4 sm:px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-[1100px] mx-auto w-full flex items-center justify-between gap-4 sm:gap-8">
         <a href="{{ route('level.index') }}" class="hidden md:flex items-center gap-3 font-semibold text-2xl text-white no-underline group">
             <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center group-hover:scale-110 transition-transform">
                 <i class="fa-brands fa-python text-white"></i>
@@ -20,18 +20,18 @@
             <span>Py<em class="italic text-brand-blue-light">Learn</em></span>
         </a>
 
-        <div class="flex-1 flex items-center gap-6 max-w-2xl">
+        <div class="flex-1 flex items-center gap-3 sm:gap-6 max-w-2xl">
             <div class="flex-1 h-2 bg-white/5 rounded-full overflow-hidden shadow-inner">
                 <div class="h-full bg-gradient-to-r from-brand-blue to-brand-blue-light rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(59,124,244,0.4)]" style="width:{{ $percent }}%"></div>
             </div>
-            <div class="flex items-center gap-2 font-semibold text-white whitespace-nowrap">
-                <span class="text-xl">{{ $current }}</span>
+            <div class="flex items-center gap-1.5 font-semibold text-white whitespace-nowrap">
+                <span class="text-lg sm:text-xl">{{ $current }}</span>
                 <span class="text-xs text-text-muted mt-1">/ {{ $total }}</span>
             </div>
         </div>
 
-        <a href="{{ route('level.index') }}" class="px-5 py-2 rounded-xl bg-white/5 text-white font-bold text-xs border border-white/10 hover:bg-white/10 transition-all">
-            <i class="fa-solid fa-xmark mr-2 text-[10px]"></i>Keluar
+        <a href="{{ route('level.index') }}" class="px-4 sm:px-5 py-2 rounded-xl bg-white/5 text-white font-bold text-xs border border-white/10 hover:bg-white/10 transition-all">
+            <i class="fa-solid fa-xmark mr-1.5 sm:mr-2 text-[10px]"></i>Keluar
         </a>
     </div>
 </nav>

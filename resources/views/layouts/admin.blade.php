@@ -31,10 +31,13 @@
     </style>
 </head>
 <body class="min-h-screen">
+    <!-- Sidebar Backdrop for Mobile -->
+    <div id="admin-sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300" onclick="toggleAdminSidebar()"></div>
+
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="w-72 glass-sidebar flex flex-col sticky top-0 h-screen z-50">
-            <div class="p-8 border-b border-white/5">
+        <aside id="admin-sidebar" class="fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0 lg:static w-72 glass-sidebar flex flex-col h-screen z-50 transition-transform duration-300">
+            <div class="p-8 border-b border-white/5 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
                         <i class="fas fa-terminal text-white"></i>
@@ -44,6 +47,9 @@
                         <span class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Admin Control</span>
                     </div>
                 </div>
+                <button onclick="toggleAdminSidebar()" class="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             
             <nav class="flex-1 p-6 space-y-2 overflow-y-auto">
@@ -108,21 +114,24 @@
         <!-- Main Content -->
         <main class="flex-1 min-h-screen overflow-x-hidden">
             <!-- Header -->
-            <header class="h-20 flex items-center justify-between px-8 border-b border-white/5 sticky top-0 z-40 bg-[#04091a]/80 backdrop-blur-md">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-lg font-semibold text-white">
+            <header class="h-20 flex items-center justify-between px-4 sm:px-8 border-b border-white/5 sticky top-0 z-40 bg-[#04091a]/80 backdrop-blur-md">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <button onclick="toggleAdminSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="text-base sm:text-lg font-semibold text-white truncate">
                         @yield('header_title', 'Dashboard')
                     </h2>
                 </div>
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                        <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold">AD</div>
-                        <span class="text-sm font-medium text-slate-300">Administrator</span>
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <div class="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white">AD</div>
+                        <span class="text-xs sm:text-sm font-medium text-slate-300 truncate max-w-[80px] sm:max-w-none">Administrator</span>
                     </div>
                 </div>
             </header>
 
-            <div class="p-8">
+            <div class="p-4 sm:p-8">
                 @if(session('success'))
                     <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-500">
                         <i class="fas fa-check-circle"></i>
@@ -142,6 +151,23 @@
         </main>
     </div>
 
+    <script>
+        function toggleAdminSidebar() {
+            const sidebar = document.getElementById('admin-sidebar');
+            const overlay = document.getElementById('admin-sidebar-overlay');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
     @stack('scripts')
 </body>
 </html>

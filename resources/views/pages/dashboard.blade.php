@@ -140,7 +140,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 <a href="{{ route('level.index') }}" class="bg-slate-900 rounded-xl border border-gray-800 p-4 flex items-center gap-3 hover:border-gray-700 hover:bg-gray-800 transition-all cursor-pointer">
                     <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
                         <i class="fa-solid fa-layer-group text-blue-400"></i>

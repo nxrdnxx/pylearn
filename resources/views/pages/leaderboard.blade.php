@@ -44,7 +44,10 @@
 
             @foreach($podium as $user)
             @if($user)
-            <div class="podium-card group relative @if($user->rank == 1) md:scale-110 md:-translate-y-4 z-20 @endif transition-all duration-500">
+            @php
+                $orderClass = $user->rank == 1 ? 'order-1 md:order-2' : ($user->rank == 2 ? 'order-2 md:order-1' : 'order-3 md:order-3');
+            @endphp
+            <div class="podium-card group relative {{ $orderClass }} @if($user->rank == 1) md:scale-110 md:-translate-y-4 z-20 @endif transition-all duration-500">
                 <div class="relative bg-surface-1 rounded-[32px] border @if($user->rank == 1) border-brand-amber/30 shadow-[0_20px_50px_rgba(232,160,34,0.15)] @else border-white/5 @endif p-8 text-center overflow-hidden">
                     
                     @if($user->rank == 1)

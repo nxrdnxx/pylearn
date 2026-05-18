@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between px-2">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 px-2">
                     <label class="flex items-center gap-3 text-[13px] text-text-secondary cursor-pointer group">
                         <div class="relative flex items-center">
                             <input type="checkbox" class="peer h-5 w-5 appearance-none rounded-lg bg-ink-950 border border-white/10 checked:bg-brand-blue checked:border-brand-blue transition-all cursor-pointer">

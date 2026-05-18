@@ -464,7 +464,7 @@
   }
   
   .level-icon.current {
-    @apply bg-brand-blue/15 text-brand-blue-light shadow-[0_0_20px_rgba(59,124,244,0.2)] animate-pulse-glow;
+    @apply bg-brand-blue/15 text-brand-blue-light shadow-[0_0_20px_rgba(59,124,244,0.2)] animate-pulse;
   }
   
   .level-icon.locked {
