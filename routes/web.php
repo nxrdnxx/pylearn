@@ -10,7 +10,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\DailyQuestController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\PlaygroundController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\QuestionnaireController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,13 +50,12 @@ Route::get('/fix-db', function() {
 //     return view('landing.blade.php');
 // });
 
-// LOGIN
+// LOGIN (hanya Google OAuth untuk user biasa)
 Route::get('/login', [AuthController::class, 'index'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post')->middleware('throttle:5,1');
 
-// REGISTER
-Route::get('/register', [AuthController::class, 'registerView'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post')->middleware('throttle:5,1');
+// ADMIN LOGIN (basic auth)
+Route::get('/admin/login', [AuthController::class, 'adminLoginView'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.post')->middleware('throttle:5,1');
 
 // LOGOUT
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -76,8 +78,26 @@ Route::get('/leaderboard', [LeaderboardController::class, 'index'])
 Route::get('/badge', [BadgeController::class, 'index'])
     ->name('badge.index')
     ->middleware('auth');
+Route::get('/playground', [PlaygroundController::class, 'index'])
+    ->name('playground.index')
+    ->middleware('auth');
+Route::post('/playground/execute', [PlaygroundController::class, 'execute'])
+    ->name('playground.execute')
+    ->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'index'])
     ->name('profile.index')
+    ->middleware('auth');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])
+    ->name('profile.edit')
+    ->middleware('auth');
+Route::put('/profile', [ProfileController::class, 'update'])
+    ->name('profile.update')
+    ->middleware('auth');
+Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])
+    ->name('profile.delete-photo')
+    ->middleware('auth');
+Route::get('/materials/{level}', [MaterialController::class, 'show'])
+    ->name('material.show')
     ->middleware('auth');
 Route::get('/quiz/{level}', [QuizController::class, 'show'])
     ->name('quiz.show')
@@ -100,6 +120,14 @@ Route::post('/daily-quest', [DailyQuestController::class, 'submit'])
     ->name('daily-quest.submit')
     ->middleware('auth');
 
+// QUESTIONNAIRE
+Route::get('/questionnaire/questions', [QuestionnaireController::class, 'getQuestions'])
+    ->name('questionnaire.questions')
+    ->middleware('auth');
+Route::post('/questionnaire/submit', [QuestionnaireController::class, 'submit'])
+    ->name('questionnaire.submit')
+    ->middleware('auth');
+
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/materials', [AdminController::class, 'materials'])->name('admin.materials');
@@ -107,6 +135,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/materials/{level}', [AdminController::class, 'updateMaterial'])->name('admin.materials.update');
     Route::delete('/materials/{level}', [AdminController::class, 'destroyMaterial'])->name('admin.materials.destroy');
     Route::get('/quizzes', [AdminController::class, 'quizzes'])->name('admin.quizzes');
+    Route::get('/quiz/{level}', [AdminController::class, 'levelQuiz'])->name('admin.quizzes.level');
     Route::post('/quizzes', [AdminController::class, 'storeQuiz'])->name('admin.quizzes.store');
     Route::put('/quizzes/{question}', [AdminController::class, 'updateQuiz'])->name('admin.quizzes.update');
     Route::delete('/quizzes/{question}', [AdminController::class, 'destroyQuiz'])->name('admin.quizzes.destroy');
@@ -121,4 +150,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/quiz-results', [AdminController::class, 'quizResults'])->name('admin.quiz-results');
     Route::get('/students', [AdminController::class, 'students'])->name('admin.students');
     Route::put('/students/{user}', [AdminController::class, 'updateStudent'])->name('admin.students.update');
+    Route::delete('/students/{user}', [AdminController::class, 'destroyStudent'])->name('admin.students.destroy');
 });

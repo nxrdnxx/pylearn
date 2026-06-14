@@ -9,14 +9,17 @@ class Question extends Model
     protected $fillable = [
         'level_id',
         'type',
+        'answer_type',
         'question_text',
         'code_snippet',
+        'options',
         'correct_answer',
         'explanation',
         'test_cases'
     ];
 
     protected $casts = [
+        'options' => 'array',
         'test_cases' => 'array'
     ];
 

@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - PyLearn</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}">
+    @php
+        $manifestPath = public_path('build/manifest.json');
+        $cssFile = 'build/assets/app.css';
+        if (file_exists($manifestPath)) {
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+            $cssFile = 'build/' . ($manifest['resources/css/app.css']['file'] ?? 'assets/app.css');
+        }
+    @endphp
+    <link rel="stylesheet" href="{{ asset($cssFile) }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #04091a 0%, #070f26 100%);
-            color: #e2e8f0;
-        }
         .glass-sidebar {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(12px);
@@ -36,8 +40,8 @@
 
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside id="admin-sidebar" class="fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0 lg:static w-72 glass-sidebar flex flex-col h-screen z-50 transition-transform duration-300">
-            <div class="p-8 border-b border-white/5 flex items-center justify-between">
+        <aside id="admin-sidebar" class="fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0 lg:static w-64 xl:w-72 glass-sidebar flex flex-col h-screen z-50 transition-transform duration-300">
+            <div class="p-5 lg:p-8 border-b border-white/5 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
                         <i class="fas fa-terminal text-white"></i>
@@ -52,8 +56,8 @@
                 </button>
             </div>
             
-            <nav class="flex-1 p-6 space-y-2 overflow-y-auto">
-                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 px-4">Main Menu</p>
+            <nav class="flex-1 p-4 lg:p-6 space-y-1 lg:space-y-2 overflow-y-auto">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 lg:mb-4 px-3 lg:px-4">Main Menu</p>
                 
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group {{ request()->routeIs('admin.dashboard') ? 'nav-link-active' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
                     <i class="fas fa-grid-2 w-5 group-hover:scale-110 transition-transform"></i> 
@@ -100,7 +104,7 @@
                 </a>
             </nav>
 
-            <div class="p-6 border-t border-white/5">
+            <div class="p-4 lg:p-6 border-t border-white/5">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all w-full text-left group">
@@ -114,7 +118,7 @@
         <!-- Main Content -->
         <main class="flex-1 min-h-screen overflow-x-hidden">
             <!-- Header -->
-            <header class="h-20 flex items-center justify-between px-4 sm:px-8 border-b border-white/5 sticky top-0 z-40 bg-[#04091a]/80 backdrop-blur-md">
+            <header class="h-16 sm:h-20 flex items-center justify-between px-3 sm:px-6 lg:px-8 border-b border-white/5 sticky top-0 z-40 bg-[#04091a]/80 backdrop-blur-md">
                 <div class="flex items-center gap-3 sm:gap-4">
                     <button onclick="toggleAdminSidebar()" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all">
                         <i class="fas fa-bars"></i>
@@ -131,7 +135,7 @@
                 </div>
             </header>
 
-            <div class="p-4 sm:p-8">
+            <div class="p-3 sm:p-6 lg:p-8">
                 @if(session('success'))
                     <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-500">
                         <i class="fas fa-check-circle"></i>

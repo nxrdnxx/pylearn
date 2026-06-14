@@ -15,48 +15,47 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-white/5">
-                    <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Urutan</th>
-                    <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Nama Level</th>
-                    <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Deskripsi</th>
-                    <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Soal</th>
-                    <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Status</th>
-                    <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5 text-right">Aksi</th>
+                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Urutan</th>
+                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Nama Level</th>
+                    <th class="hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Deskripsi</th>
+                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Soal</th>
+                    <th class="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Status</th>
+                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5 text-right">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-white/5">
                 @foreach($levels as $level)
                 <tr class="hover:bg-white/[0.02] transition-colors group">
-                    <td class="px-6 py-5 text-sm text-slate-500 font-mono">
+                    <td class="px-3 sm:px-6 py-3 sm:py-5 text-xs sm:text-sm text-slate-500 font-mono">
                         #{{ $level->order_number }}
                     </td>
-                    <td class="px-6 py-5">
-                        <div class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">{{ $level->name }}</div>
+                    <td class="px-3 sm:px-6 py-3 sm:py-5">
+                        <div class="text-xs sm:text-sm font-bold text-white group-hover:text-blue-400 transition-colors">{{ $level->name }}</div>
                     </td>
-                    <td class="px-6 py-5">
-                        <div class="text-xs text-slate-500 max-w-[250px] line-clamp-2">{{ $level->description ?? '-' }}</div>
+                    <td class="hidden md:table-cell px-3 sm:px-6 py-3 sm:py-5">
+                        <div class="text-xs text-slate-500 max-w-[200px] line-clamp-2">{{ $level->description ?? '-' }}</div>
                     </td>
-                    <td class="px-6 py-5">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[10px] font-bold text-slate-400 border border-white/5">
+                    <td class="px-3 sm:px-6 py-3 sm:py-5">
+                        <div class="flex items-center gap-1 sm:gap-2">
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 flex items-center justify-center text-[10px] font-bold text-slate-400 border border-white/5">
                                 {{ $level->questions->count() }}
                             </div>
-                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Soal</span>
                         </div>
                     </td>
-                    <td class="px-6 py-5">
+                    <td class="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-5">
                         @if($level->is_active)
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20">
+                        <span class="inline-flex items-center px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20">
                             <i class="fas fa-check-circle mr-1.5"></i>Aktif
                         </span>
                         @else
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-red-500/10 text-red-400 text-[10px] font-bold uppercase tracking-widest border border-red-500/20">
+                        <span class="inline-flex items-center px-2 py-1 rounded-lg bg-red-500/10 text-red-400 text-[10px] font-bold uppercase tracking-widest border border-red-500/20">
                             <i class="fas fa-times-circle mr-1.5"></i>Nonaktif
                         </span>
                         @endif
                     </td>
-                    <td class="px-6 py-5 text-right">
-                        <button onclick="editLevel({{ $level->id }})" class="w-8 h-8 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
-                            <i class="fas fa-edit text-xs"></i>
+                    <td class="px-3 sm:px-6 py-3 sm:py-5 text-right">
+                        <button onclick="editLevel({{ $level->id }})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
+                            <i class="fas fa-edit text-[10px] sm:text-xs"></i>
                         </button>
                     </td>
                 </tr>

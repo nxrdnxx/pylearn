@@ -14,7 +14,8 @@ class User extends Authenticatable
         'role',
         'xp',
         'login_streak',
-        'last_login_date'
+        'last_login_date',
+        'profile_picture'
     ];
 
     protected $hidden = [
@@ -48,5 +49,10 @@ class User extends Authenticatable
     public function streak()
     {
         return $this->hasOne(UserStreak::class);
+    }
+
+    public function questionnaireResponses()
+    {
+        return $this->hasMany(QuestionnaireResponse::class);
     }
 }

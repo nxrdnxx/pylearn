@@ -10,12 +10,11 @@ class Badge extends Model
         'name',
         'description',
         'icon',
-        'condition'
+        'condition',
+        'color'
     ];
 
-    protected $casts = [
-        'condition' => 'array'
-    ];
+    protected $casts = [];
 
     public function users()
     {

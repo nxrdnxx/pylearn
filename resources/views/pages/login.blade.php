@@ -56,16 +56,14 @@
     <div class="w-full max-w-[440px] relative z-10">
         <div class="text-center mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
             <a href="{{ route('landing.index') }}" class="inline-flex items-center gap-3 font-semibold text-3xl text-white no-underline mb-8 group">
-                <div class="w-12 h-12 rounded-2xl bg-brand-blue flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                    <i class="fa-brands fa-python text-white text-xl"></i>
-                </div>
-                <span>Py<em class="italic text-brand-blue-light">Learn</em></span>
+                <i class="fa-brands fa-python text-brand-blue-light text-3xl drop-shadow-[0_0_10px_rgba(96,165,250,0.6)] group-hover:drop-shadow-[0_0_14px_rgba(96,165,250,0.9)] transition-all duration-300"></i>
+                <span class="bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
             </a>
             <h1 class="text-4xl font-semibold tracking-tight text-white mb-3">Selamat Datang</h1>
-            <p class="text-text-secondary">Masuk untuk melanjutkan petualangan kodemu.</p>
+            <p class="text-text-secondary">Masuk dengan Google untuk memulai petualangan kodemu.</p>
         </div>
 
-        <div class="bg-surface-1/50 backdrop-blur-2xl rounded-[40px] border border-white/5 p-10 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+        <div class="bg-surface-1/50 backdrop-blur-2xl rounded-[32px] sm:rounded-[40px] border border-white/5 p-6 sm:p-10 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
             @if(session('error'))
             <div class="bg-brand-red/10 border border-brand-red/20 px-5 py-4 rounded-2xl mb-8 text-sm text-brand-red-light flex items-center gap-3">
                 <i class="fa-solid fa-circle-exclamation"></i>
@@ -73,79 +71,32 @@
             </div>
             @endif
 
-            <form method="POST" action="{{ route('login.post') }}" class="space-y-6">
-                @csrf
+            @if(session('success'))
+            <div class="bg-brand-green/10 border border-brand-green/20 px-5 py-4 rounded-2xl mb-8 text-sm text-brand-green-light flex items-center gap-3">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+            @endif
 
-                <div class="space-y-2">
-                    <label class="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] ml-2">Alamat Email</label>
-                    <div class="relative group">
-                        <div class="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand-blue-light transition-colors">
-                            <i class="fa-solid fa-envelope"></i>
-                        </div>
-                        <input class="w-full bg-ink-950/50 border border-white/5 rounded-[20px] pl-12 pr-6 py-4 text-[15px] text-white placeholder:text-text-muted outline-none focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/10 transition-all" type="email" name="email" placeholder="nama@email.com" required>
-                    </div>
-                </div>
+            <div class="text-center mb-8">
+                <p class="text-text-secondary text-[15px]">Masuk dengan akun Google untuk melanjutkan.</p>
+            </div>
 
-                <div class="space-y-2">
-                    <div class="flex items-center justify-between px-2">
-                        <label class="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Password</label>
-                        <a href="#" class="text-[10px] font-bold text-brand-blue-light uppercase tracking-widest hover:text-white transition-colors">Lupa?</a>
-                    </div>
-                    <div class="relative group">
-                        <div class="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand-blue-light transition-colors">
-                            <i class="fa-solid fa-lock"></i>
-                        </div>
-                        <input class="w-full bg-ink-950/50 border border-white/5 rounded-[20px] pl-12 pr-6 py-4 text-[15px] text-white placeholder:text-text-muted outline-none focus:border-brand-blue/50 focus:ring-4 focus:ring-brand-blue/10 transition-all" type="password" name="password" placeholder="Masukkan password" required>
-                    </div>
-                </div>
-
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 px-2">
-                    <label class="flex items-center gap-3 text-[13px] text-text-secondary cursor-pointer group">
-                        <div class="relative flex items-center">
-                            <input type="checkbox" class="peer h-5 w-5 appearance-none rounded-lg bg-ink-950 border border-white/10 checked:bg-brand-blue checked:border-brand-blue transition-all cursor-pointer">
-                            <i class="fa-solid fa-check absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] text-white opacity-0 peer-checked:opacity-100 transition-opacity"></i>
-                        </div>
-                        <span class="group-hover:text-white transition-colors">Ingat Sesi Saya</span>
-                    </label>
-                    <label class="flex items-center gap-2 text-[13px] text-brand-amber cursor-pointer group">
-                        <div class="relative flex items-center">
-                            <input type="checkbox" name="login_as_admin" class="peer h-5 w-5 appearance-none rounded-lg bg-ink-950 border border-white/10 checked:bg-brand-amber checked:border-brand-amber transition-all cursor-pointer">
-                            <i class="fa-solid fa-check absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] text-white opacity-0 peer-checked:opacity-100 transition-opacity"></i>
-                        </div>
-                        <span class="group-hover:text-white transition-colors">Masuk sebagai Admin</span>
-                    </label>
-                </div>
-
-                <button class="w-full py-5 rounded-[24px] bg-brand-blue text-white font-bold text-base hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.3)] hover:-translate-y-1 transition-all active:scale-[0.98] shadow-xl shadow-brand-blue/10" type="submit">
-                    Masuk Sekarang
-                </button>
-            </form>
+            <a href="{{ route('auth.google') }}" class="w-full py-5 rounded-[24px] bg-white text-gray-900 font-bold text-base hover:bg-gray-100 hover:shadow-[0_20px_40px_rgba(255,255,255,0.15)] hover:-translate-y-1 transition-all active:scale-[0.98] shadow-xl flex items-center justify-center gap-3 group">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-6 h-6">
+                <span>Masuk dengan Google</span>
+            </a>
 
             <div class="relative flex py-6 items-center">
                 <div class="flex-grow border-t border-white/5"></div>
-                <span class="flex-shrink mx-4 text-text-muted text-[10px] font-bold uppercase tracking-[0.2em]">atau masuk dengan</span>
+                <span class="flex-shrink mx-4 text-text-muted text-[10px] font-bold uppercase tracking-[0.2em]">atau</span>
                 <div class="flex-grow border-t border-white/5"></div>
             </div>
 
-            <a href="{{ route('auth.google') }}" class="w-full py-4 rounded-[20px] border border-white/5 bg-ink-950/40 hover:bg-white/5 hover:border-white/10 text-white font-bold text-[15px] flex items-center justify-center gap-3 transition-all duration-300 active:scale-[0.98] shadow-lg group">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-5 h-5 group-hover:scale-110 transition-transform">
-                <span>Google</span>
+            <a href="{{ route('admin.login') }}" class="w-full py-4 rounded-[20px] border border-white/5 bg-ink-950/40 hover:bg-white/5 hover:border-white/10 text-brand-amber font-bold text-[15px] flex items-center justify-center gap-3 transition-all duration-300 active:scale-[0.98] shadow-lg group">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Masuk sebagai Admin</span>
             </a>
-
-
-
-            <p class="text-center text-[15px] text-text-secondary mt-10">
-                Belum punya akun?
-                <a href="{{ route('register') }}" class="text-brand-blue-light font-bold hover:text-white transition-colors">
-                    Daftar Sekarang
-                </a>
-            </p>
-        </div>
-        
-        <div class="text-center mt-10 text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] flex items-center justify-center gap-3">
-            <div class="w-1 h-1 rounded-full bg-brand-green"></div>
-            Sistem Keamanan Terenkripsi
-            <div class="w-1 h-1 rounded-full bg-brand-green"></div>
         </div>
     </div>
 </div>
@@ -160,5 +111,20 @@
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
+<script>
+function togglePassword(btn) {
+    const input = btn.parentElement.querySelector('input');
+    const icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+</script>
 </body>
 </html>

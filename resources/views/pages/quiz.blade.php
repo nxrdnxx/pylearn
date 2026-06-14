@@ -4,6 +4,7 @@
 
 @section('content')
 @php
+    $hideNavbar = true;
     $question = $question ?? null;
     $total = $questions->count() ?? 0;
     $current = request()->get('q', 1);
@@ -13,11 +14,9 @@
 <!-- Fixed Premium Quiz Navbar -->
 <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-4 sm:px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-[1100px] mx-auto w-full flex items-center justify-between gap-4 sm:gap-8">
-        <a href="{{ route('level.index') }}" class="hidden md:flex items-center gap-3 font-semibold text-2xl text-white no-underline group">
-            <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i class="fa-brands fa-python text-white"></i>
-            </div>
-            <span>Py<em class="italic text-brand-blue-light">Learn</em></span>
+        <a href="{{ route('level.index') }}" class="hidden md:flex items-center gap-2.5 font-semibold text-2xl text-white no-underline group">
+            <i class="fa-brands fa-python text-brand-blue-light text-2xl drop-shadow-[0_0_8px_rgba(96,165,250,0.6)] group-hover:drop-shadow-[0_0_12px_rgba(96,165,250,0.9)] transition-all duration-300"></i>
+            <span class="bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
         </a>
 
         <div class="flex-1 flex items-center gap-3 sm:gap-6 max-w-2xl">
@@ -55,10 +54,10 @@
         </div>
 
         <!-- Question Card -->
-        <div class="bg-surface-1 rounded-[32px] border border-white/10 p-8 md:p-10 mb-8 shadow-2xl relative overflow-hidden">
+        <div class="bg-surface-1 rounded-[24px] md:rounded-[32px] border border-white/10 p-5 sm:p-8 md:p-10 mb-8 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 left-0 w-2 h-full bg-brand-blue opacity-20"></div>
             
-            <p class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed">
+            <p class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-6 md:mb-8 leading-relaxed">
                 {{ $question->question_text }}
             </p>
 
@@ -112,14 +111,14 @@
                         </a>
                     @else
                         <a href="{{ route('quiz.result', $level->id) }}" class="px-8 py-4 rounded-2xl bg-brand-blue text-white font-bold text-base hover:bg-brand-blue-light hover:shadow-[0_15px_30px_rgba(59,124,244,0.3)] hover:-translate-y-1 transition-all flex items-center gap-3">
-                            Selesaikan Kuis & Lihat Hasil <i class="fa-solid fa-bullseye"></i>
+                            Selesaikan Kuis & Lihat Hasil 
                         </a>
                     @endif
                 </div>
             </div>
 
-            <audio id="sound-correct" src="https://cdn.pixabay.com/audio/2022/03/15/audio_276037000d.mp3" preload="auto"></audio>
-            <audio id="sound-incorrect" src="https://cdn.pixabay.com/audio/2022/03/10/audio_c3527054eb.mp3" preload="auto"></audio>
+            <audio id="sound-correct" src="{{ asset('assets/audio/correct.wav') }}" preload="auto"></audio>
+            <audio id="sound-incorrect" src="{{ asset('assets/audio/incorrect.wav') }}" preload="auto"></audio>
 
             <script>
                 window.addEventListener('load', function() {
@@ -141,7 +140,7 @@
 
                 @if($question->answer_type === 'mcq' && $question->options)
                     @php
-                        $optionsData = json_decode($question->options, true);
+                        $optionsData = is_array($question->options) ? $question->options : json_decode($question->options, true);
                         $correctAnswer = $question->correct_answer;
                         $optionsWithKeys = [];
                         
@@ -158,17 +157,17 @@
                     @if(count($optionsWithKeys) > 0)
                     <div class="grid grid-cols-1 gap-4 mb-10">
                         @foreach($optionsWithKeys as $i => $opt)
-                            <label class="option-label group relative flex items-center gap-5 p-6 rounded-[24px] bg-surface-1 border-2 border-white/5 cursor-pointer transition-all duration-300 hover:border-brand-blue/30 hover:bg-surface-2 overflow-hidden">
+                            <label class="option-label group relative flex items-center gap-3 sm:gap-5 p-4 sm:p-6 rounded-[20px] sm:rounded-[24px] bg-surface-1 border-2 border-white/5 cursor-pointer transition-all duration-300 hover:border-brand-blue/30 hover:bg-surface-2 overflow-hidden">
                                 <input type="radio" name="answer" value="{{ $opt['key'] }}" required class="hidden option-input">
                                 
-                                <div class="option-indicator w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xs font-semibold text-text-muted group-hover:text-brand-blue-light transition-all">
+                                <div class="option-indicator w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[10px] sm:text-xs font-semibold text-text-muted group-hover:text-brand-blue-light transition-all">
                                     {{ $keys[$i] }}
                                 </div>
                                 
-                                <span class="text-base text-slate-200 font-medium z-10 flex-1 leading-relaxed">{{ $opt['key'] }}</span>
+                                <span class="text-sm sm:text-base text-slate-200 font-medium z-10 flex-1 leading-relaxed">{{ $opt['key'] }}</span>
                                 
                                 <div class="check-icon opacity-0 scale-50 transition-all duration-300">
-                                    <i class="fa-solid fa-circle-check text-brand-blue text-xl"></i>
+                                    <i class="fa-solid fa-circle-check text-brand-blue text-lg sm:text-xl"></i>
                                 </div>
                             </label>
                         @endforeach
@@ -185,7 +184,7 @@
                     </div>
                 @endif
 
-                <button type="submit" class="w-full py-5 rounded-[24px] bg-brand-blue text-white font-bold text-lg hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.3)] hover:-translate-y-1 transition-all active:scale-[0.98]">
+                <button type="submit" class="w-full py-4 sm:py-5 rounded-[20px] sm:rounded-[24px] bg-brand-blue text-white font-bold text-base sm:text-lg hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.3)] hover:-translate-y-1 transition-all active:scale-[0.98]">
                     Konfirmasi Jawaban
                 </button>
             </form>

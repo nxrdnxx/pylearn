@@ -7,6 +7,7 @@ use App\Http\Requests\SubmitQuizAnswerRequest;
 use App\Models\Level;
 use App\Models\Question;
 use App\Models\UserAnswer;
+use App\Models\UserProgress;
 use App\Services\BadgeService;
 use Illuminate\Support\Facades\DB;
 
@@ -15,34 +16,55 @@ class QuizController extends Controller
     public function show($levelId)
     {
         $level = Level::findOrFail($levelId);
+
+        if ($level->content) {
+            $hasRead = UserProgress::where('user_id', auth()->id())
+                ->where('level_id', $level->id)
+                ->whereNotNull('material_read_at')
+                ->exists();
+
+            if (!$hasRead) {
+                return redirect()->route('material.show', $level->id)
+                    ->with('error', 'Baca materi terlebih dahulu sebelum mengerjakan quiz.');
+            }
+        }
+
         $questions = Question::where('level_id', $levelId)->orderBy('id')->get();
-        
+
         if ($questions->isEmpty()) {
             return redirect()->route('level.index')->with('error', 'Tidak ada soal di level ini.');
         }
 
         $current = request()->get('q');
-        
+
         if (!$current) {
-            // ✅ RESUME LOGIC: Cari soal terakhir yang dijawab
+            $progress = UserProgress::where('user_id', auth()->id())
+                ->where('level_id', $level->id)
+                ->first();
+
             $lastAnsweredId = UserAnswer::where('user_id', auth()->id())
                 ->whereIn('question_id', $questions->pluck('id'))
                 ->orderByDesc('id')
                 ->value('question_id');
-            
+
             if ($lastAnsweredId) {
-                // Temukan index soal terakhir
-                $currentIndex = $questions->search(function($item) use ($lastAnsweredId) {
-                    return $item->id == $lastAnsweredId;
-                });
-                
-                // Lanjut ke soal berikutnya (index + 1)
-                // Tapi karena $current adalah 1-based, maka index + 2
-                $current = $currentIndex + 2;
-                
-                // Jika sudah melewati semua soal, arahkan ke hasil
-                if ($current > $questions->count()) {
-                    return redirect()->route('quiz.result', $levelId);
+                $lastAnswerTime = UserAnswer::where('user_id', auth()->id())
+                    ->where('question_id', $lastAnsweredId)
+                    ->value('created_at');
+
+                if ($progress && $progress->material_read_at && $lastAnswerTime &&
+                    $progress->material_read_at->gt($lastAnswerTime)) {
+                    $current = 1;
+                } else {
+                    $currentIndex = $questions->search(function($item) use ($lastAnsweredId) {
+                        return $item->id == $lastAnsweredId;
+                    });
+
+                    $current = $currentIndex + 2;
+
+                    if ($current > $questions->count()) {
+                        $current = 1;
+                    }
                 }
             } else {
                 $current = 1;
@@ -50,7 +72,7 @@ class QuizController extends Controller
         }
 
         $question = $questions[$current - 1] ?? null;
-        
+
         if (!$question && $current > 1) {
              return redirect()->route('quiz.result', $levelId);
         }
@@ -62,7 +84,7 @@ class QuizController extends Controller
     {
         try {
             $validated = $request->validated();
-            
+
             $question = Question::findOrFail($validated['question_id']);
             $user = auth()->user();
 
@@ -71,54 +93,63 @@ class QuizController extends Controller
 
             $isCorrect = strtolower($userAnswer) === strtolower($correctAnswer);
 
-            // ========== HITUNG STREAK ==========
-            $lastAnswer = UserAnswer::where('user_id', $user->id)
-                ->orderByDesc('id')
-                ->first();
+            $xpPerCorrect = config('game.xp.per_correct_answer', 20);
+            $streakBonus = config('game.xp.bonus_streak_multiplier', 1.5);
 
-            $streak = 0;
-            if ($lastAnswer && $lastAnswer->is_correct) {
-                $streak = $lastAnswer->streak ?? 0;
-            }
+            DB::beginTransaction();
 
-            // ========== HITUNG XP ==========
-            $xpEarned = 0;
-            if ($isCorrect) {
-                $xpEarned = 20; // XP dasar
-                
-                // Streak bonus: mulai dari streak 3++
-                if ($streak >= 3) {
-                    $xpEarned += 5; // Bonus streak
+            try {
+                // Hitung streak
+                $lastAnswer = UserAnswer::where('user_id', $user->id)
+                    ->orderByDesc('id')
+                    ->first();
+
+                $streak = 0;
+                if ($lastAnswer && $lastAnswer->is_correct) {
+                    $streak = $lastAnswer->streak ?? 0;
                 }
-                
-                $streak++; // Tambah streak
-            } else {
-                $streak = 0; // Reset streak
-            }
 
-            // ✅ SIMPAN KE DATABASE
-            UserAnswer::updateOrCreate(
-                [
-                    'user_id' => $user->id,
-                    'question_id' => $question->id,
-                ],
-                [
-                    'user_answer' => $userAnswer,
-                    'is_correct' => $isCorrect,
-                    'score' => $isCorrect ? 20 : 0,
-                    'xp_earned' => $xpEarned,
-                    'streak' => $streak,
-                ]
-            );
+                // Hitung XP
+                $xpEarned = 0;
+                if ($isCorrect) {
+                    $xpEarned = $xpPerCorrect;
 
-            // ✅ UPDATE XP USER
-            if ($isCorrect) {
-                $user->increment('xp', $xpEarned);
-                
-                $earnedBadges = BadgeService::checkAndAward($user->id, $xpEarned);
-                if (count($earnedBadges) > 0) {
-                    session()->flash('new_badges', $earnedBadges);
+                    if ($streak >= 3) {
+                        $xpEarned = (int) round($xpEarned * $streakBonus);
+                    }
+
+                    $streak++;
+                } else {
+                    $streak = 0;
                 }
+
+                UserAnswer::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'question_id' => $question->id,
+                    ],
+                    [
+                        'user_answer' => $userAnswer,
+                        'is_correct' => $isCorrect,
+                        'score' => $isCorrect ? $xpPerCorrect : 0,
+                        'xp_earned' => $xpEarned,
+                        'streak' => $streak,
+                    ]
+                );
+
+                if ($isCorrect) {
+                    $user->increment('xp', $xpEarned);
+
+                    $earnedBadges = BadgeService::checkAndAward($user->id, $xpEarned);
+                    if (count($earnedBadges) > 0) {
+                        session()->flash('new_badges', $earnedBadges);
+                    }
+                }
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
             }
 
             return redirect()->route('quiz.show', [
@@ -136,7 +167,7 @@ class QuizController extends Controller
                 'user_id' => auth()->id(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             return redirect()->back()
                 ->with('error', 'Terjadi kesalahan saat memproses jawaban. Silakan coba lagi.');
         }
@@ -147,7 +178,6 @@ class QuizController extends Controller
         try {
             $userId = auth()->id();
 
-            // Ambil semua soal di level ini
             $questions = Question::where('level_id', $levelId)->get();
             $totalQuestions = $questions->count();
 
@@ -156,28 +186,38 @@ class QuizController extends Controller
                     ->with('error', 'Level tidak memiliki soal.');
             }
 
-            // Ambil semua jawaban user untuk soal di level ini
             $answers = UserAnswer::where('user_id', $userId)
                 ->whereIn('question_id', $questions->pluck('id'))
                 ->get();
 
-            // Hitung benar & salah
             $correct = $answers->where('is_correct', 1)->count();
             $wrong = $answers->where('is_correct', 0)->count();
 
-            // Total skor user (20 per benar)
             $totalScore = $answers->sum('score');
 
-            // Skor maksimal
-            $maxScore = $totalQuestions * 20;
+            $maxScore = $totalQuestions * config('game.xp.per_correct_answer', 20);
 
-            // Persentase nilai
-            $percentage = $maxScore > 0 
-                ? round(($totalScore / $maxScore) * 100) 
+            $percentage = $maxScore > 0
+                ? round(($totalScore / $maxScore) * 100)
                 : 0;
 
-            // XP total
             $xp = $answers->sum('xp_earned');
+
+            $progress = UserProgress::firstOrCreate(
+                ['user_id' => $userId, 'level_id' => $levelId],
+                ['status' => 'unlocked']
+            );
+
+            $progress->material_read_at = null;
+            $progress->score = max($percentage, $progress->score ?? 0);
+            $progress->attempt_count = ($progress->attempt_count ?? 0) + 1;
+
+            if ($percentage >= 80) {
+                $progress->status = 'completed';
+                $progress->completed_at = now();
+            }
+
+            $progress->save();
 
             return view('pages.result', compact(
                 'totalScore',
@@ -195,7 +235,7 @@ class QuizController extends Controller
                 'level_id' => $levelId,
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             return redirect()->route('level.index')
                 ->with('error', 'Terjadi kesalahan saat menampilkan hasil.');
         }

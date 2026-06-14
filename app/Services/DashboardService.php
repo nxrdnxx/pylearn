@@ -30,13 +30,22 @@ class DashboardService
             ->groupBy('level_id')
             ->pluck('total', 'level_id');
 
-        // Get answered counts per level for this user
-        $answeredCounts = UserAnswer::where('user_id', $userId)
+        // Get distinct question IDs attempted per level (any answer)
+        $attemptedCounts = UserAnswer::where('user_id', $userId)
+            ->join('questions', 'user_answers.question_id', '=', 'questions.id')
+            ->select('questions.level_id', DB::raw('count(distinct questions.id) as attempted'))
+            ->groupBy('questions.level_id')
+            ->pluck('attempted', 'level_id');
+
+        // Get distinct question IDs answered correctly per level
+        $correctCounts = UserAnswer::where('user_id', $userId)
             ->where('is_correct', true)
             ->join('questions', 'user_answers.question_id', '=', 'questions.id')
-            ->select('questions.level_id', DB::raw('count(distinct questions.id) as answered'))
+            ->select('questions.level_id', DB::raw('count(distinct questions.id) as correct'))
             ->groupBy('questions.level_id')
-            ->pluck('answered', 'level_id');
+            ->pluck('correct', 'level_id');
+
+        $hasActivity = UserAnswer::where('user_id', $userId)->exists();
 
         $completedLevel = 0;
         $currentLevel = null;
@@ -46,15 +55,17 @@ class DashboardService
 
         foreach ($levels as $level) {
             $total = $questionCounts[$level->id] ?? 0;
-            $answered = $answeredCounts[$level->id] ?? 0;
+            $attempted = $attemptedCounts[$level->id] ?? 0;
+            $correct = $correctCounts[$level->id] ?? 0;
+            $scorePercent = $total > 0 ? round(($correct / $total) * 100) : 0;
 
-            if ($total > 0 && $answered >= $total) {
+            if ($total > 0 && $attempted >= $total && $scorePercent >= 80) {
                 $completedLevel++;
             } elseif (!$currentLevel) {
                 $currentLevel = $level;
-                $currentAnswered = $answered;
+                $currentAnswered = $attempted;
                 $currentTotal = $total;
-                $currentProgress = $total > 0 ? ($answered / $total) * 100 : 0;
+                $currentProgress = $total > 0 ? ($attempted / $total) * 100 : 0;
             }
         }
 
@@ -74,7 +85,8 @@ class DashboardService
         $streak = $user->login_streak ?? 0;
 
         // ================= LEADERBOARD =================
-        $topUsers = User::orderByDesc('xp')
+        $topUsers = User::where('role', '!=', 'admin')
+            ->orderByDesc('xp')
             ->take(5)
             ->get();
 
@@ -95,7 +107,7 @@ class DashboardService
 
         foreach ($recentLevelAnswers as $cl) {
             $totalInLevel = $questionCounts[$cl->level_id] ?? 0;
-            $correctInLevel = $answeredCounts[$cl->level_id] ?? 0;
+            $correctInLevel = $correctCounts[$cl->level_id] ?? 0;
             $scorePercent = $totalInLevel > 0 ? round(($correctInLevel / $totalInLevel) * 100) : 0;
             
             $recentActivities->push([
@@ -133,6 +145,7 @@ class DashboardService
         return [
             'user' => $user,
             'xp' => $xp,
+            'hasActivity' => $hasActivity,
             'completedLevel' => $completedLevel,
             'totalLevel' => $levels->count(),
             'currentLevel' => $currentLevel,

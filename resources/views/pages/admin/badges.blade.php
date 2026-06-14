@@ -6,25 +6,25 @@
 <div class="flex items-center justify-between mb-8">
     <div>
         <h3 class="text-xl font-bold text-white">Sistem Achievement</h3>
-        <p class="text-sm text-slate-500">Atur hadiah dan badge untuk memotivasi mahasiswa</p>
+        <p class="text-sm text-slate-500">Atur hadiah dan badge untuk memotivasi pelajar</p>
     </div>
     <button onclick="document.getElementById('addModal').classList.remove('hidden')" 
-        class="px-5 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-2xl text-xs font-bold transition-all shadow-lg shadow-amber-600/20 flex items-center gap-2">
-        <i class="fas fa-plus"></i> Tambah Badge Baru
+        class="px-4 sm:px-5 py-2.5 sm:py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-2xl text-[10px] sm:text-xs font-bold transition-all shadow-lg shadow-amber-600/20 flex items-center gap-2">
+        <i class="fas fa-plus"></i> Tambah Badge
     </button>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @foreach($badges as $badge)
     <div class="glass-card rounded-3xl p-6 hover:bg-white/5 transition-all duration-300 group relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 blur-3xl -mr-12 -mt-12 group-hover:bg-amber-500/10 transition-colors"></div>
+        <div class="absolute top-0 right-0 w-24 h-24 blur-3xl -mr-12 -mt-12 transition-colors" style="background: {{ $badge->color ?? '#f59e0b' }}0d;"></div>
         
         <div class="flex items-center gap-5 mb-6">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-500/5 flex items-center justify-center border border-white/5 shadow-xl group-hover:scale-110 transition-transform duration-500">
-                <i class="{{ $badge->icon ?? 'fas fa-medal' }} text-2xl text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]"></i>
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/5 shadow-xl group-hover:scale-110 transition-transform duration-500" style="background: linear-gradient(135deg, {{ $badge->color ?? '#f59e0b' }}33, {{ $badge->color ?? '#f59e0b' }}1a);">
+                <i class="{{ $badge->icon ?? 'fa-solid fa-medal' }} text-2xl" style="color: {{ $badge->color ?? '#f59e0b' }}; filter: drop-shadow(0 0 6px {{ $badge->color ?? '#f59e0b' }}66);"></i>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">{{ $badge->name }}</h3>
+                <h3 class="text-lg font-bold text-white transition-colors" style="--badge-color: {{ $badge->color ?? '#f59e0b' }};" onmouseenter="this.style.color=this.style.getPropertyValue('--badge-color')" onmouseleave="this.style.color=''">{{ $badge->name }}</h3>
                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded-md">{{ $badge->condition ?? 'Manual' }}</span>
             </div>
         </div>
@@ -90,6 +90,16 @@
                         class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-all font-mono">
                 </div>
             </div>
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Warna Badge</label>
+                <div class="flex items-center gap-3">
+                    <input type="color" name="color" id="addColor" value="#f59e0b"
+                        class="w-12 h-12 rounded-xl border border-white/10 cursor-pointer bg-transparent">
+                    <input type="text" id="addColorText" value="#f59e0b" maxlength="7"
+                        class="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-all font-mono"
+                        oninput="document.getElementById('addColor').value=this.value">
+                </div>
+            </div>
             
             <div class="flex gap-3 pt-4">
                 <button type="button" onclick="document.getElementById('addModal').classList.add('hidden')" 
@@ -143,6 +153,16 @@
                         class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-all font-mono">
                 </div>
             </div>
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Warna Badge</label>
+                <div class="flex items-center gap-3">
+                    <input type="color" name="color" id="editColor" value="#f59e0b"
+                        class="w-12 h-12 rounded-xl border border-white/10 cursor-pointer bg-transparent">
+                    <input type="text" id="editColorText" value="#f59e0b" maxlength="7"
+                        class="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-all font-mono"
+                        oninput="document.getElementById('editColor').value=this.value">
+                </div>
+            </div>
             
             <div class="flex gap-3 pt-4">
                 <button type="button" onclick="document.getElementById('editModal').classList.add('hidden')" 
@@ -168,6 +188,9 @@ function editBadge(id) {
     document.getElementById('editDescription').value = b.description || '';
     document.getElementById('editIcon').value = b.icon || '';
     document.getElementById('editCondition').value = b.condition || '';
+    const color = b.color || '#f59e0b';
+    document.getElementById('editColor').value = color;
+    document.getElementById('editColorText').value = color;
     document.getElementById('editForm').action = '/admin/badges/' + id;
     document.getElementById('editModal').classList.remove('hidden');
 }

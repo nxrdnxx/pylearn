@@ -1,11 +1,9 @@
 <nav class="fixed top-0 left-0 right-0 z-[100] h-16 flex items-center px-4 lg:px-7 gap-1.5 bg-slate-950/80 backdrop-blur-2xl border-b border-gray-800">
     <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-blue-500/0 via-blue-500/40 to-blue-500/0"></div>
 
-    <a href="{{ route('dashboard.index') }}" class="flex items-center gap-2.5 font-semibold text-xl text-white no-underline transition-all duration-300 group">
-        <div class="relative w-9 h-9 rounded-xl bg-blue-500 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.4)]">
-            <i class="fa-brands fa-python text-white text-lg"></i>
-        </div>
-        <span class="font-semibold text-xl hidden md:block">Py<em class="text-blue-400">Learn</em></span>
+    <a href="{{ route('dashboard.index') }}" class="flex items-center gap-2 font-semibold text-xl text-white no-underline transition-all duration-300 group">
+        <i class="fa-brands fa-python text-blue-400 text-xl drop-shadow-[0_0_8px_rgba(96,165,250,0.6)] group-hover:drop-shadow-[0_0_12px_rgba(96,165,250,0.9)] transition-all duration-300"></i>
+        <span class="font-semibold text-xl hidden md:block bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
     </a>
 
     <div class="hidden lg:flex items-center gap-1 ml-8">
@@ -20,6 +18,9 @@
         </a>
         <a href="{{ route('badge.index') }}" class="relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ Route::currentRouteName() == 'badge.index' ? 'text-white bg-gray-800' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
             <i class="fa-solid fa-medal mr-1.5 text-xs"></i>Badge
+        </a>
+        <a href="{{ route('playground.index') }}" class="relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ Route::currentRouteName() == 'playground.index' ? 'text-white bg-gray-800' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
+            <i class="fa-solid fa-terminal mr-1.5 text-xs"></i>Playground
         </a>
     </div>
 
@@ -46,14 +47,27 @@
         @endauth
 
         @auth
-        <div class="relative group/profile">
-            <button class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white flex-shrink-0 transition-all duration-200 hover:ring-2 hover:ring-blue-500 bg-gradient-to-br from-blue-600 to-blue-500">
-                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+        <div class="relative" id="profile-dropdown">
+            <button onclick="toggleProfileMenu()" class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:ring-2 hover:ring-yellow-500 bg-yellow-500 overflow-hidden">
+                @if(Auth::user()->profile_picture)
+                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="" class="w-full h-full object-cover">
+                @else
+                <i class="fa-solid fa-user text-white text-sm"></i>
+                @endif
             </button>
-            <div class="absolute right-0 top-full mt-3 w-56 py-2 rounded-xl bg-gray-800 border border-gray-700 shadow-xl opacity-0 invisible group-hover/profile:opacity-100 group-hover/profile:visible transition-all duration-200 translate-y-2 group-hover/profile:translate-y-0 z-50">
-                <div class="px-4 py-2 border-b border-gray-700 mb-1">
-                    <div class="text-sm font-semibold text-white">{{ Auth::user()->name }}</div>
-                    <div class="text-xs text-gray-500">{{ Auth::user()->email }}</div>
+            <div id="profile-menu" class="absolute right-0 top-full mt-3 w-56 py-2 rounded-xl bg-gray-800 border border-gray-700 shadow-xl z-50 hidden">
+                <div class="px-4 py-3 border-b border-gray-700 mb-1 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        @if(Auth::user()->profile_picture)
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="" class="w-full h-full object-cover">
+                        @else
+                        <i class="fa-solid fa-user text-white text-base"></i>
+                        @endif
+                    </div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-semibold text-white truncate">{{ Auth::user()->name }}</div>
+                        <div class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</div>
+                    </div>
                 </div>
                 <a href="{{ route('profile.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:text-white hover:bg-gray-700 transition-all">
                     <i class="fa-solid fa-user w-4"></i>Profil
@@ -71,13 +85,13 @@
         <a href="{{ route('login') }}" class="hidden sm:flex px-3 py-1.5 rounded-lg text-gray-400 text-sm border border-gray-700 hover:bg-gray-800 hover:text-white transition-all no-underline">
             <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Masuk
         </a>
-        <a href="{{ route('register') }}" class="px-3 py-1.5 rounded-lg bg-blue-500 text-white text-sm hover:bg-blue-400 transition-all no-underline">
-            <i class="fa-solid fa-user-plus mr-1.5"></i>
-            <span class="hidden sm:inline">Daftar</span>
+        <a href="{{ route('login') }}" class="px-3 py-1.5 rounded-lg bg-blue-500 text-white text-sm hover:bg-blue-400 transition-all no-underline">
+            <i class="fa-brands fa-google mr-1.5"></i>
+            <span class="hidden sm:inline">Masuk</span>
         </a>
         @endauth
 
-        <button class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+        <button id="mobile-menu-btn" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
             <i class="fa-solid fa-bars"></i>
         </button>
     </div>
@@ -97,6 +111,9 @@
         <a href="{{ route('badge.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors {{ Route::currentRouteName() == 'badge.index' ? 'bg-gray-800 text-white' : '' }}">
             <i class="fa-solid fa-medal w-5"></i>Badge
         </a>
+        <a href="{{ route('playground.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors {{ Route::currentRouteName() == 'playground.index' ? 'bg-gray-800 text-white' : '' }}">
+            <i class="fa-solid fa-terminal w-5"></i>Playground
+        </a>
         
         @auth
         <div class="flex items-center justify-between gap-3 mt-4 pt-4 border-t border-gray-800">
@@ -112,5 +129,21 @@
             </div>
         </div>
         @endauth
+
     </div>
 </div>
+
+<script>
+function toggleProfileMenu() {
+    const menu = document.getElementById('profile-menu');
+    menu.classList.toggle('hidden');
+}
+
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('profile-dropdown');
+    const menu = document.getElementById('profile-menu');
+    if (dropdown && menu && !dropdown.contains(e.target)) {
+        menu.classList.add('hidden');
+    }
+});
+</script>

@@ -17,19 +17,23 @@
                     @auth
                     <div class="relative group">
                         <div class="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-purple rounded-[32px] blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
-                        <div class="relative w-32 h-32 rounded-[32px] bg-surface-1 border-2 border-white/10 flex items-center justify-center text-4xl font-bold text-white shadow-2xl overflow-hidden">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                        <div class="relative w-32 h-32 rounded-[32px] bg-yellow-500 border-2 border-yellow-400/30 flex items-center justify-center shadow-2xl overflow-hidden">
+                            @if(Auth::user()->profile_picture)
+                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                            @else
+                            <i class="fa-solid fa-user text-white text-5xl"></i>
+                            @endif
                         </div>
                     </div>
                     
                     <div class="text-center md:text-left">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue-light text-[11px] font-bold uppercase tracking-wider mb-3">
-                            <i class="fa-solid fa-user-graduate text-[10px]"></i> Profil Pelajar
-                        </div>
-                        <h1 class="text-4xl font-semibold text-white mb-2 tracking-tight">{{ Auth::user()->name }}</h1>
-                        <p class="text-text-secondary mb-5">{{ Auth::user()->email }}</p>
-                        
-                        <div class="flex items-center justify-center md:justify-start gap-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue-light text-[11px] font-bold uppercase tracking-wider mb-3">
+                <i class="fa-solid fa-user-graduate text-[10px]"></i> Profil Pelajar
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-semibold text-white mb-2 tracking-tight break-all">{{ Auth::user()->name }}</h1>
+            <p class="text-text-secondary mb-5 break-all">{{ Auth::user()->email }}</p>
+            
+            <div class="flex items-center justify-center md:justify-start gap-3 flex-wrap">
                             <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 text-[11px] font-bold text-text-muted uppercase tracking-widest">
                                 <i class="fa-solid fa-layer-group mr-2 text-brand-blue"></i>Level {{ $completedLevel }}
                             </span>
@@ -41,9 +45,12 @@
                     @endauth
                 </div>
 
-                <div class="flex gap-3">
-                    <button class="px-5 py-2.5 rounded-2xl bg-surface-1/50 backdrop-blur-xl border border-white/10 text-white font-bold text-xs hover:bg-surface-2 transition-all shadow-xl" onclick="document.getElementById('logoutModal').style.display = 'flex'">
-                        <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+                <div class="flex gap-2 sm:gap-3">
+                    <a href="{{ route('profile.edit') }}" class="px-4 sm:px-5 py-2.5 rounded-2xl bg-brand-blue/10 backdrop-blur-xl border border-brand-blue/20 text-brand-blue-light font-bold text-[10px] sm:text-xs hover:bg-brand-blue/20 transition-all shadow-xl">
+                        <i class="fa-solid fa-pen-to-square mr-1 sm:mr-2"></i>                        <span class="hidden sm:inline">Edit</span> Profil
+                    </a>
+                    <button class="px-4 sm:px-5 py-2.5 rounded-2xl bg-surface-1/50 backdrop-blur-xl border border-white/10 text-white font-bold text-[10px] sm:text-xs hover:bg-surface-2 transition-all shadow-xl" onclick="document.getElementById('logoutModal').style.display = 'flex'">
+                        <i class="fa-solid fa-right-from-bracket mr-1 sm:mr-2"></i>Logout
                     </button>
                 </div>
             </div>
@@ -52,39 +59,39 @@
 
     <div class="max-w-[1100px] mx-auto px-7 pb-24">
         <!-- Stats Grid -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-            <div class="bg-surface-1 rounded-[28px] border border-white/5 p-6 hover:border-brand-blue/20 transition-all group">
-                <div class="w-12 h-12 rounded-2xl bg-brand-blue/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-bolt text-brand-blue text-xl"></i>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-10">
+            <div class="bg-surface-1 rounded-[20px] sm:rounded-[28px] border border-white/5 p-4 sm:p-6 hover:border-brand-blue/20 transition-all group">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-blue/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-bolt text-brand-blue text-lg sm:text-xl"></i>
                 </div>
-                <div class="text-3xl font-semibold text-white mb-1">{{ number_format($xp) }}</div>
-                <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Total XP</div>
+                <div class="text-2xl sm:text-3xl font-semibold text-white mb-1">{{ number_format($xp) }}</div>
+                <div class="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-widest">Total XP</div>
             </div>
             
-            <div class="bg-surface-1 rounded-[28px] border border-white/5 p-6 hover:border-brand-green/20 transition-all group">
-                <div class="w-12 h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-check-double text-brand-green text-xl"></i>
+            <div class="bg-surface-1 rounded-[20px] sm:rounded-[28px] border border-white/5 p-4 sm:p-6 hover:border-brand-green/20 transition-all group">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-check-double text-brand-green text-lg sm:text-xl"></i>
                 </div>
-                <div class="text-3xl font-semibold text-white mb-1">
-                    {{ $completedLevel }}<span class="text-lg text-text-muted">/{{ $totalLevel }}</span>
+                <div class="text-2xl sm:text-3xl font-semibold text-white mb-1">
+                    {{ $completedLevel }}<span class="text-base sm:text-lg text-text-muted">/{{ $totalLevel }}</span>
                 </div>
-                <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Level Selesai</div>
+                <div class="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-widest">Level Selesai</div>
             </div>
             
-            <div class="bg-surface-1 rounded-[28px] border border-white/5 p-6 hover:border-brand-purple/20 transition-all group">
-                <div class="w-12 h-12 rounded-2xl bg-brand-purple/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-medal text-brand-purple text-xl"></i>
+            <div class="bg-surface-1 rounded-[20px] sm:rounded-[28px] border border-white/5 p-4 sm:p-6 hover:border-brand-purple/20 transition-all group">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-purple/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-medal text-brand-purple text-lg sm:text-xl"></i>
                 </div>
-                <div class="text-3xl font-semibold text-white mb-1">{{ $badgeCount }}</div>
-                <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Badge Diraih</div>
+                <div class="text-2xl sm:text-3xl font-semibold text-white mb-1">{{ $badgeCount }}</div>
+                <div class="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-widest">Badge Diraih</div>
             </div>
             
-            <div class="bg-surface-1 rounded-[28px] border border-white/5 p-6 hover:border-brand-amber/20 transition-all group">
-                <div class="w-12 h-12 rounded-2xl bg-brand-amber/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-fire text-brand-amber text-xl"></i>
+            <div class="bg-surface-1 rounded-[20px] sm:rounded-[28px] border border-white/5 p-4 sm:p-6 hover:border-brand-amber/20 transition-all group">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-amber/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-fire text-brand-amber text-lg sm:text-xl"></i>
                 </div>
-                <div class="text-3xl font-semibold text-white mb-1">{{ $streak }}</div>
-                <div class="text-xs font-bold text-text-muted uppercase tracking-widest">Hari Streak</div>
+                <div class="text-2xl sm:text-3xl font-semibold text-white mb-1">{{ $streak }}</div>
+                <div class="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-widest">Hari Streak</div>
             </div>
         </div>
 
@@ -97,48 +104,48 @@
             </div>
             
             <div class="overflow-x-auto">
-                <table class="w-full text-left">
+                <table class="w-full text-left min-w-[500px] sm:min-w-0">
                     <thead>
                         <tr class="bg-white/[0.02]">
-                            <th class="px-8 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">Level</th>
-                            <th class="px-8 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">Skor</th>
-                            <th class="px-8 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">XP</th>
-                            <th class="px-8 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">Tanggal</th>
-                            <th class="px-8 py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-right">Status</th>
+                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">Level</th>
+                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">Skor</th>
+                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">XP</th>
+                            <th class="hidden sm:table-cell px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">Tanggal</th>
+                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-right">Status</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
                         @forelse($activities as $activity)
                         <tr class="hover:bg-white/[0.02] transition-colors group">
-                            <td class="px-8 py-5">
-                                <div class="text-sm font-bold text-white group-hover:text-brand-blue-light transition-colors">{{ $activity['level_name'] }}</div>
+                            <td class="px-4 sm:px-8 py-3 sm:py-5">
+                                <div class="text-xs sm:text-sm font-bold text-white group-hover:text-brand-blue-light transition-colors">{{ $activity['level_name'] }}</div>
                             </td>
-                            <td class="px-8 py-5 text-center">
-                                <div class="text-sm font-semibold {{ $activity['score'] >= 80 ? 'text-brand-green' : ($activity['score'] >= 50 ? 'text-brand-amber' : 'text-brand-red') }}">
+                            <td class="px-4 sm:px-8 py-3 sm:py-5 text-center">
+                                <div class="text-xs sm:text-sm font-semibold {{ $activity['score'] >= 80 ? 'text-brand-green' : ($activity['score'] >= 50 ? 'text-brand-amber' : 'text-brand-red') }}">
                                     {{ $activity['score'] }}
                                 </div>
                             </td>
-                            <td class="px-8 py-5 text-center">
-                                <div class="text-sm font-semibold text-brand-amber">+{{ $activity['xp'] }}</div>
+                            <td class="px-4 sm:px-8 py-3 sm:py-5 text-center">
+                                <div class="text-xs sm:text-sm font-semibold text-brand-amber">+{{ $activity['xp'] }}</div>
                             </td>
-                            <td class="px-8 py-5">
-                                <div class="text-xs text-text-secondary">{{ $activity['date']->diffForHumans() }}</div>
+                            <td class="hidden sm:table-cell px-4 sm:px-8 py-3 sm:py-5">
+                                <div class="text-xs text-text-secondary whitespace-nowrap">{{ $activity['date']->diffForHumans() }}</div>
                             </td>
-                            <td class="px-8 py-5 text-right">
+                            <td class="px-4 sm:px-8 py-3 sm:py-5 text-right">
                                 @if($activity['status'] === 'Lulus')
-                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-brand-green/10 text-brand-green text-[9px] font-bold uppercase tracking-tighter border border-brand-green/20">Lulus</span>
+                                <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded bg-brand-green/10 text-brand-green text-[9px] font-bold uppercase tracking-tighter border border-brand-green/20">Lulus</span>
                                 @else
-                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-brand-red/10 text-brand-red text-[9px] font-bold uppercase tracking-tighter border border-brand-red/20">Gagal</span>
+                                <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded bg-brand-red/10 text-brand-red text-[9px] font-bold uppercase tracking-tighter border border-brand-red/20">Gagal</span>
                                 @endif
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="px-8 py-20 text-center">
-                                <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fa-solid fa-inbox text-text-muted text-xl"></i>
+                            <td colspan="5" class="px-4 sm:px-8 py-10 sm:py-20 text-center">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
+                                    <i class="fa-solid fa-inbox text-text-muted text-lg sm:text-xl"></i>
                                 </div>
-                                <div class="text-sm text-text-secondary">Belum ada aktivitas tercatat.</div>
+                                <div class="text-xs sm:text-sm text-text-secondary">Belum ada aktivitas tercatat.</div>
                             </td>
                         </tr>
                         @endforelse

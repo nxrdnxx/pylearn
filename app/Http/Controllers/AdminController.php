@@ -7,7 +7,6 @@ use App\Models\Question;
 use App\Models\Badge;
 use App\Models\User;
 use App\Models\UserAnswer;
-use App\Models\Leaderboard;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -34,6 +33,7 @@ class AdminController extends Controller
         Level::create($request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'content' => 'nullable|string',
             'order_number' => 'required|integer',
         ]));
         return back()->with('success', 'Materi berhasil ditambahkan');
@@ -44,6 +44,7 @@ class AdminController extends Controller
         $level->update($request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'content' => 'nullable|string',
             'order_number' => 'required|integer',
         ]));
         return back()->with('success', 'Materi berhasil diperbarui');
@@ -57,36 +58,58 @@ class AdminController extends Controller
 
     public function quizzes()
     {
-        $questions = Question::with('level')->orderBy('level_id')->get();
-        $levels = Level::all();
-        return view('pages.admin.quizzes', compact('questions', 'levels'));
+        $levels = Level::withCount('questions')->orderBy('order_number')->get();
+        return view('pages.admin.quizzes', compact('levels'));
+    }
+
+    public function levelQuiz(Level $level)
+    {
+        $questions = Question::where('level_id', $level->id)->orderBy('id')->get();
+        $levels = Level::orderBy('order_number')->get();
+        return view('pages.admin.quiz-level', compact('level', 'questions', 'levels'));
     }
 
     public function storeQuiz(Request $request)
     {
-        Question::create($request->validate([
+        $data = $request->validate([
             'level_id' => 'required|exists:levels,id',
             'type' => 'required|string',
             'question_text' => 'required|string',
             'code_snippet' => 'nullable|string',
+            'options' => 'nullable|string',
             'correct_answer' => 'required|string',
             'explanation' => 'nullable|string',
             'test_cases' => 'nullable|array',
-        ]));
+        ]);
+
+        if (!empty($data['options'])) {
+            $data['options'] = array_map('trim', explode("\n", $data['options']));
+        }
+
+        Question::create($data);
         return back()->with('success', 'Quiz berhasil ditambahkan');
     }
 
     public function updateQuiz(Request $request, Question $question)
     {
-        $question->update($request->validate([
+        $data = $request->validate([
             'level_id' => 'required|exists:levels,id',
             'type' => 'required|string',
             'question_text' => 'required|string',
             'code_snippet' => 'nullable|string',
+            'options' => 'nullable|string',
             'correct_answer' => 'required|string',
             'explanation' => 'nullable|string',
             'test_cases' => 'nullable|array',
-        ]));
+        ]);
+
+        if (!empty($data['options'])) {
+            $data['options'] = array_map('trim', explode("\n", $data['options']));
+        } else {
+            $data['options'] = null;
+        }
+
+        $question->update($data);
         return back()->with('success', 'Quiz berhasil diperbarui');
     }
 
@@ -109,6 +132,7 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'icon' => 'nullable|string',
             'condition' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
         ]));
         return back()->with('success', 'Badge berhasil ditambahkan');
     }
@@ -120,6 +144,7 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'icon' => 'nullable|string',
             'condition' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
         ]));
         return back()->with('success', 'Badge berhasil diperbarui');
     }
@@ -149,8 +174,11 @@ class AdminController extends Controller
 
     public function leaderboard()
     {
-        $leaderboard = Leaderboard::with('user')->orderByDesc('total_score')->get();
-        return view('pages.admin.leaderboard', compact('leaderboard'));
+        $users = User::where('role', '!=', 'admin')
+            ->orderByDesc('xp')
+            ->get();
+
+        return view('pages.admin.leaderboard', compact('users'));
     }
 
     public function resetLeaderboard()
@@ -182,6 +210,22 @@ class AdminController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'xp' => 'integer',
         ]));
-        return back()->with('success', 'Data mahasiswa berhasil diperbarui');
+        return back()->with('success', 'Data pelajar berhasil diperbarui');
+    }
+
+    public function destroyStudent(User $user)
+    {
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Tidak dapat menghapus akun admin.');
+        }
+
+        $user->badges()->detach();
+        $user->answers()->delete();
+        $user->progress()->delete();
+        $user->streak()?->delete();
+        $user->questionnaireResponses()?->delete();
+        $user->delete();
+
+        return back()->with('success', 'Mahasiswa berhasil dihapus');
     }
 }

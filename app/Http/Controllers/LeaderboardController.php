@@ -10,7 +10,7 @@ class LeaderboardController extends Controller
     public function index()
     {
         // ambil semua user urut XP
-        $users = User::orderByDesc('xp')->get();
+        $users = User::where('role', '!=', 'admin')->orderByDesc('xp')->get();
 
         // ranking manual
         $users->map(function ($user, $index) {

@@ -6,188 +6,169 @@ use App\Models\User;
 use App\Models\Badge;
 use App\Models\UserBadge;
 use App\Models\UserAnswer;
+use App\Models\UserProgress;
 use App\Models\Level;
 use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 
 class BadgeService
 {
+    private static $badgesByCondition = null;
+
+    private static function getBadgesByCondition(): array
+    {
+        if (self::$badgesByCondition === null) {
+            $badges = Badge::all();
+            $map = [];
+            foreach ($badges as $badge) {
+                $map[$badge->condition] = $badge;
+            }
+            self::$badgesByCondition = $map;
+        }
+        return self::$badgesByCondition;
+    }
+
+    private static function getBadge(string $condition): ?Badge
+    {
+        $map = self::getBadgesByCondition();
+        return $map[$condition] ?? null;
+    }
+
     public static function checkAndAward($userId, $newXp = 0)
     {
         try {
             $user = User::find($userId);
-            
-            // Check if user exists
+
             if (!$user) {
                 \Log::warning("BadgeService: User not found with ID: {$userId}");
                 return [];
             }
 
             $earnedBadges = [];
-
             $existingBadges = UserBadge::where('user_id', $userId)->pluck('badge_id')->toArray();
 
             // First Blood - Selesaikan Level 1
-            $firstBlood = Badge::where('condition', 'first_level')->first();
-            if ($firstBlood && !in_array($firstBlood->id, $existingBadges)) {
-                try {
-                    $level1Questions = Question::where('level_id', 1)->pluck('id');
+            $badge = self::getBadge('first_level');
+            if ($badge && !in_array($badge->id, $existingBadges)) {
+                $level1Questions = Question::where('level_id', 1)->pluck('id');
+                if ($level1Questions->isNotEmpty()) {
                     $hasLevel1 = UserAnswer::where('user_id', $userId)
                         ->whereIn('question_id', $level1Questions)
                         ->where('is_correct', true)
-                        ->count() > 0;
+                        ->exists();
                     if ($hasLevel1) {
                         UserBadge::firstOrCreate(
-                            ['user_id' => $userId, 'badge_id' => $firstBlood->id],
+                            ['user_id' => $userId, 'badge_id' => $badge->id],
                             ['earned_at' => now()]
                         );
-                        $earnedBadges[] = $firstBlood;
+                        $earnedBadges[] = $badge;
                     }
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error checking First Blood badge: " . $e->getMessage());
                 }
             }
 
             // Diamond - 5000 XP
-            $diamond = Badge::where('condition', 'xp_5000')->first();
-            if ($diamond && !in_array($diamond->id, $existingBadges) && $user->xp >= 5000) {
-                try {
-                    UserBadge::firstOrCreate(
-                        ['user_id' => $userId, 'badge_id' => $diamond->id],
-                        ['earned_at' => now()]
-                    );
-                    $earnedBadges[] = $diamond;
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error awarding Diamond badge: " . $e->getMessage());
-                }
+            $badge = self::getBadge('xp_5000');
+            if ($badge && !in_array($badge->id, $existingBadges) && $user->xp >= 5000) {
+                UserBadge::firstOrCreate(
+                    ['user_id' => $userId, 'badge_id' => $badge->id],
+                    ['earned_at' => now()]
+                );
+                $earnedBadges[] = $badge;
             }
 
             // Streak Starter - 3 hari
-            $streakStarter = Badge::where('condition', 'streak_3')->first();
-            if ($streakStarter && !in_array($streakStarter->id, $existingBadges) && $user->login_streak >= 3) {
-                try {
-                    UserBadge::firstOrCreate(
-                        ['user_id' => $userId, 'badge_id' => $streakStarter->id],
-                        ['earned_at' => now()]
-                    );
-                    $earnedBadges[] = $streakStarter;
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error awarding Streak Starter badge: " . $e->getMessage());
-                }
+            $badge = self::getBadge('streak_3');
+            if ($badge && !in_array($badge->id, $existingBadges) && $user->login_streak >= 3) {
+                UserBadge::firstOrCreate(
+                    ['user_id' => $userId, 'badge_id' => $badge->id],
+                    ['earned_at' => now()]
+                );
+                $earnedBadges[] = $badge;
             }
 
             // Python King - #1 rank
-            $pythonKing = Badge::where('condition', 'rank_1')->first();
-            if ($pythonKing && !in_array($pythonKing->id, $existingBadges)) {
-                try {
-                    $rank = User::where('xp', '>', $user->xp)->count() + 1;
-                    if ($rank === 1) {
-                        UserBadge::firstOrCreate(
-                            ['user_id' => $userId, 'badge_id' => $pythonKing->id],
-                            ['earned_at' => now()]
-                        );
-                        $earnedBadges[] = $pythonKing;
-                    }
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error checking Python King badge: " . $e->getMessage());
+            $badge = self::getBadge('rank_1');
+            if ($badge && !in_array($badge->id, $existingBadges)) {
+                $rank = User::where('xp', '>', $user->xp)->count() + 1;
+                if ($rank === 1) {
+                    UserBadge::firstOrCreate(
+                        ['user_id' => $userId, 'badge_id' => $badge->id],
+                        ['earned_at' => now()]
+                    );
+                    $earnedBadges[] = $badge;
                 }
             }
 
             // Night Owl - Belajar jam 23:00+
-            $nightOwl = Badge::where('condition', 'night_study')->first();
-            if ($nightOwl && !in_array($nightOwl->id, $existingBadges)) {
-                try {
-                    $now = now();
-                    if ($now->hour >= 23) {
-                        UserBadge::firstOrCreate(
-                            ['user_id' => $userId, 'badge_id' => $nightOwl->id],
-                            ['earned_at' => now()]
-                        );
-                        $earnedBadges[] = $nightOwl;
-                    }
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error awarding Night Owl badge: " . $e->getMessage());
+            $badge = self::getBadge('night_study');
+            if ($badge && !in_array($badge->id, $existingBadges)) {
+                $hour = now()->hour;
+                if ($hour >= 23) {
+                    UserBadge::firstOrCreate(
+                        ['user_id' => $userId, 'badge_id' => $badge->id],
+                        ['earned_at' => now()]
+                    );
+                    $earnedBadges[] = $badge;
                 }
             }
 
-            // Quiz Master - 100% semua level
-            $quizMaster = Badge::where('condition', 'perfect_score')->first();
-            if ($quizMaster && !in_array($quizMaster->id, $existingBadges)) {
-                try {
-                    $levels = Level::all();
-                    $allPerfect = true;
-                    foreach ($levels as $level) {
-                        $questionIds = Question::where('level_id', $level->id)->pluck('id');
-                        $total = $questionIds->count();
-                        if ($total === 0) continue;
-                        $correct = UserAnswer::where('user_id', $userId)
-                            ->whereIn('question_id', $questionIds)
-                            ->where('is_correct', true)
-                            ->count();
-                        if ($correct < $total) {
-                            $allPerfect = false;
-                            break;
-                        }
-                    }
-                    if ($allPerfect && $levels->count() > 0) {
-                        UserBadge::firstOrCreate(
-                            ['user_id' => $userId, 'badge_id' => $quizMaster->id],
-                            ['earned_at' => now()]
-                        );
-                        $earnedBadges[] = $quizMaster;
-                    }
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error checking Quiz Master badge: " . $e->getMessage());
+            // Early Bird - Pagi buta (4-7)
+            $badge = self::getBadge('early_bird');
+            if ($badge && !in_array($badge->id, $existingBadges)) {
+                $hour = now()->hour;
+                if ($hour >= 4 && $hour <= 7) {
+                    UserBadge::firstOrCreate(
+                        ['user_id' => $userId, 'badge_id' => $badge->id],
+                        ['earned_at' => now()]
+                    );
+                    $earnedBadges[] = $badge;
                 }
             }
-            
-            // Early Bird - Pagi buta (4-7)
-            $earlyBird = Badge::where('condition', 'early_bird')->first();
-            if ($earlyBird && !in_array($earlyBird->id, $existingBadges)) {
-                try {
-                    $hour = now()->hour;
-                    if ($hour >= 4 && $hour <= 7) {
+
+            // Quiz Master - Selesaikan level 1-10
+            $badge = self::getBadge('perfect_score');
+            if ($badge && !in_array($badge->id, $existingBadges)) {
+                $levelIds = Level::whereBetween('order_number', [1, 10])
+                    ->pluck('id');
+
+                if ($levelIds->isNotEmpty()) {
+                    $completed = UserProgress::where('user_id', $userId)
+                        ->whereIn('level_id', $levelIds)
+                        ->where('status', 'completed')
+                        ->count();
+
+                    if ($completed === $levelIds->count()) {
                         UserBadge::firstOrCreate(
-                            ['user_id' => $userId, 'badge_id' => $earlyBird->id],
+                            ['user_id' => $userId, 'badge_id' => $badge->id],
                             ['earned_at' => now()]
                         );
-                        $earnedBadges[] = $earlyBird;
+                        $earnedBadges[] = $badge;
                     }
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error awarding Early Bird badge: " . $e->getMessage());
                 }
             }
 
             // Consistent Coder - 7 hari streak
-            $streak7 = Badge::where('condition', 'streak_7')->first();
-            if ($streak7 && !in_array($streak7->id, $existingBadges) && $user->login_streak >= 7) {
-                try {
-                    UserBadge::firstOrCreate(
-                        ['user_id' => $userId, 'badge_id' => $streak7->id],
-                        ['earned_at' => now()]
-                    );
-                    $earnedBadges[] = $streak7;
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error awarding Consistent Coder badge: " . $e->getMessage());
-                }
+            $badge = self::getBadge('streak_7');
+            if ($badge && !in_array($badge->id, $existingBadges) && $user->login_streak >= 7) {
+                UserBadge::firstOrCreate(
+                    ['user_id' => $userId, 'badge_id' => $badge->id],
+                    ['earned_at' => now()]
+                );
+                $earnedBadges[] = $badge;
             }
 
             // Problem Solver - 100 soal benar
-            $problemSolver = Badge::where('condition', 'questions_100')->first();
-            if ($problemSolver && !in_array($problemSolver->id, $existingBadges)) {
-                try {
-                    $totalCorrect = UserAnswer::where('user_id', $userId)
-                        ->where('is_correct', true)
-                        ->count();
-                    if ($totalCorrect >= 100) {
-                        UserBadge::firstOrCreate(
-                            ['user_id' => $userId, 'badge_id' => $problemSolver->id],
-                            ['earned_at' => now()]
-                        );
-                        $earnedBadges[] = $problemSolver;
-                    }
-                } catch (\Exception $e) {
-                    \Log::error("BadgeService: Error checking Problem Solver badge: " . $e->getMessage());
+            $badge = self::getBadge('questions_100');
+            if ($badge && !in_array($badge->id, $existingBadges)) {
+                $totalCorrect = UserAnswer::where('user_id', $userId)
+                    ->where('is_correct', true)
+                    ->count();
+                if ($totalCorrect >= 100) {
+                    UserBadge::firstOrCreate(
+                        ['user_id' => $userId, 'badge_id' => $badge->id],
+                        ['earned_at' => now()]
+                    );
+                    $earnedBadges[] = $badge;
                 }
             }
 

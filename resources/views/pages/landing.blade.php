@@ -5,11 +5,9 @@
     <!-- Premium Navbar -->
     <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-4 sm:px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-[1200px] mx-auto w-full flex items-center justify-between">
-            <div class="flex items-center gap-3 font-semibold text-2xl text-white">
-                <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center shadow-[0_0_20px_rgba(59,124,244,0.3)]">
-                    <i class="fa-brands fa-python text-white"></i>
-                </div>
-                <span class="font-semibold text-2xl">Py<em class="italic text-brand-blue-light">Learn</em></span>
+            <div class="flex items-center gap-2.5 font-semibold text-2xl text-white">
+                <i class="fa-brands fa-python text-brand-blue-light text-2xl drop-shadow-[0_0_8px_rgba(96,165,250,0.6)]"></i>
+                <span class="bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
             </div>
             
             <div class="hidden md:flex items-center gap-8 ml-12">
@@ -18,14 +16,7 @@
                 <a href="{{ route('leaderboard.index') }}" class="text-sm font-bold text-text-muted hover:text-white transition-colors uppercase tracking-widest">Klasemen</a>
             </div>
             
-            <div class="hidden sm:flex items-center gap-4 ml-auto">
-                <a href="{{ route('login') }}" class="px-5 py-2.5 rounded-xl text-text-secondary text-xs font-bold hover:text-white transition-all">
-                    Masuk
-                </a>
-                <a href="{{ route('register') }}" class="px-6 py-2.5 rounded-xl bg-brand-blue text-white text-xs font-bold hover:bg-brand-blue-light hover:shadow-[0_10px_20px_rgba(59,124,244,0.3)] transition-all">
-                    Daftar Sekarang
-                </a>
-            </div>
+            <div class="hidden sm:flex items-center ml-auto"></div>
 
             <!-- Mobile Toggle -->
             <button onclick="toggleMobileMenu()" class="sm:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all ml-auto">
@@ -42,14 +33,7 @@
             <a href="{{ route('leaderboard.index') }}" class="text-sm font-bold text-text-secondary hover:text-white transition-colors uppercase tracking-widest">Klasemen</a>
         </div>
         <div class="h-px bg-white/5"></div>
-        <div class="flex flex-col gap-4">
-            <a href="{{ route('login') }}" class="w-full py-3.5 rounded-xl text-center text-text-secondary text-sm font-bold hover:text-white transition-all bg-white/5 border border-white/5">
-                Masuk
-            </a>
-            <a href="{{ route('register') }}" class="w-full py-3.5 rounded-xl bg-brand-blue text-center text-white text-sm font-bold hover:bg-brand-blue-light hover:shadow-[0_10px_20px_rgba(59,124,244,0.3)] transition-all">
-                Daftar Sekarang
-            </a>
-        </div>
+        <div class="flex flex-col"></div>
     </div>
 
     <script>
@@ -85,45 +69,19 @@
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-blue"></span>
                         </span>
-                        Edisi Terbaru 2024 Telah Hadir
+                        Edisi Terbaru 2026 Telah Hadir
                     </div>
-                    <h1 class="font-semibold text-6xl md:text-8xl text-white mb-8 tracking-tighter leading-[0.95]">
+                    <h1 class="font-semibold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-8 tracking-tighter leading-[0.95]">
                         Kuasai <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-blue-light">Python</span><br>
                         Dengan Gaya.
                     </h1>
-                    <p class="text-xl text-text-secondary leading-relaxed mb-12 max-w-[520px]">
+                    <p class="text-base sm:text-xl text-text-secondary leading-relaxed mb-8 sm:mb-12 max-w-[520px]">
                         Platform belajar Python tercanggih dengan sistem gamifikasi yang membuat belajar menjadi adiktif. Dari nol hingga siap kerja.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-5 mb-16">
-                        <a href="{{ route('register') }}" class="px-10 py-5 rounded-2xl bg-brand-blue text-white font-bold text-lg hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-12 sm:mb-16">
+                        <a href="{{ route('login') }}" class="px-6 sm:px-10 py-4 sm:py-5 rounded-2xl bg-brand-blue text-white font-bold text-base sm:text-lg hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.4)] hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
                             Mulai Belajar Gratis <i class="fa-solid fa-arrow-right"></i>
                         </a>
-                        <a href="{{ route('level.index') }}" class="px-10 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-3">
-                            Lihat Kurikulum
-                        </a>
-                    </div>
-                    
-                    <div class="flex items-center gap-8">
-                        <div class="flex -space-x-4">
-                            @foreach([1,2,3,4] as $i)
-                                <div class="w-12 h-12 rounded-full border-4 border-ink-950 bg-surface-2 flex items-center justify-center text-xs font-bold text-white overflow-hidden shadow-xl">
-                                    <img src="https://i.pravatar.cc/100?img={{ $i+10 }}" alt="User">
-                                </div>
-                            @endforeach
-                            <div class="w-12 h-12 rounded-full border-4 border-ink-950 bg-brand-blue flex items-center justify-center text-[10px] font-bold text-white shadow-xl">
-                                12K+
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex text-brand-amber text-xs mb-1">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                            <p class="text-xs text-text-muted font-bold uppercase tracking-widest">Dipercaya 12,000+ Pelajar</p>
-                        </div>
                     </div>
                 </div>
 
@@ -177,44 +135,56 @@
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-text-muted uppercase tracking-widest mb-6">
                     Masa Depan Pembelajaran
                 </div>
-                <h2 class="font-semibold text-5xl md:text-6xl text-white mb-6 tracking-tight">Lebih Dari Sekedar Kursus</h2>
+                <h2 class="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-tight">Lebih Dari Sekedar Kursus</h2>
                 <p class="text-lg text-text-secondary max-w-2xl mx-auto">Kami menggabungkan kurikulum industri dengan mekanisme permainan untuk memastikan kamu tidak pernah bosan saat belajar.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
                 <!-- Feature 1 -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-brand-blue/5 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative bg-surface-1 border border-white/5 rounded-[40px] p-10 transition-all duration-500 hover:-translate-y-2">
-                        <div class="w-16 h-16 rounded-2xl bg-brand-blue/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-layer-group text-brand-blue text-2xl"></i>
+                    <div class="relative bg-surface-1 border border-white/5 rounded-[32px] sm:rounded-[40px] p-6 sm:p-8 lg:p-10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-brand-blue/10 flex items-center justify-center mb-5 sm:mb-6 lg:mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-layer-group text-brand-blue text-xl sm:text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-white mb-4">Level Berjenjang</h3>
-                        <p class="text-text-secondary leading-relaxed">Sistem materi yang terstruktur rapi. Buka level baru setelah kamu menguasai materi sebelumnya dengan nilai minimal 80%.</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Level Berjenjang</h3>
+                        <p class="text-sm sm:text-base text-text-secondary leading-relaxed flex-1">Sistem materi yang terstruktur rapi. Buka level baru setelah kamu menguasai materi sebelumnya dengan nilai minimal 80%.</p>
                     </div>
                 </div>
 
                 <!-- Feature 2 -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-brand-purple/5 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative bg-surface-1 border border-white/5 rounded-[40px] p-10 transition-all duration-500 hover:-translate-y-2">
-                        <div class="w-16 h-16 rounded-2xl bg-brand-purple/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-code text-brand-purple text-2xl"></i>
+                    <div class="relative bg-surface-1 border border-white/5 rounded-[32px] sm:rounded-[40px] p-6 sm:p-8 lg:p-10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-brand-purple/10 flex items-center justify-center mb-5 sm:mb-6 lg:mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-code text-brand-purple text-xl sm:text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-white mb-4">Daily Quest</h3>
-                        <p class="text-text-secondary leading-relaxed">Tantangan harian cepat untuk melatih insting kodingmu. Jaga streak-mu dan kumpulkan XP ekstra setiap hari.</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Daily Quest</h3>
+                        <p class="text-sm sm:text-base text-text-secondary leading-relaxed flex-1">Tantangan harian cepat untuk melatih insting kodingmu. Jaga streak-mu dan kumpulkan XP ekstra setiap hari.</p>
                     </div>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-brand-amber/5 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative bg-surface-1 border border-white/5 rounded-[40px] p-10 transition-all duration-500 hover:-translate-y-2">
-                        <div class="w-16 h-16 rounded-2xl bg-brand-amber/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-trophy text-brand-amber text-2xl"></i>
+                    <div class="relative bg-surface-1 border border-white/5 rounded-[32px] sm:rounded-[40px] p-6 sm:p-8 lg:p-10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-brand-amber/10 flex items-center justify-center mb-5 sm:mb-6 lg:mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-trophy text-brand-amber text-xl sm:text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-white mb-4">Achievement</h3>
-                        <p class="text-text-secondary leading-relaxed">Dapatkan badge eksklusif dan bersaing di Klasemen Global. Jadilah legenda Python yang diakui oleh komunitas.</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Achievement</h3>
+                        <p class="text-sm sm:text-base text-text-secondary leading-relaxed flex-1">Dapatkan badge eksklusif dan bersaing di Klasemen Global. Jadilah legenda Python yang diakui oleh komunitas.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="group relative">
+                    <div class="absolute inset-0 bg-brand-green/5 rounded-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative bg-surface-1 border border-white/5 rounded-[32px] sm:rounded-[40px] p-6 sm:p-8 lg:p-10 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-brand-green/10 flex items-center justify-center mb-5 sm:mb-6 lg:mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-laptop-code text-brand-green text-xl sm:text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Python Playground</h3>
+                        <p class="text-sm sm:text-base text-text-secondary leading-relaxed flex-1">Editor Python online langsung di browser. Tulis, jalankan, dan debug kode Python secara real-time tanpa perlu install apapun.</p>
                     </div>
                 </div>
             </div>
@@ -222,14 +192,14 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-32 relative overflow-hidden">
+    <section class="py-20 sm:py-32 relative overflow-hidden">
         <div class="absolute inset-0 bg-brand-blue/5"></div>
         <div class="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
-            <h2 class="font-semibold text-5xl md:text-7xl text-white mb-8 tracking-tighter">Sudah Siap Menjadi<br><span class="text-brand-blue-light italic">Python Master?</span></h2>
-            <p class="text-xl text-text-secondary mb-12 max-w-xl mx-auto">Gabung bersama 12,000+ pelajar lainnya dan mulai perjalanan kodemu hari ini secara gratis.</p>
+            <h2 class="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white mb-8 tracking-tighter">Sudah Siap Menjadi<br><span class="text-brand-blue-light italic">Python Master?</span></h2>
+            <p class="text-xl text-text-secondary mb-12 max-w-xl mx-auto">Gabung bersama pelajar lainnya dan mulai perjalanan kodemu hari ini secara gratis.</p>
             <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                <a href="{{ route('register') }}" class="px-12 py-5 rounded-2xl bg-brand-blue text-white font-bold text-lg hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.4)] transition-all">
-                    Buat Akun Sekarang
+                <a href="{{ route('login') }}" class="px-8 sm:px-12 py-4 sm:py-5 rounded-2xl bg-brand-blue text-white font-bold text-base sm:text-lg hover:bg-brand-blue-light hover:shadow-[0_20px_40px_rgba(59,124,244,0.4)] transition-all">
+                    Mulai Sekarang
                 </a>
             </div>
         </div>
@@ -237,21 +207,8 @@
 
     <!-- Footer -->
     <footer class="py-12 border-t border-white/5">
-        <div class="max-w-[1200px] mx-auto px-7 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="flex items-center gap-3 font-semibold text-xl text-white opacity-50">
-                <div class="w-7 h-7 rounded-lg bg-white flex items-center justify-center">
-                    <i class="fa-brands fa-python text-ink-950 text-sm"></i>
-                </div>
-                <span>PyLearn</span>
-            </div>
-            
-            <p class="text-sm text-text-muted">© 2024 PyLearn. Didorong oleh rasa ingin tahu dan segelas kopi.</p>
-            
-            <div class="flex items-center gap-6">
-                <a href="#" class="text-text-muted hover:text-white transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
-                <a href="#" class="text-text-muted hover:text-white transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
-                <a href="#" class="text-text-muted hover:text-white transition-colors"><i class="fa-brands fa-discord text-xl"></i></a>
-            </div>
+        <div class="max-w-[1200px] mx-auto px-7 text-center">
+            <p class="text-text-muted">© 2026 PyLearn.</p>
         </div>
     </footer>
 </div>

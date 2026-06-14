@@ -20,8 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
     UserSeeder::class,
-    LevelsSeeder::class,
-    QuestionsSeeder::class,
+    LevelAndQuestionSeeder::class,
     BadgesSeeder::class,
 
     UserProgressSeeder::class,
@@ -30,6 +29,7 @@ class DatabaseSeeder extends Seeder
     UserAnswersSeeder::class,
     UserBadgesSeeder::class,
 
+    LevelContentSeeder::class,
     // UpdateUserXpSeeder::class, // penting
     LeaderboardSeeder::class,
 ]);

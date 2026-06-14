@@ -14,11 +14,13 @@ class UserProgress extends Model
         'score',
         'status',
         'attempt_count',
-        'completed_at'
+        'completed_at',
+        'material_read_at'
     ];
 
     protected $casts = [
-        'completed_at' => 'datetime'
+        'completed_at' => 'datetime',
+        'material_read_at' => 'datetime'
     ];
 
     public function user()
