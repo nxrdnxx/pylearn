@@ -64,9 +64,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
-// FAVICON — browser default request, serve SVG langsung
-Route::get('/favicon.ico', fn() => response()->file(public_path('assets/favicon.svg')));
-
 // WEBSITE
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/dashboard', [DashboardController::class, 'index'])
