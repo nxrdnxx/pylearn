@@ -13,8 +13,10 @@
             $manifest = json_decode(file_get_contents($manifestPath), true);
             $cssFile = 'build/' . ($manifest['resources/css/app.css']['file'] ?? 'assets/app.css');
         }
+        $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? '';
+        $cssPath = realpath($docRoot) === realpath(public_path()) ? $cssFile : 'public/' . $cssFile;
     @endphp
-    <link rel="stylesheet" href="{{ asset($cssFile) }}">
+    <link rel="stylesheet" href="/{{ $cssPath }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     @stack('styles')
