@@ -19,7 +19,7 @@
                         <div class="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-purple rounded-[32px] blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
                         <div class="relative w-32 h-32 rounded-[32px] bg-yellow-500 border-2 border-yellow-400/30 flex items-center justify-center shadow-2xl overflow-hidden">
                             @if(Auth::user()->profile_picture)
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                            <img src="{{ '/' . $pubDir . 'storage/' . Auth::user()->profile_picture }}" alt="Foto Profil" class="w-full h-full object-cover">
                             @else
                             <i class="fa-solid fa-user text-white text-5xl"></i>
                             @endif

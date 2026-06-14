@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? '';
+        $pubDir = realpath($docRoot) === realpath(public_path()) ? '' : 'public/';
+        view()->share('pubDir', $pubDir);
     }
 }

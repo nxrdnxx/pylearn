@@ -48,7 +48,7 @@
                             <div class="absolute inset-0 bg-yellow-500/30 rounded-[32px] blur-xl opacity-40"></div>
                             <div id="previewContainer" class="relative w-24 h-24 sm:w-32 sm:h-32 rounded-[32px] bg-yellow-500 border-2 border-yellow-400/30 flex items-center justify-center shadow-2xl overflow-hidden">
                                 @if($user->profile_picture)
-                                <img id="previewImage" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                                <img id="previewImage" src="{{ '/' . $pubDir . 'storage/' . $user->profile_picture }}" alt="Foto Profil" class="w-full h-full object-cover">
                                 @else
                                 <i id="previewIcon" class="fa-solid fa-user text-white text-3xl sm:text-5xl"></i>
                                 <img id="previewImage" class="hidden w-full h-full object-cover">

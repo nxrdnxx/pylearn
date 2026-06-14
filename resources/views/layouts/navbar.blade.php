@@ -50,7 +50,7 @@
         <div class="relative" id="profile-dropdown">
             <button onclick="toggleProfileMenu()" class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:ring-2 hover:ring-yellow-500 bg-yellow-500 overflow-hidden">
                 @if(Auth::user()->profile_picture)
-                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="" class="w-full h-full object-cover">
+                <img src="{{ '/' . $pubDir . 'storage/' . Auth::user()->profile_picture }}" alt="" class="w-full h-full object-cover">
                 @else
                 <i class="fa-solid fa-user text-white text-sm"></i>
                 @endif
@@ -59,7 +59,7 @@
                 <div class="px-4 py-3 border-b border-gray-700 mb-1 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
                         @if(Auth::user()->profile_picture)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="" class="w-full h-full object-cover">
+                        <img src="{{ '/' . $pubDir . 'storage/' . Auth::user()->profile_picture }}" alt="" class="w-full h-full object-cover">
                         @else
                         <i class="fa-solid fa-user text-white text-base"></i>
                         @endif

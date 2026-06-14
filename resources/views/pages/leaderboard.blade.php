@@ -71,7 +71,7 @@
                             <div class="absolute inset-0 bg-yellow-500/30 rounded-full blur-lg opacity-40 group-hover:opacity-60 transition-opacity"></div>
                             <div class="relative w-full h-full rounded-full bg-yellow-500 border-2 @if($user->rank == 1) border-brand-amber @else border-yellow-400/30 @endif flex items-center justify-center shadow-2xl overflow-hidden">
                                 @if($user->profile_picture)
-                                <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="" class="w-full h-full object-cover">
+                                <img src="{{ '/' . $pubDir . 'storage/' . $user->profile_picture }}" alt="" class="w-full h-full object-cover">
                                 @else
                                 <i class="fa-solid fa-user text-white text-lg sm:text-2xl"></i>
                                 @endif
@@ -113,7 +113,7 @@
                         
                         <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all overflow-hidden">
                             @if($user->profile_picture)
-                            <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="" class="w-full h-full object-cover">
+                            <img src="{{ '/' . $pubDir . 'storage/' . $user->profile_picture }}" alt="" class="w-full h-full object-cover">
                             @else
                             <i class="fa-solid fa-user text-white text-[10px] sm:text-sm"></i>
                             @endif

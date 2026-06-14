@@ -181,7 +181,7 @@
                         </span>
                         <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
                             @if($u->profile_picture)
-                            <img src="{{ asset('storage/' . $u->profile_picture) }}" alt="" class="w-full h-full object-cover">
+                            <img src="{{ '/' . $pubDir . 'storage/' . $u->profile_picture }}" alt="" class="w-full h-full object-cover">
                             @else
                             <i class="fa-solid fa-user text-white text-[10px] sm:text-xs"></i>
                             @endif
