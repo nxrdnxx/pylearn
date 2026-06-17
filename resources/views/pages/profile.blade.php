@@ -17,7 +17,7 @@
                     @auth
                     <div class="relative group">
                         <div class="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-purple rounded-[32px] blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
-                        <div class="relative w-32 h-32 rounded-[32px] bg-yellow-500 border-2 border-yellow-400/30 flex items-center justify-center shadow-2xl overflow-hidden">
+                        <div class="relative w-32 h-32 rounded-[32px] bg-ink-700 border-2 border-ink-600 flex items-center justify-center shadow-2xl overflow-hidden">
                             @if(Auth::user()->profile_picture)
                             <img src="{{ '/' . $pubDir . 'storage/' . Auth::user()->profile_picture }}" alt="Foto Profil" class="w-full h-full object-cover">
                             @else
@@ -104,48 +104,48 @@
             </div>
             
             <div class="overflow-x-auto">
-                <table class="w-full text-left min-w-[500px] sm:min-w-0">
+                <table class="w-full text-left">
                     <thead>
                         <tr class="bg-white/[0.02]">
-                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">Level</th>
-                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">Skor</th>
-                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">XP</th>
-                            <th class="hidden sm:table-cell px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest">Tanggal</th>
-                            <th class="px-4 sm:px-8 py-3 sm:py-4 text-[10px] font-bold text-text-muted uppercase tracking-widest text-right">Status</th>
+                            <th class="px-2 sm:px-8 py-2 sm:py-4 text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest">Level</th>
+                            <th class="px-2 sm:px-8 py-2 sm:py-4 text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">Skor</th>
+                            <th class="px-2 sm:px-8 py-2 sm:py-4 text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest text-center">XP</th>
+                            <th class="hidden sm:table-cell px-2 sm:px-8 py-2 sm:py-4 text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest">Tanggal</th>
+                            <th class="px-2 sm:px-8 py-2 sm:py-4 text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest text-right">Status</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
                         @forelse($activities as $activity)
                         <tr class="hover:bg-white/[0.02] transition-colors group">
-                            <td class="px-4 sm:px-8 py-3 sm:py-5">
-                                <div class="text-xs sm:text-sm font-bold text-white group-hover:text-brand-blue-light transition-colors">{{ $activity['level_name'] }}</div>
+                            <td class="px-2 sm:px-8 py-2 sm:py-5">
+                                <div class="text-[10px] sm:text-sm font-bold text-white group-hover:text-brand-blue-light transition-colors truncate max-w-[120px] sm:max-w-none">{{ $activity['level_name'] }}</div>
                             </td>
-                            <td class="px-4 sm:px-8 py-3 sm:py-5 text-center">
-                                <div class="text-xs sm:text-sm font-semibold {{ $activity['score'] >= 80 ? 'text-brand-green' : ($activity['score'] >= 50 ? 'text-brand-amber' : 'text-brand-red') }}">
+                            <td class="px-2 sm:px-8 py-2 sm:py-5 text-center">
+                                <div class="text-[10px] sm:text-sm font-semibold {{ $activity['score'] >= 80 ? 'text-brand-green' : ($activity['score'] >= 50 ? 'text-brand-amber' : 'text-brand-red') }}">
                                     {{ $activity['score'] }}
                                 </div>
                             </td>
-                            <td class="px-4 sm:px-8 py-3 sm:py-5 text-center">
-                                <div class="text-xs sm:text-sm font-semibold text-brand-amber">+{{ $activity['xp'] }}</div>
+                            <td class="px-2 sm:px-8 py-2 sm:py-5 text-center">
+                                <div class="text-[10px] sm:text-sm font-semibold text-brand-amber">+{{ $activity['xp'] }}</div>
                             </td>
-                            <td class="hidden sm:table-cell px-4 sm:px-8 py-3 sm:py-5">
-                                <div class="text-xs text-text-secondary whitespace-nowrap">{{ $activity['date']->diffForHumans() }}</div>
+                            <td class="hidden sm:table-cell px-2 sm:px-8 py-2 sm:py-5">
+                                <div class="text-[10px] sm:text-xs text-text-secondary whitespace-nowrap">{{ $activity['date']->diffForHumans() }}</div>
                             </td>
-                            <td class="px-4 sm:px-8 py-3 sm:py-5 text-right">
+                            <td class="px-2 sm:px-8 py-2 sm:py-5 text-right">
                                 @if($activity['status'] === 'Lulus')
-                                <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded bg-brand-green/10 text-brand-green text-[9px] font-bold uppercase tracking-tighter border border-brand-green/20">Lulus</span>
+                                <span class="inline-flex items-center px-1 sm:px-2 py-0.5 rounded bg-brand-green/10 text-brand-green text-[8px] sm:text-[9px] font-bold uppercase tracking-tighter border border-brand-green/20">Lulus</span>
                                 @else
-                                <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded bg-brand-red/10 text-brand-red text-[9px] font-bold uppercase tracking-tighter border border-brand-red/20">Gagal</span>
+                                <span class="inline-flex items-center px-1 sm:px-2 py-0.5 rounded bg-brand-red/10 text-brand-red text-[8px] sm:text-[9px] font-bold uppercase tracking-tighter border border-brand-red/20">Gagal</span>
                                 @endif
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="px-4 sm:px-8 py-10 sm:py-20 text-center">
-                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
-                                    <i class="fa-solid fa-inbox text-text-muted text-lg sm:text-xl"></i>
+                            <td colspan="5" class="px-2 sm:px-8 py-6 sm:py-20 text-center">
+                                <div class="w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                    <i class="fa-solid fa-inbox text-text-muted text-sm sm:text-xl"></i>
                                 </div>
-                                <div class="text-xs sm:text-sm text-text-secondary">Belum ada aktivitas tercatat.</div>
+                                <div class="text-[10px] sm:text-sm text-text-secondary">Belum ada aktivitas tercatat.</div>
                             </td>
                         </tr>
                         @endforelse

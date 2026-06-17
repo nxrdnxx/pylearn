@@ -99,10 +99,10 @@ class BadgeService
                 }
             }
 
-            // Night Owl - Belajar jam 23:00+
+            // Night Owl - Belajar jam 23:00+ WIB
             $badge = self::getBadge('night_study');
             if ($badge && !in_array($badge->id, $existingBadges)) {
-                $hour = now()->hour;
+                $hour = now('Asia/Jakarta')->hour;
                 if ($hour >= 23) {
                     UserBadge::firstOrCreate(
                         ['user_id' => $userId, 'badge_id' => $badge->id],
@@ -112,10 +112,10 @@ class BadgeService
                 }
             }
 
-            // Early Bird - Pagi buta (4-7)
+            // Early Bird - Pagi buta (4-7 WIB)
             $badge = self::getBadge('early_bird');
             if ($badge && !in_array($badge->id, $existingBadges)) {
-                $hour = now()->hour;
+                $hour = now('Asia/Jakarta')->hour;
                 if ($hour >= 4 && $hour <= 7) {
                     UserBadge::firstOrCreate(
                         ['user_id' => $userId, 'badge_id' => $badge->id],

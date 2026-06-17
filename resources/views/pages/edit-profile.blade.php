@@ -2,6 +2,19 @@
 
 @section('title', 'Edit Profil')
 
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<style>
+    #cropModal .cropper-container {
+        max-height: 70vh;
+    }
+    .cropper-view-box,
+    .cropper-face {
+        border-radius: 50%;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="pt-16 min-h-screen bg-ink-950">
     <div class="relative overflow-hidden pt-12 pb-16">
@@ -45,8 +58,8 @@
 
                     <div class="flex flex-col items-center gap-4 sm:gap-5">
                         <div class="relative group">
-                            <div class="absolute inset-0 bg-yellow-500/30 rounded-[32px] blur-xl opacity-40"></div>
-                            <div id="previewContainer" class="relative w-24 h-24 sm:w-32 sm:h-32 rounded-[32px] bg-yellow-500 border-2 border-yellow-400/30 flex items-center justify-center shadow-2xl overflow-hidden">
+                            <div class="absolute inset-0 bg-ink-700/30 rounded-[32px] blur-xl opacity-40"></div>
+                            <div id="previewContainer" class="relative w-24 h-24 sm:w-32 sm:h-32 rounded-[32px] bg-ink-700 border-2 border-ink-600 flex items-center justify-center shadow-2xl overflow-hidden">
                                 @if($user->profile_picture)
                                 <img id="previewImage" src="{{ '/' . $pubDir . 'storage/' . $user->profile_picture }}" alt="Foto Profil" class="w-full h-full object-cover">
                                 @else
@@ -95,27 +108,118 @@
     </div>
 </div>
 
+<!-- Crop Modal -->
+<div id="cropModal" class="fixed inset-0 z-[200] bg-ink-950/90 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-surface-1 rounded-[28px] border border-white/10 w-full max-w-md shadow-2xl overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-white/5 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white">Crop Foto Profil</h3>
+            <button type="button" onclick="closeCropModal()" class="text-text-secondary hover:text-white w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/10 transition-all">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="p-4 sm:p-5">
+            <div class="w-full max-h-[400px] overflow-hidden rounded-2xl bg-ink-950">
+                <img id="cropImage" src="" alt="Crop Foto">
+            </div>
+        </div>
+        <div class="p-4 sm:p-5 border-t border-white/5 flex gap-3">
+            <button type="button" onclick="closeCropModal()" class="flex-1 py-2.5 sm:py-3 rounded-2xl bg-white/5 text-text-secondary font-bold text-[10px] sm:text-xs hover:bg-white/10 transition-all">Batal</button>
+            <button type="button" onclick="confirmCrop()" class="flex-1 py-2.5 sm:py-3 rounded-2xl bg-brand-blue text-white font-bold text-[10px] sm:text-xs hover:bg-brand-blue-light transition-all shadow-lg shadow-brand-blue/20">Terapkan</button>
+        </div>
+    </div>
+</div>
+
 <form id="deletePhotoForm" action="{{ route('profile.delete-photo') }}" method="POST" class="hidden">
     @csrf
     @method('DELETE')
 </form>
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-function previewFile(input) {
-    const preview = document.getElementById('previewImage');
-    const icon = document.getElementById('previewIcon');
-    const container = document.getElementById('previewContainer');
+let cropper = null;
+let currentCropFile = null;
 
+function previewFile(input) {
     if (input.files && input.files[0]) {
+        currentCropFile = input.files[0];
         const reader = new FileReader();
         reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.classList.remove('hidden');
-            if (icon) icon.style.display = 'none';
+            showCropModal(e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function showCropModal(src) {
+    const modal = document.getElementById('cropModal');
+    const img = document.getElementById('cropImage');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    img.src = src;
+
+    setTimeout(function() {
+        if (cropper) cropper.destroy();
+        cropper = new Cropper(img, {
+            aspectRatio: 1,
+            viewMode: 1,
+            dragMode: 'move',
+            cropBoxResizable: true,
+            cropBoxMovable: true,
+            minContainerWidth: 200,
+            minContainerHeight: 200,
+        });
+    }, 200);
+}
+
+function closeCropModal() {
+    const modal = document.getElementById('cropModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    if (cropper) {
+        cropper.destroy();
+        cropper = null;
+    }
+    document.getElementById('profile_picture').value = '';
+    currentCropFile = null;
+}
+
+function confirmCrop() {
+    if (!cropper) return;
+
+    const canvas = cropper.getCroppedCanvas({
+        width: 512,
+        height: 512,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+    });
+
+    canvas.toBlob(function(blob) {
+        const fileName = currentCropFile ? currentCropFile.name.replace(/\.[^.]+$/, '') + '-cropped.jpg' : 'profile-cropped.jpg';
+        const croppedFile = new File([blob], fileName, {
+            type: 'image/jpeg',
+            lastModified: Date.now(),
+        });
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(croppedFile);
+        const input = document.getElementById('profile_picture');
+        input.files = dataTransfer.files;
+
+        const preview = document.getElementById('previewImage');
+        const icon = document.getElementById('previewIcon');
+        preview.src = canvas.toDataURL('image/jpeg');
+        preview.classList.remove('hidden');
+        if (icon) icon.style.display = 'none';
+
+        const modal = document.getElementById('cropModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+    }, 'image/jpeg', 0.95);
 }
 
 function removePhoto() {

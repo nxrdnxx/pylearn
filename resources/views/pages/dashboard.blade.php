@@ -179,7 +179,7 @@
                         <span class="w-5 sm:w-6 text-center text-xs sm:text-sm font-mono {{ $i == 0 ? 'text-yellow-400' : ($i == 1 ? 'text-gray-400' : ($i == 2 ? 'text-orange-500' : 'text-gray-500')) }}">
                             @if($i == 0)<i class="fa-solid fa-crown text-xs sm:text-sm"></i>@else{{ $i + 1 }}@endif
                         </span>
-                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-ink-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
                             @if($u->profile_picture)
                             <img src="{{ '/' . $pubDir . 'storage/' . $u->profile_picture }}" alt="" class="w-full h-full object-cover">
                             @else

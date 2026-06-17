@@ -74,9 +74,9 @@
                     <!-- Gradient Hover Effect -->
                     <div class="absolute inset-0 bg-gradient-to-br @if($isCompleted) from-brand-green/5 @elseif($isUnlocked) from-brand-blue/5 @else from-white/2 @endif to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                    <div class="relative flex flex-col md:flex-row items-stretch md:items-center gap-4 sm:gap-6 p-4 sm:p-6 md:p-8">
-                        <!-- Level Number/Icon -->
-                        <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex-shrink-0 flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
+                    <div class="relative flex flex-row items-stretch md:items-center gap-3 p-4 sm:p-6 md:p-8">
+                        <!-- Desktop: Big level number icon (hidden on mobile) -->
+                        <div class="hidden md:flex w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex-shrink-0 items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
                             @if($isLocked)
                                 <div class="absolute inset-0 bg-white/5 backdrop-blur-md"></div>
                                 <i class="fa-solid fa-lock text-text-muted text-2xl relative z-10"></i>
@@ -85,13 +85,22 @@
                                 <span class="text-lg sm:text-2xl font-semibold @if($isCompleted) text-brand-green-light @else text-brand-blue-light @endif relative z-10">
                                     {{ $level['order'] }}
                                 </span>
-
                             @endif
                         </div>
 
-                        <!-- Content -->
+                        <!-- Content (number + title inline on mobile) -->
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
+                            <div class="flex items-center gap-2 sm:gap-3 mb-1.5 flex-wrap">
+                                <!-- Mobile level number inline with title -->
+                                @if($isLocked)
+                                    <span class="md:hidden w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-lock text-text-muted text-xs"></i>
+                                    </span>
+                                @else
+                                    <span class="md:hidden inline-flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0 @if($isCompleted) bg-brand-green/10 text-brand-green-light @else bg-brand-blue/10 text-brand-blue-light @endif text-base font-bold">
+                                        {{ $level['order'] }}
+                                    </span>
+                                @endif
                                 <h3 class="text-base sm:text-xl font-bold text-white tracking-tight group-hover:text-brand-blue-light transition-colors">{{ $level['name'] }}</h3>
                                 
                                 @if($isCompleted)
@@ -153,8 +162,8 @@
                             @endif
                         </div>
 
-                        <!-- Action Button (Icon) -->
-                        <div class="flex-shrink-0 flex items-center justify-center">
+                        <!-- Action Button (centered vertically on mobile, centered on desktop) -->
+                        <div class="flex-shrink-0 flex items-center self-stretch md:self-auto justify-center">
                             @if($isLocked)
                                 <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/5 flex items-center justify-center text-text-muted">
                                     <i class="fa-solid fa-lock"></i>

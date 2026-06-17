@@ -48,14 +48,14 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
                 @forelse($earned as $badge)
                 @php $color = $badge->color ?? '#3b7cf4'; @endphp
-                <div class="group relative">
+                <div class="group relative h-full">
                     <div class="absolute inset-0 rounded-[32px] blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500" style="background: linear-gradient(135deg, {{ $color }}33, {{ $color }}1a);"></div>
-                    <div class="relative bg-surface-1 border border-white/5 rounded-[24px] sm:rounded-[32px] p-4 sm:p-6 flex flex-col items-center text-center transition-all duration-500 hover:-translate-y-2 hover:border-white/10 shadow-lg">
-                        <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 shadow-xl group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, {{ $color }}33, {{ $color }}1a);">
+                    <div class="relative h-full bg-surface-1 border border-white/5 rounded-[24px] sm:rounded-[32px] p-4 sm:p-6 flex flex-col items-center text-center transition-all duration-500 hover:-translate-y-2 hover:border-white/10 shadow-lg">
+                        <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 shadow-xl group-hover:scale-110 transition-transform border border-white/5 flex-shrink-0" style="background: linear-gradient(135deg, {{ $color }}33, {{ $color }}1a);">
                             <i class="{{ $badge->icon ?? 'fa-solid fa-medal' }} text-xl sm:text-2xl" style="color: {{ $color }}; filter: drop-shadow(0 0 6px {{ $color }}66);"></i>
                         </div>
-                        <h4 class="text-xs sm:text-sm font-bold text-white mb-1 sm:mb-2 group-hover:text-brand-amber transition-colors">{{ $badge->name }}</h4>
-                        <p class="text-[9px] sm:text-[10px] text-text-muted leading-relaxed line-clamp-2">{{ $badge->description }}</p>
+                        <h4 class="text-xs sm:text-sm font-bold text-white mb-1 sm:mb-2 group-hover:text-brand-amber transition-colors flex-shrink-0">{{ $badge->name }}</h4>
+                        <p class="text-[9px] sm:text-[10px] text-text-muted leading-relaxed line-clamp-2 flex-1 flex items-center justify-center">{{ $badge->description }}</p>
                     </div>
                 </div>
                 @empty
@@ -78,12 +78,12 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
                 @foreach($locked as $badge)
-                <div class="relative bg-surface-1/30 border border-white/5 rounded-[24px] sm:rounded-[32px] p-4 sm:p-6 flex flex-col items-center text-center opacity-60 filter grayscale">
-                    <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-3 sm:mb-4 border border-white/5">
+                <div class="relative h-full bg-surface-1/30 border border-white/5 rounded-[24px] sm:rounded-[32px] p-4 sm:p-6 flex flex-col items-center text-center opacity-60 filter grayscale">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-3 sm:mb-4 border border-white/5 flex-shrink-0">
                         <i class="fa-solid fa-lock text-text-muted text-lg sm:text-xl"></i>
                     </div>
-                    <h4 class="text-xs sm:text-sm font-bold text-text-muted mb-1 sm:mb-2">{{ $badge->name }}</h4>
-                    <p class="text-[9px] sm:text-[10px] text-text-muted/60 leading-relaxed">{{ $badge->description }}</p>
+                    <h4 class="text-xs sm:text-sm font-bold text-text-muted mb-1 sm:mb-2 flex-shrink-0">{{ $badge->name }}</h4>
+                    <p class="text-[9px] sm:text-[10px] text-text-muted/60 leading-relaxed flex-1 flex items-center justify-center">{{ $badge->description }}</p>
                 </div>
                 @endforeach
             </div>

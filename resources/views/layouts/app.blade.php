@@ -24,7 +24,7 @@
         @include('layouts.navbar')
     @endif
 
-    <main>
+    <main class="pb-20 lg:pb-0">
         @yield('content')
     </main>
 
@@ -100,7 +100,7 @@
 
     @auth
     @if(!isset($hideNavbar) || !$hideNavbar)
-    <button id="questionnaireBtn" onclick="openQuestionnaire()" class="fixed bottom-6 right-6 z-[40] w-14 h-14 rounded-full bg-brand-blue hover:bg-brand-blue-light text-white flex items-center justify-center shadow-[0_8px_30px_rgba(59,124,244,0.4)] hover:shadow-[0_8px_30px_rgba(59,124,244,0.6)] cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 group" title="Isi Kuesioner">
+    <button id="questionnaireBtn" onclick="openQuestionnaire()" class="fixed bottom-20 lg:bottom-6 right-4 z-[100] w-14 h-14 rounded-full bg-brand-blue hover:bg-brand-blue-light text-white items-center justify-center shadow-[0_8px_30px_rgba(59,124,244,0.4)] hover:shadow-[0_8px_30px_rgba(59,124,244,0.6)] cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 group hidden" title="Isi Kuesioner">
         <i class="fa-solid fa-comment-dots text-xl group-hover:rotate-12 transition-transform duration-300"></i>
         <!-- Pulse effect badge -->
         <span class="absolute -top-1 -right-1 flex h-4 w-4">
@@ -118,14 +118,9 @@
             
             <!-- Header (Progress & Close) -->
             <div class="p-5 border-b border-white/5 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-brand-blue/10 flex items-center justify-center text-brand-blue">
-                        <i class="fa-solid fa-clipboard-question"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white">Evaluasi PyLearn</h4>
-                        <span id="questionnaireCounter" class="text-[10px] text-text-secondary">Memuat...</span>
-                    </div>
+                <div>
+                    <h4 class="text-sm font-bold text-white">Evaluasi PyLearn</h4>
+                    <span id="questionnaireCounter" class="text-[10px] text-text-secondary">Memuat...</span>
                 </div>
                 <button onclick="closeQuestionnaire()" class="text-text-secondary hover:text-white hover:bg-white/10 rounded-full w-7 h-7 flex items-center justify-center transition-all">
                     <i class="fa-solid fa-xmark"></i>
@@ -208,6 +203,7 @@
                     if (result.has_submitted) {
                         document.getElementById('questionnaireBtn')?.remove();
                     } else {
+                        document.getElementById('questionnaireBtn')?.classList.remove('hidden');
                         questionnaireQuestions = result.questions;
                         questionnaireLoaded = true;
                         
