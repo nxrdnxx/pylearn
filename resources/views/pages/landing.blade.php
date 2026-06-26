@@ -1,56 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+@php $hideNavbar = true; @endphp
 <div class="min-h-screen bg-ink-950 overflow-x-hidden">
     <!-- Premium Navbar -->
     <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-4 sm:px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-[1200px] mx-auto w-full flex items-center justify-between">
             <div class="flex items-center gap-2.5 font-semibold text-2xl text-white">
-                <i class="fa-brands fa-python text-brand-blue-light text-2xl drop-shadow-[0_0_8px_rgba(96,165,250,0.6)]"></i>
-                <span class="bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
+                <img src="{{ '/' . $pubDir . 'assets/favicon.svg' }}" alt="PyLearn" class="h-8 w-8 glow-python transition-all duration-300">
+                <span>PyLearn</span>
             </div>
             
-            <div class="hidden md:flex items-center gap-8 ml-12">
-                <a href="#fitur" class="text-sm font-bold text-text-muted hover:text-white transition-colors uppercase tracking-widest">Fitur</a>
-                <a href="{{ route('level.index') }}" class="text-sm font-bold text-text-muted hover:text-white transition-colors uppercase tracking-widest">Kurikulum</a>
-                <a href="{{ route('leaderboard.index') }}" class="text-sm font-bold text-text-muted hover:text-white transition-colors uppercase tracking-widest">Klasemen</a>
-            </div>
-            
-            <div class="hidden sm:flex items-center ml-auto"></div>
-
-            <!-- Mobile Toggle -->
-            <button onclick="toggleMobileMenu()" class="sm:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all ml-auto">
-                <i id="menu-icon" class="fas fa-bars"></i>
-            </button>
         </div>
     </nav>
-
-    <!-- Mobile Navigation Drawer -->
-    <div id="mobile-menu" class="fixed inset-x-0 top-20 bg-ink-950/95 backdrop-blur-2xl border-b border-white/5 z-[99] p-6 space-y-6 hidden sm:hidden transition-all duration-300 animate-in fade-in slide-in-from-top-4">
-        <div class="flex flex-col gap-5">
-            <a href="#fitur" onclick="toggleMobileMenu()" class="text-sm font-bold text-text-secondary hover:text-white transition-colors uppercase tracking-widest">Fitur</a>
-            <a href="{{ route('level.index') }}" class="text-sm font-bold text-text-secondary hover:text-white transition-colors uppercase tracking-widest">Kurikulum</a>
-            <a href="{{ route('leaderboard.index') }}" class="text-sm font-bold text-text-secondary hover:text-white transition-colors uppercase tracking-widest">Klasemen</a>
-        </div>
-        <div class="h-px bg-white/5"></div>
-        <div class="flex flex-col"></div>
-    </div>
-
-    <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                menu.classList.add('hidden');
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
-            }
-        }
-    </script>
 
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center pt-20">

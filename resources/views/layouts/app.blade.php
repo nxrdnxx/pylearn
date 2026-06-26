@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth bg-ink-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,9 +17,17 @@
     <link rel="stylesheet" href="/{{ $pubDir }}{{ $cssFile }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+    (function() {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    })();
+    </script>
     @stack('styles')
 </head>
-<body class="antialiased selection:bg-brand-blue/30 selection:text-white">
+<body class="antialiased selection:bg-brand-blue/30 selection:text-white bg-ink-950">
     @if(!isset($hideNavbar) || !$hideNavbar)
         @include('layouts.navbar')
     @endif
@@ -99,7 +107,7 @@
     @endif
 
     @auth
-    @if(!isset($hideNavbar) || !$hideNavbar)
+    @if((!isset($hideNavbar) || !$hideNavbar) && request()->routeIs('dashboard.*'))
     <button id="questionnaireBtn" onclick="openQuestionnaire()" class="fixed bottom-20 lg:bottom-6 right-4 z-[100] w-14 h-14 rounded-full bg-brand-blue hover:bg-brand-blue-light text-white items-center justify-center shadow-[0_8px_30px_rgba(59,124,244,0.4)] hover:shadow-[0_8px_30px_rgba(59,124,244,0.6)] cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 group hidden" title="Isi Kuesioner">
         <i class="fa-solid fa-comment-dots text-xl group-hover:rotate-12 transition-transform duration-300"></i>
         <!-- Pulse effect badge -->
@@ -414,6 +422,26 @@
         #questionArea {
             transition: opacity 0.15s ease-out, transform 0.15s ease-out;
         }
+
+        [data-theme="light"] #questionnaireBtn { background: #EBB920 !important; box-shadow: 0 8px 30px rgba(235,185,32,0.4) !important; }
+        [data-theme="light"] #questionnaireBtn:hover { background: #d4a018 !important; box-shadow: 0 8px 30px rgba(235,185,32,0.6) !important; }
+        [data-theme="light"] #questionnaireBtn i { color: #744317 !important; }
+        [data-theme="light"] #questionnaireBtn .fa-comment-dots { color: #744317 !important; }
+        [data-theme="light"] #questionnaireCard .text-white { color: #744317 !important; }
+        [data-theme="light"] #questionnaireCard .border-white\/10 { border-color: #d1d5db !important; }
+        [data-theme="light"] #questionnaireCard .border-white\/5 { border-color: #d1d5db !important; }
+        [data-theme="light"] #questionnaireCard .bg-slate-950 { background: #f1f5f9 !important; }
+        [data-theme="light"] #questionnaireCard #questionnaireProgress { background: #EBB920 !important; }
+        [data-theme="light"] #questionnaireCard .score-btn { border-color: #d1d5db !important; background: #f8fafc !important; color: #744317 !important; }
+        [data-theme="light"] #questionnaireCard .score-btn:hover { border-color: #EBB920 !important; background: rgba(235,185,32,0.1) !important; }
+        [data-theme="light"] #questionnaireCard .score-btn.border-brand-blue { border-color: #EBB920 !important; background: rgba(235,185,32,0.2) !important; color: #EBB920 !important; }
+        [data-theme="light"] #questionnaireCard .text-text-secondary { color: #744317 !important; }
+        [data-theme="light"] #questionnaireCard .text-text-muted { color: #744317 !important; }
+        [data-theme="light"] #questionnaireCard .border-slate-800 { border-color: #d1d5db !important; }
+        [data-theme="light"] #questionnaireCard .bg-slate-800\/30 { background: #f8fafc !important; }
+        [data-theme="light"] #questionnaireCard .bg-slate-800 { background: #f1f5f9 !important; }
+        [data-theme="light"] #questionnaireCard .hover\:text-white:hover { color: #744317 !important; }
+        [data-theme="light"] #questionnaireCard .bg-slate-800\/50 { background: #f8fafc !important; }
     </style>
     @endif
     @endauth

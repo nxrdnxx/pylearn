@@ -9,6 +9,7 @@ use App\Models\UserAnswer;
 use App\Models\UserBadge;
 use App\Models\Badge;
 use App\Services\DailyQuestService;
+use App\Services\BadgeService;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -20,6 +21,11 @@ class DashboardController extends Controller
         
         if (!$user) {
             return redirect()->route('login');
+        }
+
+        $earnedBadges = BadgeService::checkAndAward($user->id);
+        if (count($earnedBadges) > 0) {
+            session()->flash('new_badges', $earnedBadges);
         }
         
         $data = \App\Services\DashboardService::getDashboardData($user);

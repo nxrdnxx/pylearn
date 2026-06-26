@@ -51,19 +51,14 @@ class DailyQuestService
                 }
 
                 if ($questions->isNotEmpty()) {
-                    $newQuestsData = [];
                     foreach ($questions as $q) {
-                        $newQuestsData[] = [
+                        DailyQuest::create([
                             'user_id' => $userId,
                             'question_id' => $q->id,
                             'quest_date' => $today,
-                            'completed' => false,
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ];
+                        ]);
                     }
-                    DailyQuest::insert($newQuestsData);
-                    
+
                     // Refresh the collection
                     $quests = DailyQuest::with('question')
                         ->where('user_id', $userId)

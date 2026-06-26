@@ -56,8 +56,8 @@
     <div class="w-full max-w-[440px] relative z-10">
         <div class="text-center mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
             <a href="{{ route('landing.index') }}" class="inline-flex items-center gap-3 font-semibold text-3xl text-white no-underline mb-8 group">
-                <i class="fa-brands fa-python text-brand-blue-light text-3xl drop-shadow-[0_0_10px_rgba(96,165,250,0.6)] group-hover:drop-shadow-[0_0_14px_rgba(96,165,250,0.9)] transition-all duration-300"></i>
-                <span class="bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
+                <img src="{{ '/' . $pubDir . 'assets/favicon.svg' }}" alt="PyLearn" class="h-8 w-8 glow-python group-hover:glow-python transition-all duration-300">
+                <span>PyLearn</span>
             </a>
             <h1 class="text-4xl font-semibold tracking-tight text-white mb-3">Selamat Datang</h1>
             <p class="text-text-secondary">Masuk dengan Google untuk memulai petualangan kodemu.</p>

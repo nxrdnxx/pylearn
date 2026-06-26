@@ -17,11 +17,11 @@ class UserService
                 return [];
             }
 
-            $today = Carbon::now()->toDateString();
+            $today = Carbon::now('Asia/Jakarta')->toDateString();
             $lastLogin = $user->last_login_date ? $user->last_login_date->toDateString() : null;
             
             if ($lastLogin !== $today) {
-                $yesterday = Carbon::yesterday()->toDateString();
+                $yesterday = Carbon::yesterday('Asia/Jakarta')->toDateString();
                 
                 if ($lastLogin === $yesterday) {
                     $user->increment('login_streak');
@@ -29,11 +29,9 @@ class UserService
                     $user->update(['login_streak' => 1]);
                 }
                 $user->update(['last_login_date' => $today]);
-                
-                return BadgeService::checkAndAward($user->id);
             }
             
-            return [];
+            return BadgeService::checkAndAward($user->id);
         } catch (\Exception $e) {
             \Log::error("UserService::handleLoginStreak failed: " . $e->getMessage(), [
                 'user_id' => $user->id ?? null,

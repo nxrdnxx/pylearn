@@ -3,18 +3,14 @@
 @section('title', 'Hasil Kuis')
 
 @section('content')
-<!-- Simplified Premium Navbar -->
+<div class="result-page">
+<!-- Simplified Premium Navbar (mobile: centered logo only) -->
 <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
-    <div class="max-w-[1100px] mx-auto w-full flex items-center justify-between">
+    <div class="max-w-[1100px] mx-auto w-full flex items-center justify-center lg:justify-start">
         <a href="{{ route('dashboard.index') }}" class="flex items-center gap-2.5 font-semibold text-2xl text-white no-underline group">
-            <i class="fa-brands fa-python text-brand-blue-light text-2xl drop-shadow-[0_0_8px_rgba(96,165,250,0.6)] group-hover:drop-shadow-[0_0_12px_rgba(96,165,250,0.9)] transition-all duration-300"></i>
-            <span class="bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
+            <img src="{{ '/' . $pubDir . 'assets/favicon.svg' }}" alt="PyLearn" class="h-8 w-8 glow-python group-hover:glow-python transition-all duration-300">
+            <span>PyLearn</span>
         </a>
-        <div class="flex items-center gap-3">
-            <a href="{{ route('dashboard.index') }}" class="px-5 py-2.5 rounded-xl bg-white/5 text-white font-bold text-xs border border-white/10 hover:bg-white/10 transition-all">
-                <i class="fa-solid fa-house mr-2 text-[10px]"></i>Dashboard
-            </a>
-        </div>
     </div>
 </nav>
 
@@ -53,6 +49,28 @@
                 <p class="text-sm text-text-secondary mt-4 max-w-[280px] mx-auto leading-relaxed">Kamu butuh skor minimal <span class="text-white font-bold">80</span> untuk membuka tantangan berikutnya.</p>
             @endif
         </div>
+
+        <!-- Badge Time Condition Info (WIB) -->
+        @php
+            $wibHour = now('Asia/Jakarta')->hour;
+            $isEarlyBird = $wibHour >= 4 && $wibHour <= 7;
+            $isNightOwl = $wibHour >= 23;
+        @endphp
+
+        @if($isEarlyBird || $isNightOwl)
+        <div class="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl {{ $isEarlyBird ? 'bg-brand-amber/10 border border-brand-amber/20' : 'bg-brand-blue/10 border border-brand-blue/20' }}">
+                <i class="fa-solid {{ $isEarlyBird ? 'fa-sun text-brand-amber' : 'fa-moon text-brand-blue-light' }} text-sm"></i>
+                <span class="text-[10px] sm:text-xs font-bold {{ $isEarlyBird ? 'text-brand-amber' : 'text-brand-blue-light' }}">
+                    @if($isEarlyBird)
+                        Early Bird aktif! Belajar jam 4-7 AM WIB dapat badge spesial
+                    @else
+                        Night Owl aktif! Belajar setelah jam 11 PM WIB dapat badge spesial
+                    @endif
+                </span>
+            </div>
+        </div>
+        @endif
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-3 gap-3 sm:gap-4 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-400">
@@ -132,5 +150,56 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
+    [data-theme="light"] .result-page nav.fixed {
+        background: rgba(255,255,255,0.7) !important;
+        backdrop-filter: blur(12px) !important;
+        border-bottom-color: #d1d5db !important;
+    }
+
+    [data-theme="light"] .result-page .text-white { color: #744317 !important; }
+
+    [data-theme="light"] .result-page .text-text-muted {
+        color: #744317 !important;
+    }
+
+    [data-theme="light"] .result-page .bg-brand-blue\/10 { background: rgba(235,185,32,0.1) !important; }
+    [data-theme="light"] .result-page .text-brand-blue,
+    [data-theme="light"] .result-page .text-brand-blue-light { color: #EBB920 !important; }
+    [data-theme="light"] .result-page .border-brand-blue\/20 { border-color: rgba(235,185,32,0.2) !important; }
+
+    [data-theme="light"] .result-page .drop-shadow-\[0_0_30px_rgba\(31\,184\,122\,0\.3\)\],
+    [data-theme="light"] .result-page .drop-shadow-\[0_0_30px_rgba\(224\,82\,82\,0\.3\)\] {
+        filter: none !important;
+    }
+
+    [data-theme="light"] .result-page .border-white\/5 {
+        border-color: #d1d5db !important;
+    }
+
+    [data-theme="light"] .result-page .bg-brand-blue.text-white {
+        background: #EBB920 !important;
+    }
+    [data-theme="light"] .result-page .bg-brand-blue.text-white:hover {
+        box-shadow: none !important;
+        transform: translateY(0) !important;
+    }
+
+    [data-theme="light"] .result-page .grid.grid-cols-2 a {
+        background: #EBB920 !important;
+        border-color: #EBB920 !important;
+    }
+    [data-theme="light"] .result-page .grid.grid-cols-2 a:hover {
+        background: #EBB920 !important;
+        border-color: #EBB920 !important;
+        transform: scale(1.03) !important;
+    }
+
+    [data-theme="light"] .result-page .hover\:shadow-\[0_20px_40px_rgba\(59\,124\,244\,0\.3\)\]:hover,
+    [data-theme="light"] .result-page .hover\:shadow-\[0_20px_40px_rgba\(224\,82\,82\,0\.3\)\]:hover {
+        box-shadow: none !important;
+        transform: translateY(0) !important;
+    }
 </style>
+</div>
 @endsection

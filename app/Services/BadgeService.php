@@ -99,11 +99,11 @@ class BadgeService
                 }
             }
 
-            // Night Owl - Belajar jam 23:00+ WIB
+            // Night Owl - Belajar larut malam (23:00 - 03:59 WIB)
             $badge = self::getBadge('night_study');
             if ($badge && !in_array($badge->id, $existingBadges)) {
                 $hour = now('Asia/Jakarta')->hour;
-                if ($hour >= 23) {
+                if ($hour >= 23 || $hour < 4) {
                     UserBadge::firstOrCreate(
                         ['user_id' => $userId, 'badge_id' => $badge->id],
                         ['earned_at' => now()]

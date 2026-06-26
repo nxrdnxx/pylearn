@@ -11,12 +11,13 @@
     $percent = $total > 0 ? ($current / $total) * 100 : 0;
 @endphp
 
+<div class="quiz-page">
 <!-- Fixed Premium Quiz Navbar -->
 <nav class="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-4 sm:px-7 bg-ink-950/80 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-[1100px] mx-auto w-full flex items-center justify-between gap-4 sm:gap-8">
         <a href="{{ route('level.index') }}" class="hidden md:flex items-center gap-2.5 font-semibold text-2xl text-white no-underline group">
-            <i class="fa-brands fa-python text-brand-blue-light text-2xl drop-shadow-[0_0_8px_rgba(96,165,250,0.6)] group-hover:drop-shadow-[0_0_12px_rgba(96,165,250,0.9)] transition-all duration-300"></i>
-            <span class="bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">PyLearn</span>
+            <img src="{{ '/' . $pubDir . 'assets/favicon.svg' }}" alt="PyLearn" class="h-8 w-8 glow-python group-hover:glow-python transition-all duration-300">
+            <span>PyLearn</span>
         </a>
 
         <div class="flex-1 flex items-center gap-3 sm:gap-6 max-w-2xl">
@@ -48,7 +49,7 @@
                 <div class="h-4 w-px bg-white/10"></div>
                 <span class="text-sm font-bold text-white">{{ $level->name }}</span>
             </div>
-            <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-tighter">
+            <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-tighter quiz-percent">
                 <i class="fa-solid fa-clock-rotate-left"></i> {{ round($percent) }}% Selesai
             </div>
         </div>
@@ -244,5 +245,100 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
+    [data-theme="light"] .quiz-page nav.fixed {
+        background: rgba(255,255,255,0.7) !important;
+        backdrop-filter: blur(12px) !important;
+        border-bottom-color: #d1d5db !important;
+    }
+
+    [data-theme="light"] .quiz-page .text-white { color: #744317 !important; }
+
+    [data-theme="light"] .quiz-page .bg-brand-blue\/10 { background: rgba(235,185,32,0.1) !important; }
+    [data-theme="light"] .quiz-page .text-brand-blue,
+    [data-theme="light"] .quiz-page .text-brand-blue-light,
+    [data-theme="light"] .quiz-page .fa-circle-check { color: #EBB920 !important; }
+    [data-theme="light"] .quiz-page .border-brand-blue { border-color: #EBB920 !important; }
+    [data-theme="light"] .quiz-page .border-brand-blue\/20 { border-color: rgba(235,185,32,0.2) !important; }
+    [data-theme="light"] .quiz-page .hover\:border-brand-blue\/30:hover { border-color: rgba(235,185,32,0.3) !important; }
+    [data-theme="light"] .quiz-page .hover\:bg-brand-blue\/10:hover { background: rgba(235,185,32,0.1) !important; }
+    [data-theme="light"] .quiz-page .group-hover\:text-brand-blue-light:hover { color: #EBB920 !important; }
+    [data-theme="light"] .quiz-page .bg-brand-blue\/5 { background: rgba(235,185,32,0.05) !important; }
+    [data-theme="light"] .quiz-page .bg-brand-blue\/20 { background: rgba(235,185,32,0.2) !important; }
+
+    [data-theme="light"] .quiz-page .h-full.bg-gradient-to-r.from-brand-blue.to-brand-blue-light {
+        background: #EBB920 !important;
+        box-shadow: none !important;
+    }
+    [data-theme="light"] .quiz-page .h-2.bg-white\/5 {
+        background: rgba(209,213,219,0.3) !important;
+    }
+
+    [data-theme="light"] .quiz-page .bg-surface-1.rounded-\[24px\] {
+        border-color: #d1d5db !important;
+        box-shadow: none !important;
+    }
+
+    [data-theme="light"] .quiz-page .bg-ink-950.rounded-2xl {
+        background: #F1F5F9 !important;
+        border-color: #d1d5db !important;
+    }
+    [data-theme="light"] .quiz-page .bg-ink-950.rounded-2xl code,
+    [data-theme="light"] .quiz-page .bg-ink-950.rounded-2xl .text-brand-blue-light {
+        color: #1e293b !important;
+    }
+    [data-theme="light"] .quiz-page .bg-ink-950\/50 {
+        background: rgba(241,245,249,0.8) !important;
+    }
+
+    [data-theme="light"] .quiz-page .border-2.border-white\/5 {
+        border-color: #d1d5db !important;
+    }
+    [data-theme="light"] .quiz-page .text-slate-200 { color: #744317 !important; }
+    [data-theme="light"] .quiz-page .bg-white\/5.border-white\/10 {
+        background: rgba(209,213,219,0.3) !important;
+        border-color: #d1d5db !important;
+    }
+
+    [data-theme="light"] .quiz-page .option-label.selected {
+        border-color: #EBB920 !important;
+        background-color: rgba(235,185,32,0.05) !important;
+        box-shadow: none !important;
+    }
+
+    [data-theme="light"] .quiz-page .bg-surface-1.rounded-\[32px\] {
+        border-color: #d1d5db !important;
+    }
+    [data-theme="light"] .quiz-page .shadow-inner.shadow-black\/20 {
+        box-shadow: none !important;
+    }
+    [data-theme="light"] .quiz-page textarea[name="answer"] {
+        color: #744317 !important;
+    }
+
+    [data-theme="light"] .quiz-page a:has(.fa-xmark) {
+        background: #EBB920 !important;
+        border-color: #EBB920 !important;
+    }
+    [data-theme="light"] .quiz-page .bg-brand-blue.text-white {
+        background: #EBB920 !important;
+    }
+    [data-theme="light"] .quiz-page .bg-brand-blue.text-white:hover {
+        box-shadow: none !important;
+        transform: translateY(0) !important;
+    }
+
+    [data-theme="light"] .quiz-page .shadow-xl.shadow-brand-blue\/20 {
+        box-shadow: none !important;
+    }
+
+    [data-theme="light"] .quiz-page .quiz-percent {
+        color: #744317 !important;
+    }
+
+    .quiz-page .option-label:hover {
+        transform: scale(1.02) !important;
+    }
 </style>
+</div>
 @endsection

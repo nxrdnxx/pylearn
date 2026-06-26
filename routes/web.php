@@ -75,6 +75,9 @@ Route::get('/levels', [LevelController::class, 'index'])
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])
     ->name('leaderboard.index')
     ->middleware('auth');
+Route::get('/api/user/{id}/profile', [LeaderboardController::class, 'userProfile'])
+    ->name('api.user.profile')
+    ->middleware('auth');
 Route::get('/badge', [BadgeController::class, 'index'])
     ->name('badge.index')
     ->middleware('auth');

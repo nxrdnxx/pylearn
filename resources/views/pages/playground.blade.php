@@ -22,6 +22,12 @@
     background: #04091a;
     color: rgba(255,255,255,0.9);
 }
+@media (max-width: 640px) {
+    #editorContainer .CodeMirror {
+        font-size: 10px;
+        line-height: 1.5;
+    }
+}
 #editorContainer .CodeMirror-gutters {
     background: #04091a;
     border-right: 1px solid rgba(255,255,255,0.05);
@@ -66,6 +72,46 @@
     background: rgba(107,159,247,0.2);
     border-bottom: 1px solid #6b9ff7;
 }
+
+[data-theme="light"] #editorContainer .CodeMirror {
+    background: #ffffff;
+    color: #1e293b;
+}
+[data-theme="light"] #editorContainer .CodeMirror-gutters {
+    background: var(--color-playground-gutter);
+    border-right: 1px solid #e2e8f0;
+}
+[data-theme="light"] #editorContainer .CodeMirror-linenumber {
+    color: #64748b;
+}
+[data-theme="light"] #editorContainer .CodeMirror-cursor {
+    border-color: #3b82f6;
+}
+[data-theme="light"] #editorContainer .CodeMirror-selected {
+    background: rgba(59,130,246,0.15);
+}
+[data-theme="light"] #editorContainer .cm-keyword { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-operator { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-variable-2 { color: #1e293b; }
+[data-theme="light"] #editorContainer .cm-variable-3 { color: #1e293b; }
+[data-theme="light"] #editorContainer .cm-builtin { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-atom { color: #1e293b; }
+[data-theme="light"] #editorContainer .cm-number { color: #1e293b; }
+[data-theme="light"] #editorContainer .cm-def { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-string { color: #1e293b; }
+[data-theme="light"] #editorContainer .cm-string-2 { color: #1e293b; }
+[data-theme="light"] #editorContainer .cm-comment { color: #94a3b8; font-style: italic; }
+[data-theme="light"] #editorContainer .cm-meta { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-tag { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-attribute { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-property { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-punctuation { color: #2563eb; }
+[data-theme="light"] #editorContainer .cm-bracket { color: #1e293b; }
+[data-theme="light"] #editorContainer .CodeMirror-matchingbracket {
+    color: #1e293b !important;
+    background: rgba(59,130,246,0.1);
+    border-bottom: 1px solid #3b82f6;
+}
 </style>
 @endpush
 
@@ -81,11 +127,11 @@
         <div class="max-w-[1280px] mx-auto px-7 relative z-10">
             <div class="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
                 <div class="text-center md:text-left">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-green text-[11px] font-bold uppercase tracking-wider mb-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-green/10 border border-brand-green/20 text-[11px] font-bold uppercase tracking-wider mb-4" style="color:var(--color-playground-badge-text);">
                         <i class="fa-solid fa-terminal text-[10px]"></i> Python Playground
                     </div>
-                    <h1 class="text-4xl md:text-5xl font-semibold text-white mb-3 tracking-tight">Coba <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-green to-brand-green-light">Kode Python</span></h1>
-                    <p class="text-lg text-text-secondary max-w-xl">
+                    <h1 class="text-4xl md:text-5xl font-semibold mb-3 tracking-tight"><span style="color:var(--color-playground-title);">Coba </span><span style="color:var(--color-playground-accent);">Kode Python</span></h1>
+                    <p class="text-lg max-w-xl" style="color:var(--color-playground-desc);">
                         Tulis, jalankan, dan eksperimen kode Python langsung di browser tanpa perlu install apa pun.
                     </p>
                 </div>
@@ -94,34 +140,28 @@
     </div>
 
     <div class="max-w-[1280px] mx-auto w-full px-4 md:px-7 flex-1 flex flex-col pb-6 relative z-10 min-h-0">
-            <div class="flex-1 flex flex-col lg:flex-row gap-3 sm:gap-4 min-h-0">
-            <div class="flex-1 flex flex-col bg-surface-1 rounded-[24px] sm:rounded-[28px] border border-white/5 overflow-hidden shadow-2xl min-h-0 min-h-[300px]">
+            <div class="flex-1 flex flex-col min-h-0 bg-surface-1 rounded-[12px] sm:rounded-[16px] overflow-hidden relative" style="border:1px solid var(--color-playground-border);box-shadow:var(--shadow-playground);">
+            <div class="flex-1 flex flex-col min-h-0 min-h-[300px] relative">
                 <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-brand-green/0 via-brand-green/40 to-brand-green/0 pointer-events-none"></div>
-                <div class="px-3 sm:px-5 py-2 border-b border-white/5 flex items-center gap-3 bg-surface-1/80 flex-shrink-0">
-                    <div class="flex items-center gap-1">
-                        <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-red/70 inline-block"></span>
-                        <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-amber/70 inline-block"></span>
-                        <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-green/70 inline-block"></span>
-                    </div>
-                    <div class="flex items-center gap-2 ml-2 sm:ml-3 px-2 sm:px-3 py-0.5 rounded-md bg-ink-950 border border-white/5">
-                        <i class="fa-brands fa-python text-brand-green text-[10px]"></i>
-                        <span class="text-[10px] font-bold text-text-muted uppercase tracking-widest">main.py</span>
-                    </div>
+                <div class="px-3 sm:px-5 py-2 border-b border-white/5 flex items-center gap-3 flex-shrink-0" style="background-color:var(--color-playground-toolbar);">
+                    <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--color-playground-label);">main.py</span>
                 </div>
                 <div id="editorContainer" class="flex-1 min-h-0"></div>
             </div>
 
-            <div class="lg:w-[420px] xl:w-[500px] flex flex-col bg-surface-1 rounded-[24px] sm:rounded-[28px] border border-white/5 overflow-hidden shadow-2xl min-h-0 min-h-[250px] lg:min-h-0">
+            <div class="h-px bg-white/5"></div>
+
+            <div class="flex flex-col min-h-0 min-h-[250px] lg:max-h-[300px] relative">
                 <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-brand-blue/0 via-brand-blue/40 to-brand-blue/0 pointer-events-none"></div>
-                <div class="px-3 sm:px-5 py-2 border-b border-white/5 flex items-center justify-between bg-surface-1/80 flex-shrink-0">
+                <div class="px-3 sm:px-5 py-2 border-b border-white/5 flex items-center justify-between flex-shrink-0" style="background-color:var(--color-playground-toolbar);">
                     <div class="flex items-center gap-2">
-                        <span class="flex items-center gap-2 text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                        <span class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest" style="color:var(--color-playground-label);">
                             <i class="fa-solid fa-terminal text-xs text-brand-blue-light"></i> Output
                         </span>
                         <span id="statusDot" class="hidden w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
                     </div>
                     <div class="flex items-center gap-1 sm:gap-2">
-                        <button id="runBtn" onclick="runCode()" class="px-3 sm:px-4 py-1.5 rounded-xl bg-brand-green text-white font-bold text-[10px] hover:bg-brand-green-light hover:shadow-[0_5px_15px_rgba(31,184,122,0.3)] transition-all duration-300 active:scale-[0.95] flex items-center gap-1.5">
+                        <button id="runBtn" onclick="runCode()" class="px-3 sm:px-4 py-1.5 rounded-xl font-bold text-[10px] transition-all duration-300 active:scale-[0.95] flex items-center gap-1.5" style="background-color:var(--color-playground-btn-bg);color:var(--color-playground-btn-text);">
                             <i class="fa-solid fa-play text-[8px]"></i>
                             <span class="hidden sm:inline">Jalankan</span>
                         </button>
@@ -132,12 +172,12 @@
                     </div>
                 </div>
                 <div class="relative flex-1 min-h-0 overflow-hidden">
-                    <pre id="outputPanel" class="absolute inset-0 overflow-y-auto p-3 sm:p-5 font-mono text-xs sm:text-sm leading-relaxed m-0 whitespace-pre-wrap break-words bg-ink-950/30"><span class="text-text-muted/40 text-xs">// Hasil eksekusi akan muncul di sini</span></pre>
+                    <pre id="outputPanel" class="absolute inset-0 overflow-y-auto p-3 sm:p-5 font-mono text-xs sm:text-sm leading-relaxed m-0 whitespace-pre-wrap break-words bg-ink-950/30 text-content"><span class="text-text-muted/40 text-xs">// Hasil eksekusi akan muncul di sini</span></pre>
                     <div id="outputEmpty" class="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-8 pointer-events-none">
                         <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-surface-2/50 border border-white/5 flex items-center justify-center mb-3 sm:mb-4">
                             <i class="fa-solid fa-play text-text-muted/30 text-lg sm:text-xl"></i>
                         </div>
-                        <p class="text-text-muted/40 text-xs sm:text-sm font-medium">Klik <span class="text-brand-green font-bold">Jalankan</span> untuk melihat hasil</p>
+                        <p class="text-text-muted/40 text-xs sm:text-sm font-medium">Klik <span class="font-bold" style="color:var(--color-playground-empty-accent);">Jalankan</span> untuk melihat hasil</p>
                     </div>
                 </div>
             </div>
