@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuestionnaireResponse extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
-        'user_id',
         'name',
         'q_1',
         'q_2',
@@ -20,9 +21,4 @@ class QuestionnaireResponse extends Model
         'q_9',
         'q_10',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

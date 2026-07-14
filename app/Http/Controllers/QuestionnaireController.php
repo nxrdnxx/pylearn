@@ -93,7 +93,7 @@ class QuestionnaireController extends Controller
                 }
             }
 
-            $hasSubmitted = Auth::check() && QuestionnaireResponse::where('user_id', Auth::id())->exists();
+            $hasSubmitted = Auth::check() && QuestionnaireResponse::where('name', Auth::user()->name)->exists();
 
             return response()->json([
                 'success' => true,
@@ -119,7 +119,7 @@ class QuestionnaireController extends Controller
         ]);
 
         try {
-            if (Auth::check() && QuestionnaireResponse::where('user_id', Auth::id())->exists()) {
+            if (Auth::check() && QuestionnaireResponse::where('name', Auth::user()->name)->exists()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Anda sudah mengisi kuesioner ini sebelumnya. Terima kasih!'
@@ -129,8 +129,7 @@ class QuestionnaireController extends Controller
             $answers = $request->input('answers');
 
             $response = QuestionnaireResponse::create([
-                'user_id' => Auth::id(),
-                'name'    => Auth::user()->name,
+                'name' => Auth::user()->name,
                 'q_1'     => $answers['q_1'] ?? null,
                 'q_2'     => $answers['q_2'] ?? null,
                 'q_3'     => $answers['q_3'] ?? null,

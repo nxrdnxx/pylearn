@@ -7,6 +7,7 @@ use App\Models\Question;
 use App\Models\Badge;
 use App\Models\User;
 use App\Models\UserAnswer;
+use App\Models\QuestionnaireResponse;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -223,7 +224,7 @@ class AdminController extends Controller
         $user->answers()->delete();
         $user->progress()->delete();
         $user->streak()?->delete();
-        $user->questionnaireResponses()?->delete();
+        QuestionnaireResponse::where('name', $user->name)?->delete();
         $user->delete();
 
         return back()->with('success', 'User berhasil dihapus');

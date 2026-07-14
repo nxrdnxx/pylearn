@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('questionnaire_responses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->unique()->constrained('users')->onDelete('cascade');
-            $table->string('name')->nullable();
+            $table->string('name')->nullable()->unique();
             $table->tinyInteger('q_1');
             $table->tinyInteger('q_2');
             $table->tinyInteger('q_3');
@@ -25,7 +24,7 @@ return new class extends Migration
             $table->tinyInteger('q_8');
             $table->tinyInteger('q_9');
             $table->tinyInteger('q_10');
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
         });
     }
 
