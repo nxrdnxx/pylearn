@@ -26,6 +26,8 @@ Route::get('/fix-db', function() {
     try {
         // Clear caches
         \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
         
         // Ensure questions exist
         if (\App\Models\DailyQuestQuestion::count() === 0) {
@@ -122,6 +124,37 @@ Route::get('/daily-quest/data', [DailyQuestController::class, 'getQuestData'])
 Route::post('/daily-quest', [DailyQuestController::class, 'submit'])
     ->name('daily-quest.submit')
     ->middleware('auth');
+
+// Storage fallback for shared hosting (no symlink)
+Route::get('/storage-test', function () {
+    $dir = storage_path('app/public');
+    $files = glob($dir . '/**/*');
+    $fileList = array_map(function ($f) use ($dir) {
+        return str_replace($dir . '/', '', $f);
+    }, $files);
+    $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? 'not set';
+    $pubPath = public_path();
+    $pubDir = realpath($docRoot) === realpath($pubPath) ? '' : 'public/';
+    return 'Base: ' . $dir . ' | Files: ' . implode(', ', $fileList) . ' | DOCUMENT_ROOT: ' . $docRoot . ' | public_path: ' . $pubPath . ' | pubDir: ' . $pubDir;
+});
+
+Route::get('/storage/{path}', function (string $path) {
+    $fullPath = realpath(storage_path('app/public/' . $path));
+    $basePath = realpath(storage_path('app/public'));
+    if (!$fullPath || !$basePath || !str_starts_with($fullPath, $basePath) || !file_exists($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->where('path', '.*');
+
+Route::get('/public/storage/{path}', function (string $path) {
+    $fullPath = realpath(storage_path('app/public/' . $path));
+    $basePath = realpath(storage_path('app/public'));
+    if (!$fullPath || !$basePath || !str_starts_with($fullPath, $basePath) || !file_exists($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->where('path', '.*');
 
 // QUESTIONNAIRE
 Route::get('/questionnaire/questions', [QuestionnaireController::class, 'getQuestions'])

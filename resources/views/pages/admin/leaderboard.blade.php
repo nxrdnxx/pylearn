@@ -5,7 +5,7 @@
 @section('content')
 <div class="flex items-center justify-between mb-8">
     <div>
-        <h3 class="text-xl font-bold text-white">Klasemen Mahasiswa</h3>
+        <h3 class="text-xl font-bold text-white">Klasemen User</h3>
         <p class="text-sm text-slate-500">Pantau persaingan dan progres belajar pelajar</p>
     </div>
     <form action="{{ route('admin.leaderboard.reset') }}" method="POST" onsubmit="return confirm('Yakin reset leaderboard?')">
@@ -22,7 +22,7 @@
             <thead>
                 <tr class="bg-white/5">
                     <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Rank</th>
-                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Mahasiswa</th>
+                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">User</th>
                     <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Total XP</th>
                     <th class="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Aktivitas</th>
                 </tr>

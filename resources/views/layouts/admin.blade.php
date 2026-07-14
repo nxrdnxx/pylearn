@@ -34,7 +34,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen" style="background-color: #04091a;">
     <!-- Sidebar Backdrop for Mobile -->
     <div id="admin-sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300" onclick="toggleAdminSidebar()"></div>
 
@@ -60,13 +60,13 @@
                 <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 lg:mb-4 px-3 lg:px-4">Main Menu</p>
                 
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group {{ request()->routeIs('admin.dashboard') ? 'nav-link-active' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                    <i class="fas fa-grid-2 w-5 group-hover:scale-110 transition-transform"></i> 
+                    <i class="fas fa-grip w-5 group-hover:scale-110 transition-transform"></i> 
                     <span class="font-medium">Dashboard</span>
                 </a>
                 
                 <a href="{{ route('admin.students') }}" class="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group {{ request()->routeIs('admin.students*') ? 'nav-link-active' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
-                    <i class="fas fa-user-graduate w-5 group-hover:scale-110 transition-transform"></i>
-                    <span class="font-medium">Mahasiswa</span>
+                    <i class="fas fa-users w-5 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-medium">User</span>
                 </a>
 
                 <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-8 mb-4 px-4">Content</p>

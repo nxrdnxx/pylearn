@@ -226,6 +226,6 @@ class AdminController extends Controller
         $user->questionnaireResponses()?->delete();
         $user->delete();
 
-        return back()->with('success', 'Mahasiswa berhasil dihapus');
+        return back()->with('success', 'User berhasil dihapus');
     }
 }

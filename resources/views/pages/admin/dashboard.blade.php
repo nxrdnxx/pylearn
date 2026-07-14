@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header_title', 'Dashboard Overview')
+@section('header_title', 'Dashboard')
 
 @section('content')
 <div class="mb-6 sm:mb-10">
@@ -109,7 +109,7 @@
                     <i class="fas fa-users text-sm sm:text-base"></i>
                 </div>
                 <div class="min-w-0">
-                    <p class="text-xs sm:text-sm font-bold text-white truncate">Data Mahasiswa</p>
+                    <p class="text-xs sm:text-sm font-bold text-white truncate">Data User</p>
                     <p class="text-[10px] text-slate-500 truncate">Monitoring progres</p>
                 </div>
             </div>

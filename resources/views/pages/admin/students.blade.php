@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header_title', 'Data Mahasiswa')
+@section('header_title', 'Data User')
 
 @section('content')
 <div class="flex items-center justify-between mb-8">
@@ -16,7 +16,7 @@
             <thead>
                 <tr class="bg-white/5">
                     <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">No</th>
-                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Mahasiswa</th>
+                    <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">User</th>
                     <th class="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">XP Progress</th>
                     <th class="hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5">Stats</th>
                     <th class="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-white/5 text-right">Aksi</th>
@@ -93,7 +93,7 @@
                 <i class="fas fa-user-edit text-xl"></i>
             </div>
             <div>
-                <h2 class="text-xl font-bold text-white">Edit Mahasiswa</h2>
+                <h2 class="text-xl font-bold text-white">Edit User</h2>
                 <p class="text-xs text-slate-500 font-medium">Perbarui informasi profil pelajar</p>
             </div>
         </div>
@@ -138,7 +138,7 @@
                 <i class="fas fa-exclamation-triangle text-xl"></i>
             </div>
             <div>
-                <h2 class="text-xl font-bold text-white">Hapus Mahasiswa</h2>
+                <h2 class="text-xl font-bold text-white">Hapus User</h2>
                 <p class="text-xs text-slate-500 font-medium">Tindakan ini tidak dapat dibatalkan</p>
             </div>
         </div>
