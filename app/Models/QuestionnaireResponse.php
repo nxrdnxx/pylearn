@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuestionnaireResponse extends Model
 {
-    public $timestamps = false;
+    const UPDATED_AT = null;
 
     protected $fillable = [
         'name',
+        'email',
         'q_1',
         'q_2',
         'q_3',

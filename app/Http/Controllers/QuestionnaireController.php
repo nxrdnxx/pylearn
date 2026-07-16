@@ -129,17 +129,18 @@ class QuestionnaireController extends Controller
             $answers = $request->input('answers');
 
             $response = QuestionnaireResponse::create([
-                'name' => Auth::user()->name,
-                'q_1'     => $answers['q_1'] ?? null,
-                'q_2'     => $answers['q_2'] ?? null,
-                'q_3'     => $answers['q_3'] ?? null,
-                'q_4'     => $answers['q_4'] ?? null,
-                'q_5'     => $answers['q_5'] ?? null,
-                'q_6'     => $answers['q_6'] ?? null,
-                'q_7'     => $answers['q_7'] ?? null,
-                'q_8'     => $answers['q_8'] ?? null,
-                'q_9'     => $answers['q_9'] ?? null,
-                'q_10'    => $answers['q_10'] ?? null,
+                'name'  => Auth::user()->name,
+                'email' => Auth::user()->email,
+                'q_1'   => $answers['q_1'] ?? null,
+                'q_2'   => $answers['q_2'] ?? null,
+                'q_3'   => $answers['q_3'] ?? null,
+                'q_4'   => $answers['q_4'] ?? null,
+                'q_5'   => $answers['q_5'] ?? null,
+                'q_6'   => $answers['q_6'] ?? null,
+                'q_7'   => $answers['q_7'] ?? null,
+                'q_8'   => $answers['q_8'] ?? null,
+                'q_9'   => $answers['q_9'] ?? null,
+                'q_10'  => $answers['q_10'] ?? null,
             ]);
 
             return response()->json([
